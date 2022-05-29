@@ -13,5 +13,58 @@ class Doomslayer : LegendPlayer {
         LegendPlayer.Toughness 0.,0.;
         LegendPlayer.Luck 0.,0.;
         LegendPlayer.BonusHealth 0,0.5;
+
+        Player.StartItem "SlayerChaingun";
+    }
+}
+
+class SlayerChaingun : LegendWeapon {
+    // The chaingun attacks rapidly for pow*0.1 damage with a small amount of spread.
+
+    default {
+        LegendWeapon.Damage 0, 0.1;
+    }
+
+    states {
+        Select:
+            CHGG A 1 A_Raise;
+            Loop;
+        Deselect:
+            CHGG A 1 A_Lower;
+            Loop;
+        Ready:
+            CHGG A 1 A_WeaponReady();
+            Loop;
+        Fire:
+            CHGG A 1 {
+                A_StartSound("weapons/chngun");
+                Shoot("BulletShot",ang: frandom(-4,4),pitch: frandom(-1.5,1.5));
+                A_GunFlash();
+            }
+            CHGG A 2;
+            CHGG B 1;
+            CHGG B 0 A_Refire();
+            Goto Ready;
+
+        Flash:
+            CHGF A 1 Bright A_Light1();
+            Goto LightDone;
+    }
+}
+
+class BulletShot : LegendShot {
+    // A small bullet projectile.
+
+    default {
+        Scale 0.5;
+    }
+
+    states {
+        Spawn:
+            PUFF AB 3 Bright;
+            Loop;
+        Death:
+            PUFF BCD 4;
+            Stop;
     }
 }
