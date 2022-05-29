@@ -45,7 +45,7 @@ class LegendPlayer : DoomPlayer {
         // Roll a random number between 1 and 100. If it's lower than chance, return true.
         // Luck is applied to this roll based on isBad.
         double roll = frandom(0,100);
-        isBad ? roll += GetLuck() : roll -= GetLuck();
+        if(isBad) { roll += GetLuck(); } else { roll -= GetLuck(); }
         return roll < chance;
     }
 
@@ -88,9 +88,9 @@ class LegendPlayer : DoomPlayer {
         // We're measuring health with the growth calculator.
         if (withUpgrades) {
             return MaxHealth + BonusHealth + Floor(BonusHealthGrow * Level);
-        } else [
+        } else {
             return MaxHealth;
-        ]
+        }
     }
 
 }
