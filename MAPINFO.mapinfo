@@ -1,3 +1,4 @@
 GameInfo {
     PlayerClasses = "Doomslayer"
+    AddEventHandlers = "XPDropHandler"
 }

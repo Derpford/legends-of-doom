@@ -60,3 +60,59 @@ class SmallXPGem : XPGem {
             Loop;
     }
 }
+
+class MidXPGem : XPGem {
+
+    default {
+        XPGem.Value 25.0;
+    }
+
+    states {
+        Spawn:
+            XPRM A 3;
+            XPYM A 3;
+            XPGM A 3;
+            XPBM A 3;
+            XPPM A 3;
+            Loop;
+    }
+}
+
+class BigXPGem : XPGem {
+
+    default {
+        XPGem.Value 125.0;
+    }
+
+    states {
+        Spawn:
+            XPRB A 3;
+            XPYB A 3;
+            XPGB A 3;
+            XPBB A 3;
+            XPPB A 3;
+            Loop;
+    }
+}
+
+class XPDropHandler : EventHandler {
+    // When a monster dies, drop XP equal to 10% of its HP.
+    // TODO: Decide if this should scale up with monster level.
+
+    override void WorldThingDied(WorldEvent e) {
+        if (e.Thing.bISMONSTER) { // Only on monsters!
+            double xpval = e.Thing.GetSpawnHealth() * 0.1;
+            Name type = "SmallXPGem";
+            if (xpval > 100) {
+                type = "BigXPGem";
+            } else if (xpval > 25) {
+                type = "MidXPGem";
+            }
+            let gem = XPGem(e.Thing.spawn(type, e.Thing.pos));
+            if (gem) {
+                gem.value = xpval;
+                gem.vel = (frandom(-6,6), frandom(-6,6), frandom(8,12));
+            }
+        }
+    }
+}
