@@ -54,6 +54,7 @@ class LegendPlayer : DoomPlayer {
         }
         return ret;
     }
+
     bool LuckRoll(double chance, bool isBad = false) {
         // Roll a random number between 1 and 100. If it's lower than chance, return true.
         // Luck is applied to this roll based on isBad.
@@ -100,4 +101,32 @@ class LegendPlayer : DoomPlayer {
         }
     }
 
+}
+
+class XPGem : Inventory {
+    // A special class that handles the whole thing with XP being a double
+
+    double value;
+    Property Value : value;
+
+    default {
+        XPGem.Value 1.0;
+    }
+
+    override void AttachToOwner(Actor other) {
+        let plr = LegendPlayer(other);
+        if(plr) {
+            plr.xp += value;
+            GoAwayAndDie(); //wow rude >:(
+        }
+    }
+
+    states {
+        Spawn:
+            XPRS A -1;
+            Loop;
+        Death:
+            TNT1 A 0;
+            Stop;
+    }
 }
