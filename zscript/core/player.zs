@@ -41,6 +41,11 @@ class LegendPlayer : DoomPlayer {
         Player.MaxHealth 100; // Make sure this is set.
     }
 
+    override void Tick() {
+        super.Tick();
+        TryLevel();
+    }
+
     double RollDown(double initial) {
         // Returns 1, plus 1 for every 100 in initial, plus 1 based on remainder of initial.
         double ret = 1.;
@@ -101,32 +106,4 @@ class LegendPlayer : DoomPlayer {
         }
     }
 
-}
-
-class XPGem : Inventory {
-    // A special class that handles the whole thing with XP being a double
-
-    double value;
-    Property Value : value;
-
-    default {
-        XPGem.Value 1.0;
-    }
-
-    override void AttachToOwner(Actor other) {
-        let plr = LegendPlayer(other);
-        if(plr) {
-            plr.xp += value;
-            GoAwayAndDie(); //wow rude >:(
-        }
-    }
-
-    states {
-        Spawn:
-            XPRS A -1;
-            Loop;
-        Death:
-            TNT1 A 0;
-            Stop;
-    }
 }
