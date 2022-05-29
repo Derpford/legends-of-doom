@@ -41,6 +41,19 @@ class LegendPlayer : DoomPlayer {
         Player.MaxHealth 100; // Make sure this is set.
     }
 
+    double RollDown(double initial) {
+        // Returns 1, plus 1 for every 100 in initial, plus 1 based on remainder of initial.
+        double ret = 1.;
+        while (initial > 100.) {
+            ret += 1;
+            initial -= 100.;
+        }
+        // The final roll.
+        if (LuckRoll(initial)) {
+            ret += 1;
+        }
+        return ret;
+    }
     bool LuckRoll(double chance, bool isBad = false) {
         // Roll a random number between 1 and 100. If it's lower than chance, return true.
         // Luck is applied to this roll based on isBad.
@@ -71,16 +84,10 @@ class LegendPlayer : DoomPlayer {
         // Grabs the current Power value. If `raw`, skip the precision doubling check.
         double pow = self.Power + (self.PowerGrow * self.Level);
         double lucky = GetPrecision();
-        double multi = 1.;
 
         // Return the raw value if asked.
         if (raw) { return pow; }
-        while (lucky > 0) {
-            if (LuckRoll(lucky)) {
-                multi += 1;
-            }
-            lucky -= 100.;
-        }
+        double multi = RollDown(lucky);
         return pow * multi;
     }
 
