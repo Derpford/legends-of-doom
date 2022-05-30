@@ -8,6 +8,7 @@ extend class LegendPlayer {
             xp -= (100.0 * level);
             level += 1;
             console.printf("Level is now "..level);
+            A_StartSound("misc/p_pkup");
             return true;
         } else {
             return false;
@@ -24,11 +25,13 @@ class XPGem : Inventory {
     default {
         XPGem.Value 1.0;
         +DONTGIB;
+        +INVENTORY.QUIET;
     }
 
     override void AttachToOwner(Actor other) {
         let plr = LegendPlayer(other);
         if(plr) {
+            plr.A_StartSound("misc/i_pkup");
             plr.xp += value;
             GoAwayAndDie(); //wow rude >:(
         }
