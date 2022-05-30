@@ -23,6 +23,7 @@ class XPGem : Inventory {
 
     default {
         XPGem.Value 1.0;
+        +DONTGIB;
     }
 
     override void AttachToOwner(Actor other) {
