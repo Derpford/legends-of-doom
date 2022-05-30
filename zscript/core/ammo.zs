@@ -50,6 +50,7 @@ class RedAmmoBig : RedAmmo replaces ShellBox {
 
 class YellowAmmo : Ammo replaces RocketAmmo {
     default {
+        Scale 0.5;
         Inventory.PickupMessage "Yellow ammo!";
         Inventory.Amount 5;
         Inventory.MaxAmount 100;
@@ -59,14 +60,14 @@ class YellowAmmo : Ammo replaces RocketAmmo {
 
     states {
         Spawn:
-            ROCK A -1;
+            BROK A -1;
             Stop;
     }
 }
 
 class YellowAmmoBig : YellowAmmo replaces RocketBox {
     default {
-        Scale 2.0;
+        Scale 1.0;
         Inventory.Amount 50;
     }
 }
