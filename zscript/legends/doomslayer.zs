@@ -22,7 +22,8 @@ class SlayerChaingun : LegendWeapon {
     // The chaingun attacks rapidly for pow*0.1 damage with a small amount of spread.
 
     default {
-        LegendWeapon.Damage 0, 0.1;
+        LegendWeapon.Damage 5, 0.1;
+        Weapon.SlotNumber 2;
     }
 
     states {
@@ -57,6 +58,7 @@ class BulletShot : LegendShot {
 
     default {
         Scale 0.5;
+        Radius 2;
     }
 
     states {
