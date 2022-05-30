@@ -35,22 +35,17 @@ class MonsterStaticHandler : StaticEventHandler {
     // Stores monster level during level transitions.
 
     int MonsterLevel;
-    bool hasData;
 
     override void NetworkProcess(ConsoleEvent e) {
         // Receive the data!
         if (e.Name == "SaveMonsterLevel") {
             MonsterLevel = e.Args[0];
-            hasData = true;
         }
     }
 
-    override void WorldThingSpawned (WorldEvent e) {
-        // Send a net event with the data! But only if hasData.
-        if (hasData) {
-            hasData = false;
-            EventHandler.SendNetworkEvent("LoadMonsterLevel",MonsterLevel);
-        }
+    override void WorldLoaded (WorldEvent e) {
+        // Send a net event with the data!
+        EventHandler.SendNetworkEvent("LoadMonsterLevel",MonsterLevel);
     }
 }
 
@@ -69,7 +64,7 @@ class MonsterLevelHandler : EventHandler {
 
     override void NetworkProcess(ConsoleEvent e) {
         // Receive the data!
-        if (e.Name == "LoadMonsterLevel") {
+        if (e.Name == "LoadMonsterLevel" && e.Args[0] != 0) {
             MonsterLevel = e.Args[0];
         }
     }
