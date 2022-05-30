@@ -19,6 +19,7 @@ class Doomslayer : LegendPlayer {
         Player.StartItem "SlayerChaingun";
         Player.StartItem "SlayerShotgun";
         Player.StartItem "SlayerPlasma";
+        Player.StartItem "SlayerLauncher";
     }
 }
 
@@ -52,6 +53,7 @@ class PlasmaShot : LegendShot {
         Radius 13;
         Height 8;
         Speed 30;
+        DeathSound "weapons/plasmax";
     }
 
     states {
@@ -60,6 +62,28 @@ class PlasmaShot : LegendShot {
             Loop;
         Death:
             PLSE ABCDE 4 Bright;
+            Stop;
+    }
+}
+
+class RocketShot : LegendShot {
+    // Big, slightly slower than PlasmaShot, but it explodes!
+    default {
+        Radius 13;
+        Height 8;
+        Speed 24;
+        DeathSound "weapons/rocklx";
+    }
+    
+    states {
+        Spawn:
+            MISL A 1;
+            Loop;
+        Death:
+            MISL BC 4;
+            MISL D 4 A_Explode(power*5,128);
+            MISL E 4;
+            TNT1 A 0;
             Stop;
     }
 }
@@ -205,6 +229,43 @@ class SlayerPlasma : LegendWeapon {
             Goto LightDone;
         Flash2:
             PLSF B 2 Bright A_Light1();
+            Goto LightDone;
+    }
+}
+
+class SlayerLauncher : LegendWeapon {
+    // Fires rockets that impact for pow*1.0 damage and explode for up to pow*5.0 damage.
+    default {
+        LegendWeapon.Damage 0., 1.;
+        Weapon.SlotNumber 5;
+        Weapon.AmmoType "YellowAmmo";
+        Weapon.AmmoUse 5;
+    }
+
+    states {
+        Select:
+            MISG A 1 A_Raise(35);
+            Loop;
+        Deselect:
+            MISG A 1 A_Lower(35);
+            Loop;
+        Ready:
+            MISG A 1 A_WeaponReady();
+            Loop;
+        Fire:
+            MISG B 1 {
+                A_StartSound("weapons/rocklf");
+                A_TakeInventory("YellowAmmo",5);
+                Shoot("RocketShot");
+                A_GunFlash();
+            }
+            MISG B 19;
+            MISG B 0 A_Refire();
+            Goto Ready;
+        Flash:
+            MISF A 3 Bright A_Light1();
+            MISF B 4 Bright;
+            MISF CD 4 Bright A_Light2();
             Goto LightDone;
     }
 }
