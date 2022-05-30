@@ -44,7 +44,15 @@ class LegendPlayer : DoomPlayer {
     override void Tick() {
         super.Tick();
         TryLevel();
+        
+        // Restore 1% max health every 5 seconds.
+        if(GetAge() % 175 == 0) {
+            int amt = floor(0.01*GetMaxHealth(true));
+            GiveBody(amt);
+        }
     }
+
+    // TODO: TakeSpecialDamage override for Toughness.
 
     double RollDown(double initial) {
         // Returns 1, plus 1 for every 100 in initial, plus 1 based on remainder of initial.
