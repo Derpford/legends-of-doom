@@ -191,10 +191,7 @@ class SlayerChaingun : LegendWeapon {
             CHGG A 1 A_Lower(35);
             Loop;
         Ready:
-            CHGG A 1 {
-                A_WeaponReady();
-                invoker.stacks = 0;
-            }
+            CHGG A 1 A_WeaponReady();
             Loop;
         Fire:
             CHGG A 1 {
