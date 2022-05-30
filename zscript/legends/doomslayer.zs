@@ -17,6 +17,7 @@ class Doomslayer : LegendPlayer {
         Player.StartItem "GreenAmmo",60;
         Player.StartItem "RedAmmo",10;
         Player.StartItem "SlayerChaingun";
+        Player.StartItem "SlayerSaw";
         Player.StartItem "SlayerShotgun";
         Player.StartItem "SlayerPlasma";
         Player.StartItem "SlayerLauncher";
@@ -101,6 +102,64 @@ class VorpalSplash : LegendShot {
             TNT1 A 1;
             TNT1 A 0 A_Explode(96, 96, XF_EXPLICITDAMAGETYPE,damagetype:"Vorpal");
             Stop;
+    }
+}
+
+class SlayerSaw : LegendWeapon {
+    // Chainsaw! The great communicator!
+    // Damaging an enemy with this weapon gives them Efficiency.
+    // Enemies who die while holding Efficiency drop some ammo.
+    // Also, it hits for pow*0.15 every 4 ticks. It's like a slightly more powerful Chaingun, sort of!
+    default {
+        LegendWeapon.Damage 0., 0.15;
+        Weapon.SlotNumber 1;
+        Weapon.UpSound "weapons/sawup";
+    }
+
+    states {
+        Select:
+            SAWG C 1 A_Raise(35);
+            Loop;
+        Deselect:
+            SAWG C 1 A_Lower(35);
+            Loop;
+        Ready:
+            SAWG C 1 {
+                A_WeaponReady();
+                A_StartSound("weapons/sawidle");
+            }
+            SAWG CC 1 A_WeaponReady();
+            SAWG D 1 {
+                A_WeaponReady();
+                A_StartSound("weapons/sawidle");
+            }
+            SAWG DD 1 A_WeaponReady();
+            Loop;
+        Fire:
+            SAWG AB 4 {
+                A_StartSound("weapons/sawhit");
+                A_CustomPunch(invoker.GetDamage(),true,CPF_PULLIN);
+                let tgt = invoker.owner.AimTarget();
+                if(tgt && invoker.owner.Vec3To(tgt).length() < 64) {
+                    tgt.GiveInventory("Efficiency",1);
+                }
+            }
+            Goto Ready;
+    }
+}
+
+class Efficiency : Inventory {
+    // On owner death, spawns ammo and then removes itself.
+    override void DoEffect() {
+        if (owner.bISMONSTER && owner.health <= 0) {
+            static const Name ammotypes[] = {"GreenAmmo","RedAmmo","YellowAmmo","BlueAmmo"};
+            for (int i = 0; i < random(1,3); i++) {
+                Name it = ammotypes[random(0,3)];
+                let drop = owner.Spawn(it,owner.pos);
+                drop.vel = (frandom(-2,2),frandom(-2,2),frandom(3,6));
+            }
+            owner.A_TakeInventory("Efficiency",1);
+        }
     }
 }
 
