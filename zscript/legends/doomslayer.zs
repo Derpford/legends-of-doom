@@ -48,6 +48,15 @@ class BulletShot : LegendShot {
     }
 }
 
+class PainBullet : BulletShot {
+    // Every so often, the Chaingun fires a particularly pain-inducing bullet.
+    override int DoSpecialDamage(Actor tgt, int dmg, Name type) {
+        int diff = 17 - tgt.CountInv("Pain");
+        tgt.A_GiveInventory("Pain",diff);
+        return super.DoSpecialDamage(tgt,dmg,type);
+    }
+}
+
 class PlasmaShot : LegendShot {
     // Slower, wider, more likely to melt your face.
     default {
@@ -165,6 +174,7 @@ class Efficiency : Inventory {
 
 class SlayerChaingun : LegendWeapon {
     // The chaingun attacks rapidly for 5+pow*0.1 damage with a small amount of spread.
+    int stacks;
 
     default {
         LegendWeapon.Damage 5, 0.1;
@@ -181,13 +191,23 @@ class SlayerChaingun : LegendWeapon {
             CHGG A 1 A_Lower(35);
             Loop;
         Ready:
-            CHGG A 1 A_WeaponReady();
+            CHGG A 1 {
+                A_WeaponReady();
+                invoker.stacks = 0;
+            }
             Loop;
         Fire:
             CHGG A 1 {
                 A_TakeInventory("GreenAmmo",1);
-                A_StartSound("weapons/chngun");
-                Shoot("BulletShot",ang: frandom(-4,4),pitch: frandom(-1.5,1.5));
+                invoker.stacks += 1;
+                if(invoker.stacks >= 5) {
+                    A_StartSound("weapons/chngun",pitch:1.1);
+                    Shoot("PainBullet",ang: frandom(-2,2),pitch: frandom(-1.0,1.0));
+                    invoker.stacks -= 5;
+                } else {
+                    A_StartSound("weapons/chngun");
+                    Shoot("BulletShot",ang: frandom(-4,4),pitch: frandom(-1.5,1.5));
+                }
                 A_GunFlash();
             }
             CHGG A 1;

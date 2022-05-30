@@ -30,3 +30,19 @@ class VorpalModifier : Inventory {
         }
     }
 }
+
+class Pain : Inventory {
+    // Flinches the target for a certain number of frames.
+
+    default {
+        Inventory.Amount 1;
+        Inventory.MaxAmount 999;
+    }
+
+    override void DoEffect() {
+        if (owner.health > 0 && !owner.bCORPSE && owner.ResolveState("pain") && !InStateSequence(owner.curstate,owner.ResolveState("Pain"))) {
+            owner.SetState(owner.ResolveState("Pain"));
+        }
+        owner.A_TakeInventory("Pain",1);
+    }
+}
