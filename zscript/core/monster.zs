@@ -15,6 +15,22 @@ class LevelToken : Inventory {
     }
 }
 
+class LevelHealthItem : Inventory {
+    // Handles giving monsters health when they get a LevelToken.
+
+    default {
+        Inventory.Amount 1;
+        Inventory.MaxAmount 1;
+    }
+
+    override bool HandlePickup (Inventory item) {
+        if (item is "LevelToken") {
+            owner.GiveBody(owner.GetSpawnHealth() * 0.1);
+        }
+        return false;
+    }
+}
+
 class MonsterStaticHandler : StaticEventHandler {
     // Stores monster level during level transitions.
 
@@ -48,7 +64,7 @@ class MonsterLevelHandler : EventHandler {
 
     override void NewGame() {
         MonsterLevel = 0;
-        console.printf("Resetting Monster Level!");
+        // console.printf("Resetting Monster Level!");
     }
 
     override void NetworkProcess(ConsoleEvent e) {
@@ -64,11 +80,10 @@ class MonsterLevelHandler : EventHandler {
     }
 
     override void WorldThingSpawned(WorldEvent e) {
+
         if (e.Thing.bISMONSTER) {
-            double multi = 1.0 + (MonsterLevel * 0.1);
-            e.Thing.GiveInventory("LevelToken",MonsterLevel);
-            e.Thing.health = (e.Thing.GetSpawnHealth() * multi);            
-            console.printf("Spawning "..e.Thing.GetClassName().." with level "..MonsterLevel+1);
+            e.Thing.GiveInventory("LevelHealthItem",1);
+            // console.printf("Spawning "..e.Thing.GetClassName().." with level "..MonsterLevel+1);
         }
     }
 
@@ -78,16 +93,27 @@ class MonsterLevelHandler : EventHandler {
         if (ticktimer >= 35 ) {
             ticktimer = 0;
             seconds += 1;
-            console.printf("MonsterLevel is "..MonsterLevel);
+            // console.printf("MonsterLevel is "..MonsterLevel);
         }
         if (seconds >= 60) {
             seconds = 0;
             minutes += 1;
         }
-        if (minutes >= 5) {
+        if (minutes >= 3) {
             minutes = 0;
             MonsterLevel += 1;
             console.printf("Monster Level increased to "..MonsterLevel+1);
+        }
+
+        // Iterate over all monsters, and update their levels.
+        ThinkerIterator monsters = ThinkerIterator.Create("Actor",Thinker.STAT_DEFAULT);
+        Actor mo;
+        while(mo = Actor(monsters.next())) {
+            if (mo.bISMONSTER && mo.CountInv("LevelToken") < MonsterLevel) {
+                int diff = MonsterLevel - mo.CountInv("LevelToken");
+                mo.GiveInventory("LevelToken",diff);
+                // console.printf("Leveled "..mo.GetClassName().." to "..MonsterLevel+1);
+            }
         }
     }
 }
