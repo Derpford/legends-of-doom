@@ -111,6 +111,7 @@ class SlayerChaingun : LegendWeapon {
         LegendWeapon.Damage 5, 0.1;
         Weapon.SlotNumber 2;
         Weapon.AmmoType "GreenAmmo";
+        Weapon.AmmoUse 1;
     }
 
     states {
