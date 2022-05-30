@@ -18,6 +18,7 @@ class Doomslayer : LegendPlayer {
         Player.StartItem "RedAmmo",10;
         Player.StartItem "SlayerChaingun";
         Player.StartItem "SlayerShotgun";
+        Player.StartItem "SlayerPlasma";
     }
 }
 
@@ -41,6 +42,24 @@ class BulletShot : LegendShot {
             Stop;
         XDeath:
             TNT1 A 0;
+            Stop;
+    }
+}
+
+class PlasmaShot : LegendShot {
+    // Slower, wider, more likely to melt your face.
+    default {
+        Radius 13;
+        Height 8;
+        Speed 30;
+    }
+
+    states {
+        Spawn:
+            PLSS AB 5 Bright;
+            Loop;
+        Death:
+            PLSE ABCDE 4 Bright;
             Stop;
     }
 }
@@ -146,6 +165,46 @@ class SlayerShotgun : LegendWeapon {
         Flash:
             SHT2 I 4 Bright A_Light1();
             SHT2 J 3 Bright A_Light2();
+            Goto LightDone;
+    }
+}
+
+class SlayerPlasma : LegendWeapon {
+    // The plasma rifle! Melts enemies like hot lightning through butter. Melts your ammo supply, too.
+
+    default {
+        LegendWeapon.Damage 0., .6;
+        Weapon.SlotNumber 4;
+        Weapon.AmmoType "BlueAmmo";
+        Weapon.AmmoUse 4;
+    }
+
+    states {
+        Select:
+            PLSG A 1 A_Raise(35);
+            Loop;
+        Deselect:
+            PLSG A 1 A_Lower(35);
+            Loop;
+        Ready:
+            PLSG A 1 A_WeaponReady();
+            Loop;
+        Fire:
+            PLSG A 3 {
+                A_StartSound("weapons/plasmaf");
+                A_TakeInventory("BlueAmmo",4);
+                Shoot("PlasmaShot");
+                if (frandom(0,1) > 0.5) { A_GunFlash(); } else { A_GunFlash("Flash2"); }
+            }
+            PLSG B 0 A_Refire();
+            PLSG B 16;
+            Goto Ready;
+
+        Flash:
+            PLSF A 2 Bright A_Light1();
+            Goto LightDone;
+        Flash2:
+            PLSF B 2 Bright A_Light1();
             Goto LightDone;
     }
 }
