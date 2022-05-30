@@ -29,10 +29,15 @@ class LegendWeapon : Weapon {
 
     action void Shoot(Name type, double ang = 0, double xy = 0, int height = 0, int flags = 0, double pitch = 0) {
         Actor it = A_FireProjectile(type,ang,false,xy,height,flags,pitch);
-        if(it && (it is "LegendShot")) {
-            let it = LegendShot(it);
-            it.power = invoker.GetDamage();
-        }
+        if(it) {
+            if (it is "LegendShot") {
+                let it = LegendShot(it);
+                it.power = invoker.GetDamage();
+            } else if (it is "LegendFastShot") {
+                let it = LegendFastShot(it);
+                it.power = invoker.GetDamage();
+            }
+        }   
     }
 
 }
@@ -48,4 +53,16 @@ class LegendShot : Actor {
         DamageFunction (power);
     }
 
+}
+
+class LegendFastShot : Actor {
+    // FastProjectile for LegendWeapons.
+
+    int power;
+
+    default {
+        PROJECTILE;
+        Speed 40;
+        DamageFunction (power);
+    }
 }
