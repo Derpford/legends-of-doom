@@ -132,7 +132,7 @@ class SlayerShotgun : LegendWeapon {
                 Shoot("VorpalSplash");
                 A_GunFlash();
             }
-            SHT2 A 9;
+            SHT2 A 7;
             SHT2 B 6;
             SHT2 C 6 A_CheckReload();
             SHT2 D 6 A_StartSound("weapons/sshoto");
