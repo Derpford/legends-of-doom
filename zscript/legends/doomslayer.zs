@@ -14,6 +14,8 @@ class Doomslayer : LegendPlayer {
         LegendPlayer.Luck 0.,0.;
         LegendPlayer.BonusHealth 0,0.5;
 
+        Player.StartItem "GreenAmmo",60;
+        Player.StartItem "RedAmmo",10;
         Player.StartItem "SlayerChaingun";
         Player.StartItem "SlayerShotgun";
     }
@@ -65,6 +67,7 @@ class SlayerChaingun : LegendWeapon {
     default {
         LegendWeapon.Damage 5, 0.1;
         Weapon.SlotNumber 2;
+        Weapon.AmmoType "GreenAmmo";
     }
 
     states {
@@ -79,6 +82,7 @@ class SlayerChaingun : LegendWeapon {
             Loop;
         Fire:
             CHGG A 1 {
+                A_TakeInventory("GreenAmmo",1);
                 A_StartSound("weapons/chngun");
                 Shoot("BulletShot",ang: frandom(-4,4),pitch: frandom(-1.5,1.5));
                 A_GunFlash();
@@ -103,6 +107,8 @@ class SlayerShotgun : LegendWeapon {
     default {
         LegendWeapon.Damage 0., 0.1;
         Weapon.SlotNumber 3;
+        Weapon.AmmoType "RedAmmo";
+        Weapon.AmmoUse 2;
     }
 
     states {
@@ -118,6 +124,7 @@ class SlayerShotgun : LegendWeapon {
         Fire:
             SHT2 A 1 {
                 A_StartSound("weapons/sshotf");
+                A_TakeInventory("RedAmmo",2);
                 for(int i = -5; i < 5; i++) {
                     Shoot("BulletShot",ang: i, pitch:frandom(-1,0));
                     Shoot("BulletShot",ang: i, pitch:frandom(0,1));
