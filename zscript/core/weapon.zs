@@ -49,6 +49,7 @@ class LegendShot : Actor {
 
     default {
         PROJECTILE;
+        +FORCERADIUSDMG;
         Speed 40;
         DamageFunction (power);
     }
@@ -62,6 +63,7 @@ class LegendFastShot : Actor {
 
     default {
         PROJECTILE;
+        +FORCERADIUSDMG;
         Speed 40;
         DamageFunction (power);
     }
