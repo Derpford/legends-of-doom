@@ -1,4 +1,4 @@
 GameInfo {
     PlayerClasses = "Doomslayer"
-    AddEventHandlers = "XPDropHandler", "MonsterLevelHandler", "MonsterStaticHandler"
+    AddEventHandlers = "XPDropHandler", "VorpalHandler", "MonsterLevelHandler", "MonsterStaticHandler"
 }
