@@ -12,6 +12,7 @@ version "4.6"
 // Items.
 #include "zscript/items/behemoth.zs"
 #include "zscript/items/serum.zs"
+#include "zscript/items/hard-helmet.zs"
 
 // Characters.
 #include "zscript/legends/doomslayer.zs"
