@@ -13,6 +13,8 @@ version "4.6"
 #include "zscript/items/behemoth.zs"
 #include "zscript/items/serum.zs"
 #include "zscript/items/hard-helmet.zs"
+#include "zscript/items/copied-floppy.zs"
+#include "zscript/items/surplus-caliber.zs"
 
 // Characters.
 #include "zscript/legends/doomslayer.zs"
