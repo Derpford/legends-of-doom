@@ -31,7 +31,7 @@ class XPGem : Inventory {
     override void AttachToOwner(Actor other) {
         let plr = LegendPlayer(other);
         if(plr) {
-            plr.A_StartSound("misc/i_pkup");
+            plr.A_StartSound("misc/i_pkup",2);
             plr.xp += value;
             GoAwayAndDie(); //wow rude >:(
         }
