@@ -40,6 +40,19 @@ class LegendWeapon : Weapon {
         }   
     }
 
+    action void Reload() {
+        // Not tied to "reloading". This just procs OnReload().
+        A_StartSound("misc/w_pkup",8,volume:0.7,pitch:1.3);
+        Inventory it = invoker.owner.inv;
+        while (it) {
+            let lit = LegendItem(it);
+            if (lit) {
+                lit.OnReload();
+            }
+            it = it.inv;
+        }
+    }
+
 }
 
 class LegendShot : Actor {

@@ -175,6 +175,7 @@ class Efficiency : Inventory {
 class SlayerChaingun : LegendWeapon {
     // The chaingun attacks rapidly for 5+pow*0.1 damage with a small amount of spread.
     int stacks;
+    int ammo;
 
     default {
         LegendWeapon.Damage 5, 0.1;
@@ -197,6 +198,13 @@ class SlayerChaingun : LegendWeapon {
             CHGG A 1 {
                 A_TakeInventory("GreenAmmo",1);
                 invoker.stacks += 1;
+                invoker.ammo += 1;
+
+                if(invoker.ammo >= 10) {
+                    Reload();
+                    invoker.ammo = 0;
+                }
+
                 if(invoker.stacks >= 5) {
                     A_StartSound("weapons/chngun",pitch:1.1);
                     Shoot("PainBullet",ang: frandom(-2,2),pitch: frandom(-1.0,1.0));
@@ -205,6 +213,7 @@ class SlayerChaingun : LegendWeapon {
                     A_StartSound("weapons/chngun");
                     Shoot("BulletShot",ang: frandom(-4,4),pitch: frandom(-1.5,1.5));
                 }
+
                 A_GunFlash();
             }
             CHGG A 1;
@@ -258,7 +267,7 @@ class SlayerShotgun : LegendWeapon {
             SHT2 D 6 A_StartSound("weapons/sshoto");
             SHT2 E 6;
             SHT2 F 6 A_StartSound("weapons/sshotl");
-            SHT2 G 5;
+            SHT2 G 5 Reload();
             SHT2 H 5 A_StartSound("weapons/sshotc");
             SHT2 A 4 A_Refire();
             Goto Ready;
@@ -272,6 +281,8 @@ class SlayerShotgun : LegendWeapon {
 
 class SlayerPlasma : LegendWeapon {
     // The plasma rifle! Melts enemies like hot lightning through butter. Melts your ammo supply, too.
+
+    int ammo;
 
     default {
         LegendWeapon.Damage 0., .6;
@@ -294,6 +305,11 @@ class SlayerPlasma : LegendWeapon {
             PLSG A 3 {
                 A_StartSound("weapons/plasmaf");
                 A_TakeInventory("BlueAmmo",4);
+                invoker.ammo += 1;
+                if(invoker.ammo >= 15) {
+                    Reload();
+                    invoker.ammo = 0;
+                }
                 Shoot("PlasmaShot");
                 if (frandom(0,1) > 0.5) { A_GunFlash(); } else { A_GunFlash("Flash2"); }
             }
@@ -312,6 +328,8 @@ class SlayerPlasma : LegendWeapon {
 
 class SlayerLauncher : LegendWeapon {
     // Fires rockets that impact for pow*1.0 damage and explode for up to pow*5.0 damage.
+    int ammo;
+    
     default {
         LegendWeapon.Damage 0., 1.;
         Weapon.SlotNumber 5;
@@ -331,6 +349,11 @@ class SlayerLauncher : LegendWeapon {
             Loop;
         Fire:
             MISG B 1 {
+                invoker.ammo += 1;
+                if (invoker.ammo >= 3) {
+                    Reload();
+                    invoker.ammo = 0;
+                }
                 A_StartSound("weapons/rocklf");
                 A_TakeInventory("YellowAmmo",5);
                 Shoot("RocketShot");
