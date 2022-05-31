@@ -39,6 +39,12 @@ class LegendItem : Inventory {
 
         return false;
     }
+
+    // And now, stat stuff.
+    virtual clearscope double GetPower() { return 0; }
+    virtual clearscope double GetPrecision() { return 0; }
+    virtual clearscope double GetToughness() { return 0; }
+    virtual clearscope double GetLuck() { return 0; }
 }
 
 class ItemPassiveHandler : EventHandler {
@@ -73,12 +79,12 @@ class ItemPassiveHandler : EventHandler {
 
     override void WorldThingDied(WorldEvent e) {
         // Call OnKill on items in the killer's inventory.
-        if (e.Inflictor && e.Inflictor.inv) {
-            Inventory it = e.Inflictor.inv;
+        if (e.Inflictor && e.Inflictor.target && e.Inflictor.target.inv) {
+            Inventory it = e.Inflictor.target.inv;
             while (it) {
                 let lit = LegendItem(it);
                 if (lit) {
-                    lit.OnKill(e.Inflictor, e.Thing);
+                    lit.OnKill(e.Inflictor.target, e.Thing);
                 }
                 it = it.inv;
             }

@@ -81,22 +81,58 @@ class LegendPlayer : DoomPlayer {
         // The base Luck value,
         // The LuckGrowth value times our level, 
         // and any items that might modify our Luck. [TODO]
-        return self.Luck + (self.LuckGrow * self.Level);
+        Inventory it = inv;
+        double bonus = 0.;
+        while (it) {
+            let lit = LegendItem(it);
+            if (lit) {
+                bonus += lit.GetLuck();
+            }
+            it = it.inv;
+        }
+        return bonus + self.Luck + (self.LuckGrow * self.Level);
     }
 
     double GetPrecision() {
         // As with GetLuck, but for Precision.
-        return self.Precision + (self.PrecisionGrow + self.Level);
+        Inventory it = inv;
+        double bonus = 0.;
+        while (it) {
+            let lit = LegendItem(it);
+            if (lit) {
+                bonus += lit.GetPrecision();
+            }
+            it = it.inv;
+        }
+        return bonus + self.Precision + (self.PrecisionGrow + self.Level);
     }
 
     double GetToughness() {
         // As with GetLuck, but for Toughness.
-        return self.Toughness + (self.ToughnessGrow + self.Level);
+        Inventory it = inv;
+        double bonus = 0.;
+        while (it) {
+            let lit = LegendItem(it);
+            if (lit) {
+                bonus += lit.GetToughness();
+            }
+            it = it.inv;
+        }
+        return bonus + self.Toughness + (self.ToughnessGrow + self.Level);
     }
 
     double GetPower(bool raw = false) {
         // Grabs the current Power value. If `raw`, skip the precision doubling check.
-        double pow = self.Power + (self.PowerGrow * self.Level);
+        Inventory it = inv;
+        double bonus = 0.;
+        while (it) {
+            let lit = LegendItem(it);
+            if (lit) {
+                bonus += lit.GetPower();
+            }
+            it = it.inv;
+        }
+        double pow = bonus + self.Power + (self.PowerGrow * self.Level);
         double lucky = GetPrecision();
 
         // Return the raw value if asked.
@@ -107,6 +143,7 @@ class LegendPlayer : DoomPlayer {
 
     override int GetMaxHealth (bool withUpgrades) {
         // We're measuring health with the growth calculator.
+        // Sadly, checking against inventory items fails.
         if (withUpgrades) {
             return MaxHealth + BonusHealth + Floor(BonusHealthGrow * Level);
         } else {
