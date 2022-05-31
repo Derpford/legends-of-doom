@@ -118,7 +118,9 @@ class LegendPlayer : DoomPlayer {
             }
             it = it.inv;
         }
-        return bonus + self.Toughness + (self.ToughnessGrow + self.Level);
+        double ret = bonus + self.Toughness + (self.ToughnessGrow * self.Level);
+        // console.printf("Calculated toughness: "..ret);
+        return ret;
     }
 
     double GetPower(bool raw = false) {
@@ -149,6 +151,15 @@ class LegendPlayer : DoomPlayer {
         } else {
             return MaxHealth;
         }
+    }
+
+    override int TakeSpecialDamage (Actor inf, Actor src, int dmg, Name type) {
+        // RollDown our Toughness and use that as a divisor.
+        double div = RollDown(GetToughness());
+        if (div > 1) { A_StartSound("switches/normbutn",8,pitch:1.2); } // Placeholder sound for "Toughness procced"
+        double new = double(dmg) / div;
+        // console.printf("Toughness: "..dmg.." to "..new);
+        return floor(new);
     }
 
 }
