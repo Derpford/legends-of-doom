@@ -19,6 +19,7 @@ class SurplusCaliber : LegendItem {
         } else {
             SetTimer();
         }
+        super.DoEffect();
     }
 
     override void OnReload() {
