@@ -101,11 +101,26 @@ class BigXPGem : XPGem {
 
 class XPDropHandler : EventHandler {
     // When a monster dies, drop XP equal to 10% of its HP.
-    // TODO: Decide if this should scale up with monster level.
 
     override void WorldThingDied(WorldEvent e) {
         if (e.Thing.bISMONSTER) { // Only on monsters!
-            double xpval = e.Thing.GetSpawnHealth() * 0.1;
+            int basehp = e.Thing.GetSpawnHealth();
+            double truehp = basehp + (e.Thing.CountInv("LevelToken") * basehp * 0.1);
+            let plr = LegendPlayer(e.Inflictor.target);
+            if(plr && plr.LuckRoll(truehp)) {
+                // Spawn a couple HP bonuses.
+                Name bon;
+                if(frandom(0,1)>0.5) {
+                    bon = "HealthBonus"; 
+                } else {
+                    bon = "ArmorBonus";
+                }
+                let it = e.Thing.Spawn(bon,e.Thing.pos);
+                if (it) {
+                    it.vel = (frandom(-4,4), frandom(-4,4), frandom(6,12));
+                }
+            }
+            double xpval = truehp * 0.1;
             Name type = "SmallXPGem";
             if (xpval > 100) {
                 type = "BigXPGem";
@@ -115,7 +130,7 @@ class XPDropHandler : EventHandler {
             let gem = XPGem(e.Thing.spawn(type, e.Thing.pos));
             if (gem) {
                 gem.value = xpval;
-                gem.vel = (frandom(-6,6), frandom(-6,6), frandom(8,12));
+                gem.vel = (frandom(-4,4), frandom(-4,4), frandom(6,12));
             }
         }
     }
