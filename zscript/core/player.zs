@@ -54,7 +54,7 @@ class LegendPlayer : DoomPlayer {
 
     // TODO: TakeSpecialDamage override for Toughness.
 
-    double RollDown(double initial) {
+    clearscope double RollDown(double initial) {
         // Returns 1, plus 1 for every 100 in initial, plus 1 based on remainder of initial.
         double ret = 1.;
         while (initial > 100.) {
@@ -68,7 +68,7 @@ class LegendPlayer : DoomPlayer {
         return ret;
     }
 
-    bool LuckRoll(double chance, bool isBad = false) {
+    clearscope bool LuckRoll(double chance, bool isBad = false) {
         // Roll a random number between 1 and 100. If it's lower than chance, return true.
         // Luck is applied to this roll based on isBad.
         double roll = frandom(0,100);
@@ -76,7 +76,7 @@ class LegendPlayer : DoomPlayer {
         return roll < chance;
     }
 
-    double GetLuck() {
+    clearscope double GetLuck() {
         // Get the current Luck value, based on:
         // The base Luck value,
         // The LuckGrowth value times our level, 
@@ -94,7 +94,7 @@ class LegendPlayer : DoomPlayer {
         return min(bonus + self.Luck + (self.LuckGrow * self.Level), 50.);
     }
 
-    double GetPrecision() {
+    clearscope double GetPrecision() {
         // As with GetLuck, but for Precision.
         Inventory it = inv;
         double bonus = 0.;
@@ -108,7 +108,7 @@ class LegendPlayer : DoomPlayer {
         return bonus + self.Precision + (self.PrecisionGrow + self.Level);
     }
 
-    double GetToughness() {
+    clearscope double GetToughness() {
         // As with GetLuck, but for Toughness.
         Inventory it = inv;
         double bonus = 0.;
@@ -124,7 +124,7 @@ class LegendPlayer : DoomPlayer {
         return ret;
     }
 
-    double GetPower(bool raw = false) {
+    clearscope double GetPower(bool raw = false) {
         // Grabs the current Power value. If `raw`, skip the precision doubling check.
         Inventory it = inv;
         double bonus = 0.;
