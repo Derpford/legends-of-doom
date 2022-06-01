@@ -90,7 +90,8 @@ class LegendPlayer : DoomPlayer {
             }
             it = it.inv;
         }
-        return bonus + self.Luck + (self.LuckGrow * self.Level);
+        // Capped to 50!
+        return min(bonus + self.Luck + (self.LuckGrow * self.Level), 50.);
     }
 
     double GetPrecision() {
