@@ -122,12 +122,16 @@ class ItemPassiveHandler : EventHandler {
 class HPBonus : Inventory replaces HealthBonus {
     // Adds 1 to health. Does *NOT* respect max health (or any maximum!).
 
+    int heals;
+    Property Heal : heals;
+
     default {
+        HPBonus.Heal 1;
         Inventory.PickupMessage "Health bonus!";
     }
 
     override void AttachToOwner (Actor other) {
-        other.GiveBody(1,int.max);
+        other.GiveBody(heals,int.max);
         GoAwayAndDie();
     }
 
@@ -135,5 +139,37 @@ class HPBonus : Inventory replaces HealthBonus {
         Spawn:
             BON1 ABCDCB 5;
             Loop;
+    }
+}
+
+class SuperSoul : HPBonus replaces Soulsphere {
+    // The soulsphere, but without a maximum!
+
+    default {
+        HPBonus.Heal 100;
+        Inventory.PickupMessage "Super Soul!";
+    }
+
+    states {
+        Spawn:
+            SOUL ABCDCB 6 Bright;
+    }
+}
+
+class MegaSoul : HPBonus replaces Megasphere {
+    // The megasphere, but without a (health) maximum!
+    default {
+        HPBonus.Heal 200;
+        Inventory.PickupMessage "Mega Soul!";
+    }
+
+    override void AttachToOwner (Actor other) {
+        other.GiveInventory("BlueArmor",1);
+        super.AttachToOwner(other);
+    }
+
+    states {
+        Spawn:
+            MEGA ABCD 6 Bright;
     }
 }
