@@ -44,8 +44,14 @@ class LegendHud : BaseStatusBar {
             let wpn = CPlayer.ReadyWeapon;
 
             // Start with health.
-            DrawImage("MEDIA0",(12,-2),lbarflags);
+            DrawImage("MEDIA0",(24,-2),lbarflags);
             DrawString(mStatFont,hp.."/"..maxhp,(32,-28),ltxtflags,Font.CR_BRICK);
+
+            // And the armor!
+            if (arm > 0) {
+                DrawImage("ARM1A0",(24,-34),lbarflags);
+                DrawString(mStatFont,arm.."/200",(32,-42),ltxtflags,Font.CR_CYAN);
+            }
 
             // Next, ammo.
             // TODO: Bars for the four ammo types.
@@ -57,16 +63,17 @@ class LegendHud : BaseStatusBar {
 				let a1real = plr.FindInventory(a1.GetClassName());// a1 is a ClassPointer<Ammo>, a1real is a Pointer<Inventory>
 				//DrawImage("CLIPA0",(ammoXpos,-2),rbarflags,scale:(2,2));
 				DrawInventoryIcon(a1real,(ammoXPos,-2),rbarflags,scale:(2,2));
-				DrawString(mStatFont,FormatNumber(GetAmount(a1.GetClassName())), (ammoTextXPos,-24),rtxtflags,Font.CR_RED);
+				DrawString(mStatFont,FormatNumber(GetAmount(a1.GetClassName())).."/"..a1real.maxamount, (ammoTextXPos,-24),rtxtflags,Font.CR_RED);
 			}
 
             // Finally, the stats.
-            int statXPos = 24;
-            int statTextXPos = statXPos+8;
-            DrawString(mConFont,"POW: "..String.Format("%.2f",power),(statTextXPos,64),stattxtflags);
-            DrawString(mConFont,"PRC: "..String.Format("%.2f",precision),(statTextXPos,64+8),stattxtflags);
-            DrawString(mConFont,"TUF: "..String.Format("%.2f",toughness),(statTextXPos,64+16),stattxtflags);
-            DrawString(mConFont,"LUK: "..String.Format("%.2f",luck),(statTextXPos,64+24),stattxtflags);
+            int statXPos = 8;
+            int statTextXPos = statXPos+16;
+            int statYPos = 36;
+            DrawString(mConFont,"POW: "..String.Format("%.2f",power),(statTextXPos,statYPos),stattxtflags,Font.CR_ORANGE);
+            DrawString(mConFont,"PRC: "..String.Format("%.2f",precision),(statTextXPos,statYPos+8),stattxtflags,Font.CR_PURPLE);
+            DrawString(mConFont,"TUF: "..String.Format("%.2f",toughness),(statTextXPos,statYPos+16),stattxtflags,Font.CR_BLUE);
+            DrawString(mConFont,"LUK: "..String.Format("%.2f",luck),(statTextXPos,statYPos+24),stattxtflags,Font.CR_GREEN);
         }
     }
 }
