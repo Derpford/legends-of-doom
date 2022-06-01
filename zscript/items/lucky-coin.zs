@@ -18,6 +18,7 @@ class LuckyCoin : LegendItem {
         if(TimeUp()) {
             active = false;
         }
+        super.DoEffect();
     }
 
     override double GetLuck() {
