@@ -48,11 +48,11 @@ class LegendItem : Inventory {
     virtual void BreakArmor (Actor src) {} // Called when an enemy breaks our armor (reduces Armor to 0).
 
     override bool HandlePickup(Inventory item) {
-        if (item is "HealthBonus" || item is "BasicArmorBonus") {
+        if (item is "HPBonus" || item is "BasicArmorBonus") {
             PickupBonus();
         }
 
-        if (item is "Health") { // This technically overlaps with PickupBonus and several powerups...oh well.
+        if (item is "Health" || item is "HPBonus") { // This technically overlaps with PickupBonus and several powerups...oh well.
             PickupHealth(); 
         }
 
@@ -116,5 +116,24 @@ class ItemPassiveHandler : EventHandler {
                 it = it.inv;
             }
         }
+    }
+}
+
+class HPBonus : Inventory replaces HealthBonus {
+    // Adds 1 to health. Does *NOT* respect max health (or any maximum!).
+
+    default {
+        Inventory.PickupMessage "Health bonus!";
+    }
+
+    override void AttachToOwner (Actor other) {
+        other.GiveBody(1,int.max);
+        GoAwayAndDie();
+    }
+
+    states {
+        Spawn:
+            BON1 ABCDCB 5;
+            Loop;
     }
 }

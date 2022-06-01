@@ -111,7 +111,7 @@ class XPDropHandler : EventHandler {
                 // Spawn a couple HP bonuses.
                 Name bon;
                 if(frandom(0,1)>0.5) {
-                    bon = "HealthBonus"; 
+                    bon = "HPBonus"; 
                 } else {
                     bon = "ArmorBonus";
                 }
