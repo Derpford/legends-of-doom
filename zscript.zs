@@ -15,6 +15,7 @@ version "4.6"
 #include "zscript/items/hard-helmet.zs"
 #include "zscript/items/copied-floppy.zs"
 #include "zscript/items/surplus-caliber.zs"
+#include "zscript/items/lucky-coin.zs"
 
 // Characters.
 #include "zscript/legends/doomslayer.zs"
