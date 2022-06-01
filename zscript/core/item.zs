@@ -56,8 +56,12 @@ class LegendItem : Inventory {
             PickupHealth(); 
         }
 
-        if (item is "Armor") {
+        if (item is "Armor") { // Likewise, this overlaps with armor bonuses.
             PickupArmor();
+        }
+
+        if (item is "Ammo") {
+            PickupAmmo();
         }
 
         return false;
