@@ -1,9 +1,32 @@
 class LegendItem : Inventory {
     // A class that contains a bunch of handy functions and overrides for handling procs.
 
+    double timer;
+    double timelimit;
+    Property TimerStart : timer;
+    Property Timer : timelimit;
+
     default {
         Inventory.Amount 1;
         Inventory.MaxAmount 999;
+        LegendItem.TimerStart 0;
+        LegendItem.Timer 0; // Timer must be set to be used correctly!
+    }
+
+    void SetTimer (double set = -1) {
+        if(set < 0) {
+            timer = timelimit;
+        } else {
+            timer = set;
+        }
+    }
+
+    bool TimeUp () {
+        return timer <= 0.;
+    }
+
+    override void DoEffect () {
+        timer -= 1./35.;
     }
 
     virtual void OnHit (int dmg, Name type, Actor src, Actor inf, Actor tgt) {} // Called via event handler, WorldThingDamaged.
