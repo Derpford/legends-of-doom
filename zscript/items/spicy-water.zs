@@ -2,7 +2,7 @@ class SpicyWater : LegendItem {
     // mmmmm slorp
     int stack;
     int maxstack;
-    Property Trigger = maxstack; // How many stacks before the next damage instance?
+    Property Trigger : maxstack; // How many stacks before the next damage instance?
     default {
         Scale 0.5;
         Inventory.Icon "BAR1A0";
@@ -22,7 +22,7 @@ class SpicyWater : LegendItem {
             stack += owner.CountInv("SpicyWater");
             if (stack >= maxstack) {
 
-                owner.A_Explode(floor(GetPower()*0.1),128,XF_NOTMISSILE,fulldamagedistance:128);
+                owner.A_Explode(floor(GetOwnerPower()*0.1),128,XF_NOTMISSILE,fulldamagedistance:128);
             }
         }
     }

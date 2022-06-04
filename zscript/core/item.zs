@@ -13,7 +13,7 @@ class LegendItem : Inventory {
         LegendItem.Timer 0; // Timer must be set to be used correctly!
     }
 
-    clearscope double GetLuck() {
+    clearscope double GetOwnerLuck() {
         // Returns 0 or parent's luck. Monsters don't get lucky!
         if (owner is "LegendPlayer") {
             let plr = LegendPlayer(owner);
@@ -23,7 +23,7 @@ class LegendItem : Inventory {
         }
     }
 
-    clearscope double GetPower(bool raw = false) {
+    clearscope double GetOwnerPower(bool raw = false) {
         // Returns parent's power, or 5 plus 0.5 per level for monsters.
         if (owner is "LegendPlayer") {
             let plr = LegendPlayer(owner);
@@ -38,7 +38,7 @@ class LegendItem : Inventory {
         }
     }
 
-    clearscope double GetPrecision() {
+    clearscope double GetOwnerPrecision() {
         // Returns 0 or parent's Precision. Monsters are not precise!
         if (owner is "LegendPlayer") {
             let plr = LegendPlayer(owner);
@@ -48,7 +48,7 @@ class LegendItem : Inventory {
         }
     }
 
-    clearscope double GetToughness() {
+    clearscope double GetOwnerToughness() {
         // Returns 0 or parent's Toughness. Monsters are not tough!
         if (owner is "LegendPlayer") {
             let plr = LegendPlayer(owner);
