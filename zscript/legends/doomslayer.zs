@@ -161,11 +161,8 @@ class Efficiency : Inventory {
     // On owner death, spawns ammo and then removes itself.
     override void DoEffect() {
         if (owner.bISMONSTER && owner.health <= 0) {
-            static const Name ammotypes[] = {"GreenAmmo","RedAmmo","YellowAmmo","BlueAmmo"};
-            for (int i = 0; i < random(1,3); i++) {
-                Name it = ammotypes[random(0,3)];
-                let drop = owner.Spawn(it,owner.pos);
-                drop.vel = (frandom(-2,2),frandom(-2,2),frandom(3,6));
+            for (int i = random(1,3); i > 0; i--) {
+                owner.Spawn("AmmoSpawner",owner.pos);
             }
             owner.A_TakeInventory("Efficiency",1);
         }

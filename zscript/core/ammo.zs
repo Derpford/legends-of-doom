@@ -1,6 +1,15 @@
 // There are four types of ammo: Green, Red, Yellow, and Blue.
 // These correspond to Bullet, Shell, Rocket, and Cell in vanilla.
 
+class AmmoSpawner : RandomSpawner {
+    default {
+        DropItem "GreenAmmo";
+        DropItem "RedAmmo";
+        DropItem "YellowAmmo";
+        DropItem "BlueAmmo";
+    }
+}
+
 class GreenAmmo : Ammo replaces Clip {
     default {
         Scale 0.5;
