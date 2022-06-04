@@ -7,6 +7,7 @@ class ItemSpawnHandler : EventHandler {
     Array<Class<Actor> > rareList;
     Array<Class<Actor> > epicList;
     Array<Class<Actor> > cursedList;
+    Array<Class<Actor> > AmmoList;
 
     void ParseItems(String found, out Array<Class<Actor> > items) {
         Array<String> toks;
@@ -26,6 +27,15 @@ class ItemSpawnHandler : EventHandler {
     }
 
     override void OnRegister() {
+        // Ammunition!
+        Class<Actor> ga = "GreenAmmo";
+        Class<Actor> ra = "RedAmmo";
+        Class<Actor> ya = "YellowAmmo";
+        Class<Actor> ba = "BlueAmmo";
+        AmmoList.push(ga);
+        AmmoList.push(ra);
+        AmmoList.push(ya);
+        AmmoList.push(ba);
         // Start with commons.
         int clump = Wads.FindLump("ICOMMON");
         while (clump != -1) {
@@ -69,23 +79,29 @@ class ItemSpawnHandler : EventHandler {
     override void WorldThingSpawned(WorldEvent e) {
         if (e.Thing is "DummyItem") {
             let it = DummyItem(e.Thing);
-            // Items spawn 70% common, 20% rare, 5% epic, 5% cursed.
-            // TODO: Better weighting system.
-            static const Int odds[] = {0,0,0,0,0,0,0,0,0,0,
-                            0,0,0,0,1,1,1,1,2,3};
-            switch (odds[random(0,19)]) {
-                case 0:
-                    it.spawnList.Copy(commonList);
-                    break;
-                case 1:
-                    it.spawnList.Copy(rareList);
-                    break;
-                case 2:
-                    it.spawnList.Copy(epicList);
-                    break;
-                case 3:
-                    it.spawnList.Copy(cursedList);
-                    break;
+            if(e.Thing.bDROPPED) {
+                // Tell it to spawn an ammo item.
+                it.spawnList.Copy(AmmoList);
+            } else {
+
+                // Items spawn 70% common, 20% rare, 5% epic, 5% cursed.
+                // TODO: Better weighting system.
+                static const Int odds[] = {0,0,0,0,0,0,0,0,0,0,
+                                0,0,0,0,1,1,1,1,2,3};
+                switch (odds[random(0,19)]) {
+                    case 0:
+                        it.spawnList.Copy(commonList);
+                        break;
+                    case 1:
+                        it.spawnList.Copy(rareList);
+                        break;
+                    case 2:
+                        it.spawnList.Copy(epicList);
+                        break;
+                    case 3:
+                        it.spawnList.Copy(cursedList);
+                        break;
+                }
             }
         }
     }
