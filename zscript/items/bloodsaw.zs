@@ -13,4 +13,10 @@ class BloodSaw : LegendItem {
             tgt.GiveInventory("Bleed",amt - 1);
         }
     }
+
+    states {
+        Spawn:
+            BSAW A -1;
+            Stop;
+    }
 }
