@@ -21,10 +21,15 @@ class SpicyWater : LegendItem {
         if(!TimeUp()) {
             stack += owner.CountInv("SpicyWater");
             if (stack >= maxstack) {
-
                 owner.A_Explode(floor(GetOwnerPower()*0.1),128,XF_NOTMISSILE,fulldamagedistance:128);
+                stack = 0;
             }
         }
     }
 
+    states {
+        Spawn:
+            BAR1 A -1;
+            Stop;
+    }
 }
