@@ -12,6 +12,7 @@ version "4.6"
 
 // Items.
 #include "zscript/items/behemoth.zs"
+#include "zscript/items/bloodsaw.zs"
 #include "zscript/items/copied-floppy.zs"
 #include "zscript/items/hard-helmet.zs"
 #include "zscript/items/lucky-coin.zs"
