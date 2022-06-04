@@ -8,8 +8,8 @@ class Doomslayer : LegendPlayer {
     // The Rocket Launcher explodes for 5xPower damage in a 128 unit AoE.
 
     default {
-        LegendPlayer.Power 48., 0.4;
-        LegendPlayer.Precision 0., 1.5;
+        LegendPlayer.Power 47.6, 0.4;
+        LegendPlayer.Precision -1.5, 1.5;
         LegendPlayer.Toughness 0.,0.;
         LegendPlayer.Luck 0.,0.;
         LegendPlayer.BonusHealth 0,0.5;
