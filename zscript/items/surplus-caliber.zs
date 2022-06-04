@@ -6,7 +6,7 @@ class SurplusCaliber : LegendItem {
     default {
         Inventory.Icon "CRATA0";
         Inventory.PickupMessage "Surplus Caliber: On Reload, gain a power boost.";
-        LegendItem.Timer 2.;
+        LegendItem.Timer 1.;
     }
 
     override void DoEffect() {
@@ -14,7 +14,7 @@ class SurplusCaliber : LegendItem {
         if(power > 0) {
             if(TimeUp()) {
                 SetTimer();
-                power -= 3.0;
+                power = max(0,power - (1.5 + GetStacks()));
             }
         } else {
             SetTimer();
