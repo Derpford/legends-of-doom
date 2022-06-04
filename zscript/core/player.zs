@@ -105,7 +105,7 @@ class LegendPlayer : DoomPlayer {
             }
             it = it.inv;
         }
-        return bonus + self.Precision + (self.PrecisionGrow + self.Level);
+        return bonus + self.Precision + (self.PrecisionGrow * self.Level);
     }
 
     clearscope double GetToughness() {
