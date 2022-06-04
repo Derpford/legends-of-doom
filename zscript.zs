@@ -8,6 +8,7 @@ version "4.6"
 #include "zscript/core/ammo.zs"
 #include "zscript/core/item.zs"
 #include "zscript/core/xp.zs"
+#include "zscript/core/spawn.zs"
 #include "zscript/core/weapon.zs"
 
 // Items.
