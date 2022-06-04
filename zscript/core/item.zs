@@ -3,14 +3,19 @@ class LegendItem : Inventory {
 
     double timer;
     double timelimit;
+    int stacks; // Fixes repeated proccing of items with multiple copies. Also means we don't need to care about MaxAmount.
     Property TimerStart : timer;
     Property Timer : timelimit;
 
     default {
         Inventory.Amount 1;
-        Inventory.MaxAmount 999;
+        Inventory.MaxAmount 1;
         LegendItem.TimerStart 0;
         LegendItem.Timer 0; // Timer must be set to be used correctly!
+    }
+
+    clearscope int GetStacks() {
+        return stacks;
     }
 
     clearscope double GetOwnerLuck() {
@@ -133,7 +138,14 @@ class LegendItem : Inventory {
             PickupAmmo();
         }
 
-        return false;
+        // Finally, handle increasing our stack count.
+        if (item is self.GetClassName()) {
+            stacks += 1;
+            item.GoAwayAndDie();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     // And now, stat stuff.

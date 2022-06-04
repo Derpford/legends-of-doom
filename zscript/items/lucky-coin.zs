@@ -11,7 +11,7 @@ class LuckyCoin : LegendItem {
     override void PickupBonus() {
         // Picking up a bonus item grants +25 luck for 5s per stack.
         active = true;
-        SetTimer(timelimit * owner.CountInv("LuckyCoin"));
+        SetTimer(timelimit * GetStacks());
     }
 
     override void DoEffect() {

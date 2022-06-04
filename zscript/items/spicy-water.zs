@@ -19,7 +19,7 @@ class SpicyWater : LegendItem {
         super.DoEffect();
 
         if(!TimeUp()) {
-            stack += owner.CountInv("SpicyWater");
+            stack += GetStacks();
             if (stack >= maxstack) {
                 owner.A_Explode(floor(GetOwnerPower()*0.1),128,XF_NOTMISSILE,fulldamagedistance:128);
                 stack = 0;

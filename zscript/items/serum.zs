@@ -10,7 +10,7 @@ class BloodySerum : LegendItem {
     }
 
     override void OnKill (Actor src, Actor tgt) {
-        if (kills < (100 * owner.CountInv("BloodySerum"))) {
+        if (kills < (100 * GetStacks())) {
             kills += 1;
             if(owner is "LegendPlayer") {
                 let plr = LegendPlayer(owner);

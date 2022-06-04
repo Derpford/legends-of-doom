@@ -9,7 +9,7 @@ class CopiedFloppy : LegendItem {
         // On kill, gain 5*stacks XP.
         let plr = LegendPlayer(src);
         if (plr) {
-            plr.xp += 5. * CountInv("CopiedFloppy");
+            plr.xp += 5. * GetStacks();
         }
     }
 }

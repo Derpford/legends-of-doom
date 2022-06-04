@@ -9,7 +9,7 @@ class HardHelmet : LegendItem {
 
     override double GetToughness () {
         // Gives 25 toughness per stack at full health. Less health = less toughness.
-        int stacks = CountInv("HardHelmet");
+        int stacks = GetStacks();
         double hpercent = double(owner.health) / double(owner.GetMaxHealth());
 
         return 25. * stacks * hpercent;

@@ -23,7 +23,7 @@ class SurplusCaliber : LegendItem {
     }
 
     override void OnReload() {
-        power += 1. + (2. * owner.CountInv("SurplusCaliber"));
+        power += 1. + (2. * GetStacks());
     }
 
     override double GetPower() {
