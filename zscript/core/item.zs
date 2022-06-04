@@ -101,6 +101,13 @@ class LegendItem : Inventory {
 
     override void DoEffect () {
         timer -= 1./35.;
+        // Handle stack incrementing.
+        if (owner.CountInv(self.GetClassName()) > 1) {
+            // Increment stack size.
+            stacks += 1;
+            // Take a copy.
+            owner.TakeInventory(self.GetClassName(),1);
+        }
     }
 
     virtual void OnHit (int dmg, Name type, Actor src, Actor inf, Actor tgt) {} // Called via event handler, WorldThingDamaged.
@@ -138,14 +145,7 @@ class LegendItem : Inventory {
             PickupAmmo();
         }
 
-        // Finally, handle increasing our stack count.
-        if (item is self.GetClassName()) {
-            stacks += 1;
-            item.GoAwayAndDie();
-            return true;
-        } else {
-            return false;
-        }
+        return false;
     }
 
     // And now, stat stuff.
