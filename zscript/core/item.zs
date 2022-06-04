@@ -23,6 +23,30 @@ class LegendItem : Inventory {
         }
     }
 
+    clearscope bool LuckRoll(double chance, bool isBad = false) {
+        // If the owner is a player, call their LuckRoll. Otherwise, raw random.
+        if (owner is "LegendPlayer") {
+            let plr = LegendPlayer(owner);
+            return plr.LuckRoll(chance,isBad);
+        } else {
+            return frandom(0,100) < chance;
+        }
+    }
+
+    clearscope double RollDown(double initial) {
+        // Essentially a copy of LegendPlayer's rolldown, but with our LuckRoll.
+        double ret = 1.;
+        while (initial > 100.) {
+            ret += 1;
+            initial -= 100.;
+        }
+        // The final roll.
+        if (LuckRoll(initial)) {
+            ret += 1;
+        }
+        return ret;
+    }
+
     clearscope double GetOwnerPower(bool raw = false) {
         // Returns parent's power, or 5 plus 0.5 per level for monsters.
         if (owner is "LegendPlayer") {
