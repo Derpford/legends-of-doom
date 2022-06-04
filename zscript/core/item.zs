@@ -13,6 +13,51 @@ class LegendItem : Inventory {
         LegendItem.Timer 0; // Timer must be set to be used correctly!
     }
 
+    clearscope double GetLuck() {
+        // Returns 0 or parent's luck. Monsters don't get lucky!
+        if (owner is "LegendPlayer") {
+            let plr = LegendPlayer(owner);
+            return plr.GetLuck();
+        } else {
+            return 0.;
+        }
+    }
+
+    clearscope double GetPower(bool raw = false) {
+        // Returns parent's power, or 5 plus 0.5 per level for monsters.
+        if (owner is "LegendPlayer") {
+            let plr = LegendPlayer(owner);
+            return plr.GetPower(raw);
+        } else {
+            int lvl = owner.CountInv("LevelToken");
+            double pow = 5.;
+            if (raw) {
+                pow += 0.5 * lvl;
+            }
+            return pow;
+        }
+    }
+
+    clearscope double GetPrecision() {
+        // Returns 0 or parent's Precision. Monsters are not precise!
+        if (owner is "LegendPlayer") {
+            let plr = LegendPlayer(owner);
+            return plr.GetPrecision();
+        } else {
+            return 0.;
+        }
+    }
+
+    clearscope double GetToughness() {
+        // Returns 0 or parent's Toughness. Monsters are not tough!
+        if (owner is "LegendPlayer") {
+            let plr = LegendPlayer(owner);
+            return plr.GetToughness();
+        } else {
+            return 0.;
+        }
+    }
+
     void SetTimer (double set = -1) {
         if(set < 0) {
             timer = timelimit;
