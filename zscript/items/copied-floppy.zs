@@ -12,4 +12,10 @@ class CopiedFloppy : LegendItem {
             plr.xp += 5. * GetStacks();
         }
     }
+    
+    states {
+        Spawn:
+            FLOP A -1;
+            Stop;
+    }
 }
