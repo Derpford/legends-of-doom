@@ -6,12 +6,14 @@ class LegendItem : Inventory {
     int stacks; // Fixes repeated proccing of items with multiple copies. Also means we don't need to care about MaxAmount.
     Property TimerStart : timer;
     Property Timer : timelimit;
+    Property StartStacks : stacks;
 
     default {
         Inventory.Amount 1;
         Inventory.MaxAmount 1;
         LegendItem.TimerStart 0;
         LegendItem.Timer 0; // Timer must be set to be used correctly!
+        LegendItem.StartStacks 1;
     }
 
     clearscope int GetStacks() {
