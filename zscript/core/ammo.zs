@@ -12,7 +12,8 @@ class AmmoSpawner : RandomSpawner {
 
 class GreenAmmo : Ammo replaces Clip {
     default {
-        Scale 0.5;
+        +FLOATBOB;
+        +BRIGHT;
         Inventory.PickupMessage "Green ammo!";
         Inventory.Amount 15;
         Inventory.MaxAmount 300;
@@ -22,20 +23,28 @@ class GreenAmmo : Ammo replaces Clip {
 
     states {
         Spawn:
-            AMMO A -1;
+            AMMG A -1;
             Stop;
     }
 }
 
 class GreenAmmoBig : GreenAmmo replaces ClipBox {
     default {
-        Scale 1.0;
+        Scale 1.5;
         Inventory.Amount 75;
+    }
+
+    states {
+        Spawn:
+            AMMG B -1;
+            Stop;
     }
 }
 
 class RedAmmo : Ammo replaces Shell {
     default {
+        +FLOATBOB;
+        +BRIGHT;
         Inventory.PickupMessage "Red ammo!";
         Inventory.Amount 4;
         Inventory.MaxAmount 80;
@@ -45,21 +54,28 @@ class RedAmmo : Ammo replaces Shell {
 
     states {
         Spawn:
-            SHEL A -1;
+            AMMR A -1;
             Stop;
     }
 }
 
 class RedAmmoBig : RedAmmo replaces ShellBox {
     default {
-        Scale 2.0;
+        Scale 1.5;
         Inventory.Amount 20;
+    }
+
+    states {
+        Spawn:
+            AMMR B -1;
+            Stop;
     }
 }
 
 class YellowAmmo : Ammo replaces RocketAmmo {
     default {
-        Scale 0.5;
+        +FLOATBOB;
+        +BRIGHT;
         Inventory.PickupMessage "Yellow ammo!";
         Inventory.Amount 5;
         Inventory.MaxAmount 100;
@@ -69,21 +85,28 @@ class YellowAmmo : Ammo replaces RocketAmmo {
 
     states {
         Spawn:
-            BROK A -1;
+            AMMY A -1;
             Stop;
     }
 }
 
 class YellowAmmoBig : YellowAmmo replaces RocketBox {
     default {
-        Scale 1.0;
-        Inventory.Amount 50;
+        Scale 1.5;
+        Inventory.Amount 25;
+    }
+
+    states {
+        Spawn:
+            AMMY B -1;
+            Stop;
     }
 }
 
 class BlueAmmo : Ammo replaces Cell {
     default {
-        Scale 0.5;
+        +FLOATBOB;
+        +BRIGHT;
         Inventory.PickupMessage "Blue ammo!";
         Inventory.Amount 20;
         Inventory.MaxAmount 400;
@@ -93,14 +116,20 @@ class BlueAmmo : Ammo replaces Cell {
 
     states {
         Spawn:
-            CELP A -1;
+            AMMB A -1;
             Stop;
     }
 }
 
 class BlueAmmoBig : BlueAmmo replaces CellPack {
     default {
-        Scale 1.0;
+        Scale 1.5;
         Inventory.Amount 100;
+    }
+
+    states {
+        Spawn:
+            AMMB B -1;
+            Stop;
     }
 }
