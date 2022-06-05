@@ -15,10 +15,10 @@ class LuckyCoin : LegendItem {
     }
 
     override void DoEffect() {
+        super.DoEffect();
         if(TimeUp()) {
             active = false;
         }
-        super.DoEffect();
     }
 
     override double GetLuck() {

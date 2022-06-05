@@ -10,7 +10,7 @@ class LegendItem : Inventory {
 
     default {
         Inventory.Amount 1;
-        Inventory.MaxAmount 1;
+        Inventory.MaxAmount 999;
         LegendItem.TimerStart 0;
         LegendItem.Timer 0; // Timer must be set to be used correctly!
         LegendItem.StartStacks 1;
@@ -103,13 +103,6 @@ class LegendItem : Inventory {
 
     override void DoEffect () {
         timer -= 1./35.;
-        // Handle stack incrementing.
-        if (owner.CountInv(self.GetClassName()) > 1) {
-            // Increment stack size.
-            stacks += 1;
-            // Take a copy.
-            owner.TakeInventory(self.GetClassName(),1);
-        }
     }
 
     virtual void OnHit (int dmg, Name type, Actor src, Actor inf, Actor tgt) {} // Called via event handler, WorldThingDamaged.
@@ -148,6 +141,90 @@ class LegendItem : Inventory {
         }
 
         return false;
+    }
+
+    override void Touch (actor Toucher) {
+        // Copied from Inventory, but altered to change stack count instead of its usual stuff.
+        let player = toucher.player;
+
+		// If a voodoo doll touches something, pretend the real player touched it instead.
+		if (player != NULL)
+		{
+			toucher = player.mo;
+		}
+
+		bool localview = toucher.CheckLocalView();
+
+		if (!toucher.CanTouchItem(self))
+			return;
+
+        // Instead of doing CallTryPickup right away...
+        bool selfRemove = false;
+        let it = LegendItem(toucher.FindInventory(GetClassName()));
+        if (it) {
+            // We might be doing stacks instead.
+            it.stacks += 1;
+            selfRemove = true;
+        } else {
+            bool res;
+            [res, toucher] = CallTryPickup(toucher);
+            if (!res) return;
+        }
+
+		// This is the only situation when a pickup flash should ever play.
+		if (PickupFlash != NULL && !ShouldStay())
+		{
+			Spawn(PickupFlash, Pos, ALLOW_REPLACE);
+		}
+
+		if (!bQuiet)
+		{
+			PrintPickupMessage(localview, PickupMessage ());
+
+			// Special check so voodoo dolls picking up items cause the
+			// real player to make noise.
+			if (player != NULL)
+			{
+				PlayPickupSound (player.mo);
+				if (!bNoScreenFlash && player.playerstate != PST_DEAD)
+				{
+					player.bonuscount = BONUSADD;
+				}
+			}
+			else
+			{
+				PlayPickupSound (toucher);
+			}
+		}							
+
+		// [RH] Execute an attached special (if any)
+		DoPickupSpecial (toucher);
+
+		if (bCountItem)
+		{
+			if (player != NULL)
+			{
+				player.itemcount++;
+			}
+			level.found_items++;
+		}
+
+		if (bCountSecret)
+		{
+			Actor ac = player != NULL? Actor(player.mo) : toucher;
+			ac.GiveSecret(true, true);
+		}
+
+		//Added by MC: Check if item taken was the roam destination of any bot
+		for (int i = 0; i < MAXPLAYERS; i++)
+		{
+			if (players[i].Bot != NULL && self == players[i].Bot.dest)
+				players[i].Bot.dest = NULL;
+		}
+
+        if (selfRemove) {
+            GoAwayAndDie(); // Gotta handle that ourselves.
+        }
     }
 
     // And now, stat stuff.
