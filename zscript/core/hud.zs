@@ -28,6 +28,7 @@ class LegendHud : BaseStatusBar {
 		int rbarflags = DI_SCREEN_RIGHT_BOTTOM|DI_ITEM_RIGHT_BOTTOM;
 		int ltxtflags = DI_SCREEN_LEFT_BOTTOM|DI_TEXT_ALIGN_LEFT;
 		int rtxtflags = DI_SCREEN_RIGHT_BOTTOM|DI_TEXT_ALIGN_RIGHT;
+		int cbarflags = DI_SCREEN_CENTER_BOTTOM|DI_ITEM_CENTER_BOTTOM;
         // Statbar goes in upper left.
         int statbarflags = DI_SCREEN_LEFT_TOP|DI_ITEM_LEFT_TOP;
         int stattxtflags = DI_SCREEN_LEFT_TOP|DI_TEXT_ALIGN_LEFT;
@@ -76,6 +77,22 @@ class LegendHud : BaseStatusBar {
             DrawString(mConFont,"PRC: "..String.Format("%.2f",precision),(statTextXPos,statYPos+8),stattxtflags,Font.CR_PURPLE);
             DrawString(mConFont,"TUF: "..String.Format("%.2f",toughness),(statTextXPos,statYPos+16),stattxtflags,Font.CR_BLUE);
             DrawString(mConFont,"LUK: "..String.Format("%.2f",luck),(statTextXPos,statYPos+24),stattxtflags,Font.CR_GREEN);
+
+			// Don't forget keys!
+			String keySprites[6] =
+			{
+				"STKEYS2",
+				"STKEYS0",
+				"STKEYS1",
+				"STKEYS5",
+				"STKEYS3",
+				"STKEYS4"
+			};
+
+			for(int i = 0; i < 6; i++)
+			{
+				if(plr.CheckKeys(i+1,false,true)) { DrawImage(keySprites[i],(-40+(16*i),-8),cbarflags,scale:(2,2)); }
+			}
         }
     }
 }
