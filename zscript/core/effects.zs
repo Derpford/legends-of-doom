@@ -31,6 +31,49 @@ class VorpalModifier : Inventory {
     }
 }
 
+class RadBurst : Actor {
+    // Emits radiation, creates sparkles, and stops existing.
+    int radius;
+    int power;
+
+    default {
+        RenderStyle "Add";
+        +NOGRAVITY;
+    }
+
+    states {
+        Spawn:
+            TNT1 A 0;
+            APLS A 0 {
+                A_Explode(power,radius,0,fulldamagedistance:radius,damagetype:"Radiation");
+                for (double i = 0; i < 360.; i += (360./8)) {
+                    A_SpawnItemEX("RadSparkle",xofs:radius,angle:i);
+                }
+            }
+            APLS AB 2 Bright;
+            APBX ABCDE 2 Bright;
+            TNT1 A 0;
+            Stop;
+    }
+}
+
+class RadSparkle : Actor {
+    // Sparkly.
+    default {
+        RenderStyle "Add";
+        +NOINTERACTION;
+        Scale 0.5;
+    }
+
+    states {
+        Spawn:
+            APLS AB 2 Bright;
+            APBX ABCDE 2 Bright;
+            TNT1 A 0;
+            Stop;
+    }
+}
+
 class Pain : Inventory {
     // Flinches the target for a certain number of frames.
 

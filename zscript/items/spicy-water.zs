@@ -21,8 +21,14 @@ class SpicyWater : LegendItem {
         if(!TimeUp()) {
             stack += GetStacks();
             if (stack >= maxstack) {
-                owner.A_Explode(floor(GetOwnerPower()*0.1),128,XF_NOTMISSILE,fulldamagedistance:128);
-                stack = 0;
+                // owner.A_Explode(floor(GetOwnerPower()*0.1),128,XF_NOTMISSILE,fulldamagedistance:128);
+                let it = RadBurst(owner.spawn("RadBurst",owner.pos+(0,0,16)));
+                if (it) {
+                    it.target = owner;
+                    it.power = floor(GetOwnerPower()*0.1);
+                    it.radius = 128;
+                    stack -= maxstack;
+                }
             }
         }
     }
