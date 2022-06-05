@@ -32,8 +32,8 @@ class XPGem : Inventory {
         Super.Tick();
         if (target) {
             // Gems fly toward whatever player caused them.
-            bNOGRAVITY = true;
-            vel = vec3To(target).unit() * min(GetAge(),48);
+            if (GetAge() > 48) { bNOGRAVITY = true; }
+            vel += vec3To(target).unit() * (min(GetAge(),48) * 0.1);
         } else {
             ThinkerIterator it = ThinkerIterator.Create("LegendPlayer");
             double dist = -1.;
