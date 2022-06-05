@@ -57,13 +57,15 @@ class LegendHud : BaseStatusBar {
             // TODO: Bars for the four ammo types.
             int ammoXPos = -24;
 			int ammoTextXPos = ammoXPos-32;
-			let a1 = wpn.AmmoType1;
-			if(a1)
-			{
-				let a1real = plr.FindInventory(a1.GetClassName());// a1 is a ClassPointer<Ammo>, a1real is a Pointer<Inventory>
-				//DrawImage("CLIPA0",(ammoXpos,-2),rbarflags,scale:(2,2));
-				DrawInventoryIcon(a1real,(ammoXPos,-2),rbarflags,scale:(2,2));
-				DrawString(mStatFont,FormatNumber(GetAmount(a1.GetClassName())).."/"..a1real.maxamount, (ammoTextXPos,-24),rtxtflags,Font.CR_RED);
+			if (wpn) {
+				let a1 = wpn.AmmoType1;
+				if(a1)
+				{
+					let a1real = plr.FindInventory(a1.GetClassName());// a1 is a ClassPointer<Ammo>, a1real is a Pointer<Inventory>
+					//DrawImage("CLIPA0",(ammoXpos,-2),rbarflags,scale:(2,2));
+					DrawInventoryIcon(a1real,(ammoXPos,-2),rbarflags,scale:(2,2));
+					DrawString(mStatFont,FormatNumber(GetAmount(a1.GetClassName())).."/"..a1real.maxamount, (ammoTextXPos,-24),rtxtflags,Font.CR_RED);
+				}
 			}
 
             // Finally, the stats.
