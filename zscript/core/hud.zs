@@ -39,6 +39,9 @@ class LegendHud : BaseStatusBar {
 			int maxhp = plr.GetMaxHealth(true);
 			int arm = GetAmount("BasicArmor");
 			int lvl = plr.level;
+			double xp = plr.xp;
+			double xpmax = plr.level * 100.;
+			double xpperc = xp / xpmax;
             double power = plr.GetPower(true);
             double precision = plr.GetPrecision();
             double toughness = plr.GetToughness();
@@ -74,7 +77,7 @@ class LegendHud : BaseStatusBar {
             int statXPos = 8;
             int statTextXPos = statXPos+16;
             int statYPos = 36;
-			DrawString(mConFont,"LVL: "..String.Format("%d",lvl),(statTextXPos,statYPos),stattxtflags,Font.CR_WHITE);
+			DrawString(mConFont,"LVL: "..String.Format("%d",lvl)..", "..String.Format("%.1f%%",xpperc),(statTextXPos,statYPos),stattxtflags,Font.CR_WHITE);
             DrawString(mConFont,"POW: "..String.Format("%.2f",power),(statTextXPos,statYPos+8),stattxtflags,Font.CR_ORANGE);
             DrawString(mConFont,"PRC: "..String.Format("%.2f",precision),(statTextXPos,statYPos+16),stattxtflags,Font.CR_PURPLE);
             DrawString(mConFont,"TUF: "..String.Format("%.2f",toughness),(statTextXPos,statYPos+24),stattxtflags,Font.CR_BLUE);
