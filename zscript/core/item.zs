@@ -279,6 +279,28 @@ class ItemPassiveHandler : EventHandler {
     }
 }
 
+class BonusDrop : Actor {
+    // Spawns either an HPBonus or an ArmorBonus.
+
+    states {
+        Spawn:
+            TNT1 A 0;
+            TNT1 A 0 {
+                Name bon;
+                if(frandom(0,1)>0.5) {
+                    bon = "HPBonus"; 
+                } else {
+                    bon = "ArmorBonus";
+                }
+                let it = Spawn(bon,pos);
+                if (it) {
+                    it.vel = (frandom(-4,4), frandom(-4,4), frandom(6,12));
+                }
+            }
+            Stop;
+    }
+}
+
 class HPBonus : Inventory replaces HealthBonus {
     // Adds 1 to health. Does *NOT* respect max health (or any maximum!).
 

@@ -107,18 +107,14 @@ class XPDropHandler : EventHandler {
             int basehp = e.Thing.GetSpawnHealth();
             double truehp = basehp + (e.Thing.CountInv("LevelToken") * basehp * 0.1);
             let plr = LegendPlayer(e.Inflictor.target);
-            if(plr && plr.LuckRoll(truehp)) {
-                // Spawn a couple HP bonuses.
-                Name bon;
-                if(frandom(0,1)>0.5) {
-                    bon = "HPBonus"; 
-                } else {
-                    bon = "ArmorBonus";
-                }
-                let it = e.Thing.Spawn(bon,e.Thing.pos);
-                if (it) {
-                    it.vel = (frandom(-4,4), frandom(-4,4), frandom(6,12));
-                }
+            int amt = 0;
+            if (plr) {
+                if (plr.LuckRoll(truehp)) { amt++; }
+                if (plr.LuckRoll(truehp/2)) { amt++; }
+            }
+
+            for (int i = 0; i < amt; i++) {
+                e.Thing.Spawn("BonusDrop",e.Thing.pos);
             }
             double xpval = truehp * 0.1;
             Name type = "SmallXPGem";
