@@ -35,7 +35,7 @@ class LegendHud : BaseStatusBar {
 		if(plr)
 		{
 			int hp = CPlayer.Health;
-			int maxhp = plr.GetMaxHealth();
+			int maxhp = plr.GetMaxHealth(true);
 			int arm = GetAmount("BasicArmor");
             double power = plr.GetPower(true);
             double precision = plr.GetPrecision();
