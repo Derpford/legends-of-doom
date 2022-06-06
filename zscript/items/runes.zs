@@ -15,15 +15,12 @@ class RuneOfPain : LegendItem {
                 gem.vel = (frandom(-4,4), frandom(-4,4), frandom(6,12));
             }
             active = true;
+            SetTimer();
         }
     }
 
-    override void DoEffect() {
-        super.DoEffect();
-        if (active) {
-            SetTimer();
-            active = false;
-        }
+    override void OnTimer() {
+        active = false;
     }
 
     states {

@@ -111,9 +111,12 @@ class LegendItem : Inventory {
         timer -= 1./35.;
         if(alarmSet && timer <= 0.) {
             owner.A_StartSound(alarm,7);
+            OnTimer();
             alarmSet = false;
         }
     }
+
+    virtual void OnTimer () {} // Called once whenever time is up.
 
     virtual void OnHit (int dmg, Name type, Actor src, Actor inf, Actor tgt) {} // Called via event handler, WorldThingDamaged.
 

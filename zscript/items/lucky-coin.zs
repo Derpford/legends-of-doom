@@ -14,11 +14,8 @@ class LuckyCoin : LegendItem {
         SetTimer(timelimit * GetStacks());
     }
 
-    override void DoEffect() {
-        super.DoEffect();
-        if(TimeUp()) {
-            active = false;
-        }
+    override void OnTimer() {
+        active = false;
     }
 
     override double GetLuck() {
