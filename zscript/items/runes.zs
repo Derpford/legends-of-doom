@@ -41,7 +41,7 @@ class RuneOfEyes : LegendItem {
     }
 
     override void OnPrecisionHit() {
-        power += 0.5 * GetStacks();
+        power = min(power + 0.5 * GetStacks(), 50);
     }
 
     override void DoEffect() {
