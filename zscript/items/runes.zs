@@ -115,8 +115,13 @@ class JudgementSnake : LegendShot {
     states {
         Spawn:
             FATB AB 2 Bright {
-                A_SeekerMissile(10,15,SMF_PRECISE);
-                Spawn("JudgementTail",invoker.pos);
+                if (tracer) {
+                    A_SeekerMissile(10,15,SMF_PRECISE);
+                    Spawn("JudgementTail",invoker.pos);
+                    return ResolveState(null);
+                } else {
+                    return ResolveState("Death");
+                }
             }
             Loop;
         Death:
