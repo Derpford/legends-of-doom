@@ -127,6 +127,7 @@ class Bleed : Inventory {
             timer = 0;
             // Increase stack count.
             stacks += 1;
+            return true;
         }
         return false;
     }
