@@ -3,10 +3,14 @@ class LegendItem : Inventory {
 
     double timer;
     double timelimit;
+    string alarm; // What sound, if any, should we play when the timer's up?
+    double alarmPitch;
+    bool alarmSet; // Should the alarm go off?
     int stacks; // Fixes repeated proccing of items with multiple copies. Also means we don't need to care about MaxAmount.
     Property TimerStart : timer;
     Property Timer : timelimit;
     Property StartStacks : stacks;
+    Property Alarm : alarm, alarmPitch;
 
     default {
         Inventory.Amount 1;
@@ -14,6 +18,7 @@ class LegendItem : Inventory {
         LegendItem.TimerStart 0;
         LegendItem.Timer 0; // Timer must be set to be used correctly!
         LegendItem.StartStacks 1;
+        LegendItem.Alarm "dsempty", 1.0;
     }
 
     clearscope int GetStacks() {
@@ -90,6 +95,7 @@ class LegendItem : Inventory {
     }
 
     void SetTimer (double set = -1) {
+        alarmSet = true;
         if(set < 0) {
             timer = timelimit;
         } else {
@@ -103,6 +109,10 @@ class LegendItem : Inventory {
 
     override void DoEffect () {
         timer -= 1./35.;
+        if(alarmSet && timer <= 0.) {
+            owner.A_StartSound(alarm,7);
+            alarmSet = false;
+        }
     }
 
     virtual void OnHit (int dmg, Name type, Actor src, Actor inf, Actor tgt) {} // Called via event handler, WorldThingDamaged.

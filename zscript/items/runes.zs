@@ -74,17 +74,18 @@ class RuneOfJudgement : LegendItem {
     // AND THY PUNISHMENT IS DEATH.
     default {
         Inventory.Icon "ZKYYA0";
-        Inventory.PickupMessage "Rune of Judgement: Retaliate with a homing projectile. JUDGEMENT!";
+        Inventory.PickupMessage "Rune of Judgement: Retaliate with a homing projectile. \nJUDGEMENT!";
         LegendItem.Timer 2.;
+        LegendItem.Alarm "misc/p_pkup",1.5;
     }
 
     override void OnRetaliate(int dmg, Name type, Actor src, Actor inf, Actor tgt) {
         if(src && src != tgt && TimeUp()) {
-            console.printf("JUDGEMENT!");
             LegendShot js = LegendShot(owner.Spawn("JudgementSnake",owner.pos+(0,0,24)));
             js.target = owner;
             js.tracer = src;
             js.angle = Normalize180(owner.angle) + (90 * frandom(-1,1));
+            js.pitch = frandom(-45,45);
             js.power = dmg * (0.5 + (0.5 * GetStacks()));
             SetTimer();
         }
@@ -117,11 +118,12 @@ class JudgementSnake : LegendShot {
     states {
         Spawn:
             FATB AB 2 Bright {
-                A_SeekerMissile(20,40,SMF_PRECISE);
+                A_SeekerMissile(10,15,SMF_PRECISE);
                 Spawn("JudgementTail",invoker.pos);
             }
             Loop;
         Death:
+            TNT1 A 0 A_StartSound("skeleton/tracex");
             FBXP ABC 6 Bright;
             TNT1 A 0;
             Stop;
