@@ -105,6 +105,7 @@ class Bleed : Inventory {
     }
 
     override void DoEffect() {
+        if (!owner.bISMONSTER) { return; } //QoL: Non-monsters cannot be bled to death. Barrels are no longer timebombs.
         frames += 1;
         timer += 1;
         if (frames >= 7) {
