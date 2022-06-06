@@ -1,0 +1,144 @@
+class RuneOfPain : LegendItem {
+    // It has such sights to show you...
+    bool active;
+    default {
+        Inventory.Icon "RKYYA0";
+        Inventory.PickupMessage "Rune of Pain: Hitting pained enemies spawns XP.";
+        LegendItem.Timer .25;
+    }
+
+    override void OnHit(int dmg, Name type, Actor src, Actor inf, Actor tgt) {
+        if (tgt.InStateSequence(tgt.curstate, tgt.ResolveState("Pain")) && TimeUp()) {
+            let gem = XPGem(tgt.spawn("SmallXPGem", tgt.pos));
+            if (gem) {
+                gem.value = 0.25 * GetStacks();
+                gem.vel = (frandom(-4,4), frandom(-4,4), frandom(6,12));
+            }
+            active = true;
+        }
+    }
+
+    override void DoEffect() {
+        super.DoEffect();
+        if (active) {
+            SetTimer();
+            active = false;
+        }
+    }
+
+    states {
+        Spawn:
+            RKYY ABCDEFGHIJ 4;
+            Loop;
+    }
+}
+
+class RuneOfEyes : LegendItem {
+    // I am the god-particle that permeates the universe.
+    double power;
+
+    default {
+        Inventory.Icon "SKYYA0";
+        Inventory.PickupMessage "Rune of Eyes: Precision hits grant a bit of luck.";
+        LegendItem.Timer 2.5;
+    }
+
+    override void OnPrecisionHit() {
+        power += 0.5 * GetStacks();
+    }
+
+    override void DoEffect() {
+        super.DoEffect();
+        if (power > 0) {
+            if(TimeUp()) {
+                SetTimer();
+                power = max(0, power - (0.5 * GetStacks()));
+            } else {
+                SetTimer();
+            }
+        }
+    }
+
+    override double GetLuck() {
+        return power;
+    }
+
+    states {
+        Spawn:
+            SKYY ABCDEFGHIJKLMNOPQR 4;
+            Loop;
+    }
+}
+
+class RuneOfJudgement : LegendItem {
+    // AND THY PUNISHMENT IS DEATH.
+    default {
+        Inventory.Icon "ZKYYA0";
+        Inventory.PickupMessage "Rune of Judgement: Retaliate with a homing projectile. JUDGEMENT!";
+        LegendItem.Timer 2.;
+    }
+
+    override void OnRetaliate(int dmg, Name type, Actor src, Actor inf, Actor tgt) {
+        if(src && src != tgt && TimeUp()) {
+            console.printf("JUDGEMENT!");
+            LegendShot js = LegendShot(owner.Spawn("JudgementSnake",owner.pos+(0,0,24)));
+            js.target = owner;
+            js.tracer = src;
+            js.angle = Normalize180(owner.angle) + (90 * frandom(-1,1));
+            js.power = dmg * (0.5 + (0.5 * GetStacks()));
+            SetTimer();
+        }
+    }
+
+    states {
+        Spawn:
+            ZKYY ABCDEFGHIJKLMNOPQR 4;
+    }
+}
+
+class JudgementSnake : LegendShot {
+    // JUDGEMENT.
+    default {
+        +NOCLIP;
+        +SEEKERMISSILE;
+        Speed 20;
+        radius 20;
+        height 10;
+    }
+
+    override void Tick() {
+        Super.Tick();
+        if (Vec3To(tracer).length() < (tracer.radius + self.radius)) {
+            // We're about to hit.
+            bNOCLIP = false;
+        }
+    }
+
+    states {
+        Spawn:
+            FATB AB 2 Bright {
+                A_SeekerMissile(20,40,SMF_PRECISE);
+                Spawn("JudgementTail",invoker.pos);
+            }
+            Loop;
+        Death:
+            FBXP ABC 6 Bright;
+            TNT1 A 0;
+            Stop;
+    }
+}
+
+class JudgementTail : Actor {
+    default {
+        +NOINTERACTION;
+        Scale 2.;
+    }
+
+    states {
+        Spawn:
+            PUFF AB 2 A_FadeOut();
+            Loop;
+    }
+}
+
+
