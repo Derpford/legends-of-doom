@@ -20,7 +20,7 @@ class LegendItem : Inventory {
         return stacks;
     }
 
-    clearscope double GetOwnerLuck() {
+    double GetOwnerLuck() {
         // Returns 0 or parent's luck. Monsters don't get lucky!
         if (owner is "LegendPlayer") {
             let plr = LegendPlayer(owner);
@@ -30,7 +30,7 @@ class LegendItem : Inventory {
         }
     }
 
-    clearscope bool LuckRoll(double chance, bool isBad = false) {
+    bool LuckRoll(double chance, bool isBad = false) {
         // If the owner is a player, call their LuckRoll. Otherwise, raw random.
         if (owner is "LegendPlayer") {
             let plr = LegendPlayer(owner);
@@ -40,7 +40,7 @@ class LegendItem : Inventory {
         }
     }
 
-    clearscope double RollDown(double initial) {
+    double RollDown(double initial) {
         // Essentially a copy of LegendPlayer's rolldown, but with our LuckRoll.
         double ret = 1.;
         while (initial > 100.) {
@@ -54,11 +54,11 @@ class LegendItem : Inventory {
         return ret;
     }
 
-    clearscope double GetOwnerPower(bool raw = false) {
+    double GetOwnerPower(bool raw = false) {
         // Returns parent's power, or 5 plus 0.5 per level for monsters.
         if (owner is "LegendPlayer") {
             let plr = LegendPlayer(owner);
-            return plr.GetPower(raw);
+            return plr.GetPower();
         } else {
             int lvl = owner.CountInv("LevelToken");
             double pow = 5.;
@@ -69,7 +69,7 @@ class LegendItem : Inventory {
         }
     }
 
-    clearscope double GetOwnerPrecision() {
+    double GetOwnerPrecision() {
         // Returns 0 or parent's Precision. Monsters are not precise!
         if (owner is "LegendPlayer") {
             let plr = LegendPlayer(owner);
@@ -79,7 +79,7 @@ class LegendItem : Inventory {
         }
     }
 
-    clearscope double GetOwnerToughness() {
+    double GetOwnerToughness() {
         // Returns 0 or parent's Toughness. Monsters are not tough!
         if (owner is "LegendPlayer") {
             let plr = LegendPlayer(owner);
@@ -112,6 +112,8 @@ class LegendItem : Inventory {
     virtual void OnKill (Actor src, Actor tgt) {} // Called when owner (src) killed tgt.
 
     virtual void OnReload () {} // Called whenever our weapon calls ReloadProc.
+
+    virtual void OnPrecisionHit () {} // Called whenever a GetPower call causes a Precision Hit.
 
     virtual void PickupBonus () {} // Called via HandlePickup for items that count as bonuses.
 

@@ -124,8 +124,12 @@ class LegendPlayer : DoomPlayer {
         return ret;
     }
 
-    clearscope double GetPower(bool raw = false) {
-        // Grabs the current Power value. If `raw`, skip the precision doubling check.
+    clearscope double UI_GetPower(bool raw = true) {
+        // Skip the precision hit proc. This is for HUDs and the like.
+        // Also defaults to 'raw' value.
+        double lucky = GetPrecision();
+        double multi = RollDown(lucky);
+        
         Inventory it = inv;
         double bonus = 0.;
         while (it) {
@@ -136,11 +140,31 @@ class LegendPlayer : DoomPlayer {
             it = it.inv;
         }
         double pow = bonus + self.Power + (self.PowerGrow * self.Level);
+        if (raw) { return pow; }
+        return pow * multi;
+    }
+
+    double GetPower(bool raw = false) {
+        // Grabs the current Power value. If `raw`, skip the precision doubling check.
         double lucky = GetPrecision();
+        double multi = RollDown(lucky);
+
+        Inventory it = inv;
+        double bonus = 0.;
+        while (it) {
+            let lit = LegendItem(it);
+            if (lit) {
+                if (multi > 1.) {
+                    lit.OnPrecisionHit();
+                }
+                bonus += lit.GetPower();
+            }
+            it = it.inv;
+        }
+        double pow = bonus + self.Power + (self.PowerGrow * self.Level);
 
         // Return the raw value if asked.
         if (raw) { return pow; }
-        double multi = RollDown(lucky);
         return pow * multi;
     }
 
