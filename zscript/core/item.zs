@@ -322,7 +322,7 @@ class BonusDrop : Actor {
                 if(frandom(0,1)>0.5) {
                     bon = "HPBonus"; 
                 } else {
-                    bon = "ArmorBonus";
+                    bon = "ArmBonus";
                 }
                 let it = Spawn(bon,pos);
                 if (it) {
@@ -335,6 +335,12 @@ class BonusDrop : Actor {
 
 class HPBonus : Inventory replaces HealthBonus {
     // Adds 1 to health. Does *NOT* respect max health (or any maximum!).
+
+    mixin PlayerVac;
+    override void Tick() {
+        Super.Tick();
+        Suck();
+    }
 
     int heals;
     Property Heal : heals;
@@ -356,11 +362,21 @@ class HPBonus : Inventory replaces HealthBonus {
     }
 }
 
+class ArmBonus: ArmorBonus replaces ArmorBonus {
+    // Just the old ArmorBonus, plus succ.
+    mixin PlayerVac;
+    override void Tick() {
+        Super.Tick();
+        Suck();
+    }
+}
+
 class SuperSoul : HPBonus replaces Soulsphere {
     // The soulsphere, but without a maximum!
 
     default {
         HPBonus.Heal 100;
+        HPBonus.dontSuck true;
         Inventory.PickupMessage "Super Soul!";
     }
 
@@ -370,16 +386,17 @@ class SuperSoul : HPBonus replaces Soulsphere {
     }
 }
 
-class MegaSoul : HPBonus replaces Megasphere {
+class MegaSoul : SuperSoul replaces Megasphere {
     // The megasphere, but without a (health) maximum!
     default {
         HPBonus.Heal 200;
+        HPBonus.dontSuck true;
         Inventory.PickupMessage "Mega Soul!";
     }
 
     override void AttachToOwner (Actor other) {
         other.GiveInventory("BlueArmor",1);
-        super.AttachToOwner(other);
+        other.GiveBody(heals,int.max);
     }
 
     states {

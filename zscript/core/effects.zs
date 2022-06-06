@@ -1,3 +1,30 @@
+mixin class PlayerVac {
+    bool shouldSuck;
+    property dontSuck : shouldSuck;
+    void Suck() {
+        if(shouldSuck) {return;}
+        if (target) {
+            if (GetAge() > 48) { bNOGRAVITY = true; }
+            vel += vec3To(target).unit() * (min(GetAge(),48) * 0.1);
+        } else {
+            ThinkerIterator it = ThinkerIterator.Create("LegendPlayer");
+            double dist = -1.;
+            Actor m;
+            Actor closest;
+            while(m = Actor(it.next())) {
+                double newdist = Vec3To(m).length();
+                if (newdist < 256.) {
+                    if (dist < 0 || newdist < dist) {
+                        closest = Actor(m);
+                        dist = Vec3To(closest).length();
+                    }
+                }
+            }
+            target = closest;
+        }
+    }
+}
+
 class VorpalHandler : EventHandler {
     // Catches and modifies Vorpal damage to be based on the target's max HP.
 

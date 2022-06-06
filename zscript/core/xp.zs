@@ -22,6 +22,8 @@ class XPGem : Inventory {
     double value;
     Property Value : value;
 
+    mixin PlayerVac;
+
     default {
         XPGem.Value 1.0;
         +DONTGIB;
@@ -30,26 +32,7 @@ class XPGem : Inventory {
 
     override void Tick() {
         Super.Tick();
-        if (target) {
-            // Gems fly toward whatever player caused them.
-            if (GetAge() > 48) { bNOGRAVITY = true; }
-            vel += vec3To(target).unit() * (min(GetAge(),48) * 0.1);
-        } else {
-            ThinkerIterator it = ThinkerIterator.Create("LegendPlayer");
-            double dist = -1.;
-            Actor m;
-            Actor closest;
-            while(m = Actor(it.next())) {
-                double newdist = Vec3To(m).length();
-                if (newdist < 256.) {
-                    if (dist < 0 || newdist < dist) {
-                        closest = Actor(m);
-                        dist = Vec3To(closest).length();
-                    }
-                }
-            }
-            target = closest;
-        }
+        Suck();
     }
 
     override void AttachToOwner(Actor other) {
