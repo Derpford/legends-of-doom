@@ -18,9 +18,11 @@ version "4.6"
 #include "zscript/items/hard-helmet.zs"
 #include "zscript/items/lucky-coin.zs"
 #include "zscript/items/medic-bag.zs"
+#include "zscript/items/owl-sight.zs"
 #include "zscript/items/runes.zs"
 #include "zscript/items/serum.zs"
 #include "zscript/items/spicy-water.zs"
+#include "zscript/items/stoneskin.zs"
 #include "zscript/items/surplus-caliber.zs"
 
 // Characters.
