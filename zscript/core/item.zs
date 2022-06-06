@@ -21,6 +21,12 @@ class LegendItem : Inventory {
         LegendItem.Alarm "dsempty", 1.0;
     }
 
+    override void PostBeginPlay() {
+        Super.PostBeginPlay();
+        alarmSet = true;
+        SetTimer();
+    }
+
     clearscope int GetStacks() {
         return stacks;
     }
@@ -95,12 +101,12 @@ class LegendItem : Inventory {
     }
 
     void SetTimer (double set = -1) {
-        alarmSet = true;
         if(set < 0) {
             timer = timelimit;
         } else {
             timer = set;
         }
+        self.alarmSet = true;
     }
 
     bool TimeUp () {
@@ -111,32 +117,43 @@ class LegendItem : Inventory {
         timer -= 1./35.;
         if(alarmSet && timer <= 0.) {
             owner.A_StartSound(alarm,7);
-            OnTimer();
             alarmSet = false;
+            OnTimer();
         }
     }
 
-    virtual void OnTimer () {} // Called once whenever time is up.
+    virtual void OnTimer () {} 
+    // Called once whenever time is up.
 
-    virtual void OnHit (int dmg, Name type, Actor src, Actor inf, Actor tgt) {} // Called via event handler, WorldThingDamaged.
+    virtual void OnHit (int dmg, Name type, Actor src, Actor inf, Actor tgt) {} 
+    // Called via event handler, WorldThingDamaged.
 
-    virtual void OnRetaliate (int dmg, Name type, Actor src, Actor inf, Actor tgt) {} // Likewise, but when our owner is the thing behing hurt.
+    virtual void OnRetaliate (int dmg, Name type, Actor src, Actor inf, Actor tgt) {} 
+    // Likewise, but when our owner is the thing behing hurt.
 
-    virtual void OnKill (Actor src, Actor tgt) {} // Called when owner (src) killed tgt.
+    virtual void OnKill (Actor src, Actor tgt) {} 
+    // Called when owner (src) killed tgt.
 
-    virtual void OnReload () {} // Called whenever our weapon calls ReloadProc.
+    virtual void OnReload () {} 
+    // Called whenever our weapon calls ReloadProc.
 
-    virtual void OnPrecisionHit () {} // Called whenever a GetPower call causes a Precision Hit.
+    virtual void OnPrecisionHit () {} 
+    // Called whenever a GetPower call causes a Precision Hit.
 
-    virtual void PickupBonus () {} // Called via HandlePickup for items that count as bonuses.
+    virtual void PickupBonus () {} 
+    // Called via HandlePickup for items that count as bonuses.
 
-    virtual void PickupAmmo () {} // Likewise but for ammo items.
+    virtual void PickupAmmo () {} 
+    // Likewise but for ammo items.
 
-    virtual void PickupHealth () {} // ...and for medkits and stimpacks.
+    virtual void PickupHealth () {} 
+    // ...and for medkits and stimpacks.
 
-    virtual void PickupArmor () {} // ...and armor...
+    virtual void PickupArmor () {} 
+    // ...and armor...
 
-    virtual void BreakArmor (Actor src) {} // Called when an enemy breaks our armor (reduces Armor to 0).
+    virtual void BreakArmor (Actor src) {} 
+    // Called when an enemy breaks our armor (reduces Armor to 0).
 
     override bool HandlePickup(Inventory item) {
         if (item is "HPBonus" || item is "BasicArmorBonus") {
