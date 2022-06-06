@@ -13,7 +13,7 @@ class SanguineShield : LegendItem {
 
     override void OnTimer() {
         SetTimer();
-        if(stock > 0) {
+        if(stock > 0 && owner.CountInv("BasicArmor") < 200) {
             stock -= GetStacks();
             owner.GiveInventory("ArmorBonus",GetStacks());
         }
