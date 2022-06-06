@@ -21,7 +21,7 @@ class OwlsightAmulet : LegendItem {
         bool found = false;
         while (m = Actor(it.next())) {
             if (!m.bISMONSTER || m.bCORPSE) { continue; }
-            if (owner.Vec3To(m).length() > 512) { continue; }
+            if (m.CheckSightOrRange(256)) { continue; }
             found = true;
         }
         active = !found;
