@@ -105,7 +105,7 @@ class Bleed : Inventory {
     }
 
     override void DoEffect() {
-        if (!owner.bISMONSTER) { return; } //QoL: Non-monsters cannot be bled to death. Barrels are no longer timebombs.
+        if (!owner.bISMONSTER && !(owner is "LegendPlayer")) { return; } //QoL: Non-monsters cannot be bled to death. Barrels are no longer timebombs.
         frames += 1;
         timer += 1;
         if (frames >= 7) {
@@ -128,7 +128,7 @@ class Bleed : Inventory {
             // Increase stack count.
             stacks += 1;
         }
-        return true;
+        return false;
     }
 
 }
