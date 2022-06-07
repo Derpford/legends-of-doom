@@ -151,7 +151,7 @@ class SlayerSaw : LegendWeapon {
                 A_StartSound("weapons/sawhit");
                 A_CustomPunch(invoker.GetDamage(),true,CPF_PULLIN);
                 let tgt = invoker.owner.AimTarget();
-                if(tgt && invoker.owner.Vec3To(tgt).length() < 64) {
+                if(tgt && invoker.owner.Vec3To(tgt).length() < 64 + tgt.radius) {
                     tgt.GiveInventory("Efficiency",1);
                 }
             }
