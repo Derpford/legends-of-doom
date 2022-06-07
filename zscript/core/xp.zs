@@ -110,6 +110,7 @@ class XPDropHandler : EventHandler {
     // When a monster dies, drop XP equal to 10% of its HP.
 
     override void WorldThingDied(WorldEvent e) {
+        if(!e.Thing) { return; } // Crusher deaths don't work right.
         if (e.Thing.bISMONSTER) { // Only on monsters!
             int basehp = e.Thing.GetSpawnHealth();
             double truehp = basehp + (e.Thing.CountInv("LevelToken") * basehp * 0.1);
