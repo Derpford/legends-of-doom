@@ -102,7 +102,7 @@ class VorpalSplash : LegendShot {
     // An invisible shockwave that bursts for Vorpal damage.
 
     default {
-        Speed 50;
+        Speed 25;
         Scale 0.5;
         RenderStyle "Add";
         +THRUACTORS;
@@ -110,8 +110,8 @@ class VorpalSplash : LegendShot {
 
     states {
         Spawn:
-            MISL BCD 1;
-            MISL D 1 A_Explode(96, 96, XF_EXPLICITDAMAGETYPE,damagetype:"Vorpal");
+            MISL BCD 2;
+            MISL D 2 A_Explode(96, 96, XF_EXPLICITDAMAGETYPE,damagetype:"Vorpal");
             Stop;
     }
 }
@@ -254,7 +254,7 @@ class SlayerChaingun : LegendWeapon {
 }
 
 class SlayerShotgun : LegendWeapon {
-    // The shotgun fires 21 pellets, each of which does pow*0.1 damage. It also produces a blast in front of it that does Vorpal damage.
+    // The shotgun fires 21 pellets, each of which does pow*0.16 damage. It also produces a blast in front of it that does Vorpal damage.
 
     default {
         LegendWeapon.Damage 0., 0.16;
