@@ -105,7 +105,7 @@ class VorpalSplash : LegendShot {
         Speed 25;
         Scale 0.5;
         RenderStyle "Add";
-        +THRUACTORS;
+        +NOCLIP;
     }
 
     states {
