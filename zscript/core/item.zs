@@ -13,6 +13,7 @@ class LegendItem : Inventory {
     Property Alarm : alarm, alarmPitch;
 
     default {
+        +BRIGHT; // Items should always be visible.
         Inventory.Amount 1;
         Inventory.MaxAmount 999;
         LegendItem.TimerStart 0;

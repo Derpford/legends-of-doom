@@ -82,13 +82,15 @@ class ItemSpawnHandler : EventHandler {
             if(e.Thing.bDROPPED) {
                 // Tell it to spawn an ammo item.
                 it.spawnList.Copy(AmmoList);
+                it.rarity = -1;
             } else {
 
                 // Items spawn 70% common, 20% rare, 5% epic, 5% cursed.
                 // TODO: Better weighting system.
                 static const Int odds[] = {0,0,0,0,0,0,0,0,0,0,
                                 0,0,0,0,1,1,1,1,2,3};
-                switch (odds[random(0,19)]) {
+                int rarity = odds[random(0,19)];
+                switch (rarity) {
                     case 0:
                         it.spawnList.Copy(commonList);
                         break;
@@ -102,6 +104,7 @@ class ItemSpawnHandler : EventHandler {
                         it.spawnList.Copy(cursedList);
                         break;
                 }
+                it.rarity = rarity;
             }
         }
     }
@@ -110,6 +113,7 @@ class ItemSpawnHandler : EventHandler {
 class DummyItem : Actor {
     // Placeholder for an item spawn.
     Array<Class<Actor> > spawnList;
+    int rarity;
     
     states {
         Spawn:
@@ -123,10 +127,122 @@ class DummyItem : Actor {
                         // Transfer our special to it.
                         it.A_SetSpecial(invoker.Special,invoker.Args[0],invoker.Args[1],invoker.Args[2],invoker.Args[3],invoker.Args[4]);
                         it.ChangeTID(invoker.TID);
+                        // Spawn a sparkle spawner based on rarity.
+                        if (rarity >= 0) {
+
+                            Name sparkType;
+                            switch (rarity) {
+                                case 0:
+                                    sparkType = "ItemSparkSpawner";
+                                    break;
+                                case 1:
+                                    sparkType = "RareSparkSpawner";
+                                    break;
+                                case 2:
+                                    sparkType = "EpicSparkSpawner";
+                                    break;
+                                case 3:
+                                    sparkType = "CursedSparkSpawner";
+                                    break;
+                            }
+                            
+                            let sp = Spawn(sparkType,pos);
+                            sp.master = it;
+                        }
                     }
                 }
             }
             TNT1 A 0;
             Stop;
+    }
+}
+
+class CommonSpark : Actor {
+    // A sparkle to indicate rarity.
+    default {
+        +NOINTERACTION;
+        +BRIGHT;
+    }
+    
+    override void Tick() {
+        Super.Tick();
+        vel.z = 2;
+        if (GetAge() > 18) {
+            A_FadeOut(.2);
+        }
+    }
+
+    states {
+        Spawn:
+            SPRK AB 3; 
+            Loop;
+    }
+}
+
+class RareSpark : CommonSpark {
+    states {
+        Spawn:
+            SPRK CD 3;
+            Loop;
+    }
+}
+
+class EpicSpark : CommonSpark {
+    states {
+        Spawn:
+            SPRK EF 3;
+            Loop;
+    }
+}
+
+class CursedSpark : CommonSpark {
+    states {
+        Spawn:
+            SPRK GH 5;
+            Loop;
+    }
+}
+
+class ItemSparkSpawner : Actor {
+    // Dies when its master is picked up. Spawns sparkles.
+    Name sparkType;
+    Property sparkType : sparkType;
+    default {
+        +NOINTERACTION;
+        ItemSparkSpawner.sparkType "CommonSpark";
+    }
+
+    override void Tick() {
+        Super.Tick();
+        let m = LegendItem(master);
+        if (m) {
+            if (m.owner) {
+                A_Remove(AAPTR_DEFAULT);
+            } else {
+                if (GetAge() % 15 == 0) {
+                    double ang = GetAge();
+                    A_SpawnItemEX(sparkType,xofs:32,zofs:8,angle:ang);
+                    A_SpawnItemEX(sparkType,xofs:32,zofs:8,angle:180+ang);
+                }
+            }
+        }
+    }
+}
+
+class RareSparkSpawner : ItemSparkSpawner {
+    default {
+        ItemSparkSpawner.sparkType "RareSpark";
+    }
+}
+
+class EpicSparkSpawner : ItemSparkSpawner {
+    default {
+        ItemSparkSpawner.sparkType "EpicSpark";
+    }
+}
+
+class CursedSparkSpawner : ItemSparkSpawner {
+    default {
+        ItemSparkSpawner.sparkType "CursedSpark";
     }
 }
