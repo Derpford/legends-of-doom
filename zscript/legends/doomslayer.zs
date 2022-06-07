@@ -183,6 +183,31 @@ class SlayerChaingun : LegendWeapon {
         Weapon.AmmoUse 1;
     }
 
+    action void PainBullet() {
+        A_StartSound("weapons/chngun",pitch:1.1);
+        Shoot("PainBullet",ang: frandom(-2,2),pitch: frandom(-1.0,1.0));
+        invoker.stacks -= 5;
+    }
+
+    action void Bullet(bool accurate) {
+        double multi = 1.;
+        if (!accurate) {
+            multi = 2.;
+        }
+
+        A_StartSound("weapons/chngun");
+        Shoot("BulletShot",ang: frandom(-4,4)*multi,pitch: frandom(-1.5,0.5)*multi);
+    }
+
+    action void ChainBullet(bool accurate) {
+        invoker.stacks += 1;
+        if(invoker.stacks >= 5) {
+            PainBullet();
+        } else {
+            Bullet(accurate);
+        }
+    }
+
     states {
         Select:
             CHGG A 1 A_Raise(35);
@@ -196,7 +221,6 @@ class SlayerChaingun : LegendWeapon {
         Fire:
             CHGG A 1 {
                 A_TakeInventory("GreenAmmo",1);
-                invoker.stacks += 1;
                 invoker.ammo += 1;
 
                 if(invoker.ammo >= 10) {
@@ -204,19 +228,19 @@ class SlayerChaingun : LegendWeapon {
                     invoker.ammo = 0;
                 }
 
-                if(invoker.stacks >= 5) {
-                    A_StartSound("weapons/chngun",pitch:1.1);
-                    Shoot("PainBullet",ang: frandom(-2,2),pitch: frandom(-1.0,1.0));
-                    invoker.stacks -= 5;
-                } else {
-                    A_StartSound("weapons/chngun");
-                    Shoot("BulletShot",ang: frandom(-4,4),pitch: frandom(-1.5,1.5));
-                }
+                ChainBullet(true);
 
                 A_GunFlash();
             }
             CHGG A 1;
-            CHGG B 2 A_GunFlash("Flash2");
+            CHGG B 1 {
+                A_GunFlash("Flash2");
+                if (GetPlayerInput(INPUT_BUTTONS) & BT_ALTATTACK) {
+                    A_TakeInventory("GreenAmmo",1);
+                    ChainBullet(false);
+                }
+            }
+            CHGG B 1;
             CHGG B 0 A_Refire();
             Goto Ready;
 
