@@ -110,6 +110,7 @@ class VorpalSplash : LegendShot {
 
     states {
         Spawn:
+        Death:
             MISL BCD 2;
             MISL D 2 A_Explode(96, 96, XF_EXPLICITDAMAGETYPE,damagetype:"Vorpal");
             Stop;
