@@ -12,6 +12,7 @@ version "4.6"
 #include "zscript/core/weapon.zs"
 
 // Items.
+#include "zscript/items/ammolet.zs"
 #include "zscript/items/behemoth.zs"
 #include "zscript/items/bloodsaw.zs"
 #include "zscript/items/copied-floppy.zs"
