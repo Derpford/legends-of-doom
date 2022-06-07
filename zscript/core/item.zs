@@ -115,6 +115,7 @@ class LegendItem : Inventory {
     }
 
     override void DoEffect () {
+        if (owner.bCORPSE) { return; }
         timer -= 1./35.;
         if(alarmSet && timer <= 0.) {
             owner.A_StartSound(alarm,7);

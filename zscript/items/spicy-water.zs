@@ -20,7 +20,7 @@ class SpicyWater : LegendItem {
 
         if(!TimeUp()) {
             stack += GetStacks();
-            if (stack >= maxstack) {
+            if (stack >= maxstack && !owner.bCORPSE) {
                 // owner.A_Explode(floor(GetOwnerPower()*0.1),128,XF_NOTMISSILE,fulldamagedistance:128);
                 let it = RadBurst(owner.spawn("RadBurst",owner.pos+(0,0,16)));
                 if (it) {
