@@ -102,14 +102,16 @@ class VorpalSplash : LegendShot {
     // An invisible shockwave that bursts for Vorpal damage.
 
     default {
-        Speed 10;
+        Speed 50;
+        Scale 0.5;
+        RenderStyle "Add";
         +THRUACTORS;
     }
 
     states {
         Spawn:
-            TNT1 A 1;
-            TNT1 A 0 A_Explode(96, 96, XF_EXPLICITDAMAGETYPE,damagetype:"Vorpal");
+            MISL BCD 1;
+            MISL D 1 A_Explode(96, 96, XF_EXPLICITDAMAGETYPE,damagetype:"Vorpal");
             Stop;
     }
 }
