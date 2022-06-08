@@ -19,7 +19,7 @@ class LuckyCoin : LegendItem {
     }
 
     override double GetLuck() {
-        if (active) { return 25.; } else { return 0.; }
+        if (active) { return 10.; } else { return 0.; }
     }
 
     states {
