@@ -49,7 +49,7 @@ class RuneOfEyes : LegendItem {
         if (power > 0) {
             if(TimeUp()) {
                 SetTimer();
-                power = max(0, power - (0.5 * GetStacks()));
+                power = max(0, power - (1.0 * GetStacks()));
             } else {
                 SetTimer();
             }
