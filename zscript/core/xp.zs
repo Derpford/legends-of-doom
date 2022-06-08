@@ -114,11 +114,13 @@ class XPDropHandler : EventHandler {
         if (e.Thing.bISMONSTER) { // Only on monsters!
             int basehp = e.Thing.GetSpawnHealth();
             double truehp = basehp + (e.Thing.CountInv("LevelToken") * basehp * 0.1);
-            let plr = LegendPlayer(e.Inflictor.target);
             int amt = 0;
-            if (plr) {
-                if (plr.LuckRoll(truehp)) { amt++; }
-                if (plr.LuckRoll(truehp/2)) { amt++; }
+            if (e.Inflictor) {
+                let plr = LegendPlayer(e.Inflictor.target);
+                if (plr) {
+                    if (plr.LuckRoll(truehp)) { amt++; }
+                    if (plr.LuckRoll(truehp/2)) { amt++; }
+                }
             }
 
             for (int i = 0; i < amt; i++) {
