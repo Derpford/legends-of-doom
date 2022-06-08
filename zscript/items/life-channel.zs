@@ -8,6 +8,7 @@ class LifeChannelAmulet : LegendItem {
 
     override void OnTimer() {
         owner.GiveInventory("Bleed",GetStacks());
+        SetTimer();
     }
 
     override double GetPower() {
