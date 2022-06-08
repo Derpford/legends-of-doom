@@ -169,7 +169,7 @@ class BloodParticle : Actor {
 
     override void Tick() {
         Super.tick();
-        if (GetAge() % 2 == 0) {
+        if (GetAge() % 5 == 0) {
             Spawn("BloodTrail",pos);
         }
         vel.z -= 0.5;
