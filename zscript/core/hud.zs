@@ -90,13 +90,16 @@ class LegendHud : BaseStatusBar {
 				DrawBar(ammoBars[i].."B0",ammoBars[i].."A0",amt,cap,(ammoXPos,-36 - (9 * i)),2,0,rbarflags);
 			}
 
+			// The XP bar should be just above the keys.
+			DrawBar("XBARB0","XBARA0",xp,xpmax,(0,-24),2,SHADER_REVERSE,cbarflags);
+
             // Finally, the stats.
             int statXPos = 16;
             int statTextXPos = statXPos+8;
             int statYPos = 36;
 			// Level.
 			DrawImage("SLVL",(statXPos,statYPos),statbarflags);
-			DrawString(mConFont,String.Format("%d (%.1f%%)",lvl,xpperc),(statTextXPos,statYPos),stattxtflags,Font.CR_WHITE);
+			DrawString(mConFont,String.Format("%d",lvl),(statTextXPos,statYPos),stattxtflags,Font.CR_WHITE);
 			statYPos += 9;
 			// Power.
 			DrawImage("SPOW",(statXPos,statYPos),statbarflags);
