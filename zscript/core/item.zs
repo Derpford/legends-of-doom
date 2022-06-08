@@ -142,16 +142,16 @@ class LegendItem : Inventory {
     virtual void OnPrecisionHit () {} 
     // Called whenever a GetPower call causes a Precision Hit.
 
-    virtual void PickupBonus () {} 
+    virtual void PickupBonus (Inventory item) {} 
     // Called via HandlePickup for items that count as bonuses.
 
-    virtual void PickupAmmo () {} 
+    virtual void PickupAmmo (Inventory item) {} 
     // Likewise but for ammo items.
 
-    virtual void PickupHealth () {} 
+    virtual void PickupHealth (Inventory item) {} 
     // ...and for medkits and stimpacks.
 
-    virtual void PickupArmor () {} 
+    virtual void PickupArmor (Inventory item) {} 
     // ...and armor...
 
     virtual void BreakArmor (Actor src) {} 
@@ -159,19 +159,19 @@ class LegendItem : Inventory {
 
     override bool HandlePickup(Inventory item) {
         if (item is "HPBonus" || item is "BasicArmorBonus") {
-            PickupBonus();
+            PickupBonus(item);
         }
 
         if (item is "Health" || item is "HPBonus") { // This technically overlaps with PickupBonus and several powerups...oh well.
-            PickupHealth(); 
+            PickupHealth(item); 
         }
 
         if (item is "Armor") { // Likewise, this overlaps with armor bonuses.
-            PickupArmor();
+            PickupArmor(item);
         }
 
         if (item is "Ammo") {
-            PickupAmmo();
+            PickupAmmo(item);
         }
 
         return false;
@@ -197,6 +197,7 @@ class LegendItem : Inventory {
         let it = LegendItem(toucher.FindInventory(GetClassName()));
         if (it) {
             // We might be doing stacks instead.
+            console.printf("Found a "..it.GetClassName());
             it.stacks += 1;
             selfRemove = true;
         } else {
