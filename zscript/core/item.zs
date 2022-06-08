@@ -124,6 +124,9 @@ class LegendItem : Inventory {
         }
     }
 
+    virtual bool IconState () { return true; }
+    // Return true if icon should be normal, or false if it should be dimmed.
+
     virtual void OnTimer () {} 
     // Called once whenever time is up.
 
@@ -197,7 +200,6 @@ class LegendItem : Inventory {
         let it = LegendItem(toucher.FindInventory(GetClassName()));
         if (it) {
             // We might be doing stacks instead.
-            console.printf("Found a "..it.GetClassName());
             it.stacks += 1;
             selfRemove = true;
         } else {
