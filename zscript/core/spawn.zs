@@ -219,6 +219,7 @@ class ItemSparkSpawner : Actor {
             if (m.owner) {
                 A_Remove(AAPTR_DEFAULT);
             } else {
+                SetOrigin(m.pos,false);
                 if (GetAge() % 15 == 0) {
                     double ang = GetAge();
                     A_SpawnItemEX(sparkType,xofs:32,zofs:8,angle:ang);
