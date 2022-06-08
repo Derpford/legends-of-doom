@@ -1,15 +1,17 @@
 class Ammolet : LegendItem {
     // From the demesne formerly known as Gungeon.
+    int charge;
     default {
         Inventory.Icon "AMLTD0";
-        Inventory.PickupMessage "Ammolet: Health pickups can spawn ammo.";
+        Inventory.PickupMessage "Ammolet: Picking up health occasionally spawns ammo.";
     }
 
-    override void PickupHealth() {
-        int amt = RollDown(25 + (25 * GetStacks())) -1;
-        for (int i = 0; i < amt; i++) {
+    override void PickupHealth(Inventory it) {
+        charge += it.amount * GetStacks();
+        while (charge >= 25) {
             let it = owner.Spawn("AmmoSpawner",owner.pos);
             it.vel = (frandom(-3,3),frandom(-3,3),frandom(4,6));
+            charge -= 25;
         }
     }
     
