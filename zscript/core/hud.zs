@@ -59,7 +59,18 @@ class LegendHud : BaseStatusBar {
             }
 
             // Next, ammo.
-            // TODO: Bars for the four ammo types.
+			Name ammoTypes[4] = {
+				"GreenAmmo",
+				"RedAmmo",
+				"YellowAmmo",
+				"BlueAmmo"
+			};
+			String ammoBars[4] = {
+				"GBAR",
+				"RBAR",
+				"YBAR",
+				"BBAR"
+			};
             int ammoXPos = -24;
 			int ammoTextXPos = ammoXPos-32;
 			if (wpn) {
@@ -73,15 +84,35 @@ class LegendHud : BaseStatusBar {
 				}
 			}
 
+			for (int i = 0; i < 4; i++) {
+				int amt, cap;
+				[amt, cap] = GetAmount(ammoTypes[i]);
+				DrawBar(ammoBars[i].."B0",ammoBars[i].."A0",amt,cap,(ammoXPos,-36 - (9 * i)),2,0,rbarflags);
+			}
+
             // Finally, the stats.
-            int statXPos = 8;
-            int statTextXPos = statXPos+16;
+            int statXPos = 16;
+            int statTextXPos = statXPos+8;
             int statYPos = 36;
-			DrawString(mConFont,"LVL: "..String.Format("%d",lvl)..", "..String.Format("%.1f%%",xpperc),(statTextXPos,statYPos),stattxtflags,Font.CR_WHITE);
-            DrawString(mConFont,"POW: "..String.Format("%.2f",power),(statTextXPos,statYPos+8),stattxtflags,Font.CR_ORANGE);
-            DrawString(mConFont,"PRC: "..String.Format("%.2f",precision),(statTextXPos,statYPos+16),stattxtflags,Font.CR_PURPLE);
-            DrawString(mConFont,"TUF: "..String.Format("%.2f",toughness),(statTextXPos,statYPos+24),stattxtflags,Font.CR_BLUE);
-            DrawString(mConFont,"LUK: "..String.Format("%.2f",luck),(statTextXPos,statYPos+32),stattxtflags,Font.CR_GREEN);
+			// Level.
+			DrawImage("SLVL",(statXPos,statYPos),statbarflags);
+			DrawString(mConFont,String.Format("%d (%.1f%%)",lvl,xpperc),(statTextXPos,statYPos),stattxtflags,Font.CR_WHITE);
+			statYPos += 9;
+			// Power.
+			DrawImage("SPOW",(statXPos,statYPos),statbarflags);
+            DrawString(mConFont,String.Format("%.2f",power),(statTextXPos,statYPos),stattxtflags,Font.CR_ORANGE);
+			statYPos += 9;
+			// Precision.
+			DrawImage("SPRC",(statXPos,statYPos),statbarflags);
+            DrawString(mConFont,String.Format("%.2f",precision),(statTextXPos,statYPos),stattxtflags,Font.CR_PURPLE);
+			statYPos += 9;
+			// Toughness.
+			DrawImage("STUF",(statXPos,statYPos),statbarflags);
+            DrawString(mConFont,String.Format("%.2f",toughness),(statTextXPos,statYPos),stattxtflags,Font.CR_BLUE);
+			statYPos += 9;
+			// Luck.
+			DrawImage("SLUK",(statXPos,statYPos),statbarflags);
+            DrawString(mConFont,String.Format("%.2f",luck),(statTextXPos,statYPos),stattxtflags,Font.CR_GREEN);
 
 			// Don't forget keys!
 			String keySprites[6] =
