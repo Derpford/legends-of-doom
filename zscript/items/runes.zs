@@ -49,11 +49,12 @@ class RuneOfEyes : LegendItem {
         if (power > 0) {
             if(TimeUp()) {
                 SetTimer();
-                power = max(0, power - (1.0 * GetStacks()));
-            } else {
+                power = max(0, power - (1. * GetStacks()));
+            } 
+        } else {
                 SetTimer();
-            }
         }
+
     }
 
     override double GetLuck() {
