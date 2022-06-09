@@ -4,8 +4,8 @@ class SpicyWater : LegendItem {
     int maxstack;
     Property Trigger : maxstack; // How many stacks before the next damage instance?
     default {
-        Scale 0.5;
-        Inventory.Icon "BAR1A0";
+        Scale 1.5;
+        Inventory.Icon "JNUKA0";
         LegendItem.Timer 5.;
         SpicyWater.Trigger 10;
         Tag "Spicy Water";
@@ -36,7 +36,7 @@ class SpicyWater : LegendItem {
 
     states {
         Spawn:
-            BAR1 A -1;
+            JNUK A -1;
             Stop;
     }
 }
