@@ -45,10 +45,22 @@ class LegendPlayer : DoomPlayer {
         super.Tick();
         TryLevel();
         
-        // Restore 1% max health every 5 seconds.
-        if(GetAge() % 175 == 0) {
-            int amt = floor(0.01*GetMaxHealth(true));
-            GiveBody(amt);
+        int mhp = GetMaxHealth(true);
+
+        if(GetAge() % (35 * 5) == 0) {
+            // Restore 1% max health every 5 seconds.
+            if(health < mhp) {
+                int amt = floor(0.01*mhp);
+                GiveBody(amt);
+            }
+        }
+        // Also, tick overheal down until it's at mhp+100.
+        if(GetAge() % 7 == 0) {
+            if(health > mhp+100) {
+                int amt = ceil(0.01*(health - (mhp+100)));
+                health -= amt;
+                player.health = health;
+            }
         }
     }
 
