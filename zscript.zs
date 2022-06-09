@@ -26,6 +26,7 @@ version "4.6"
 #include "zscript/items/serum.zs"
 #include "zscript/items/spicy-water.zs"
 #include "zscript/items/stoneskin.zs"
+#include "zscript/items/strawberry-jam.zs"
 #include "zscript/items/surplus-caliber.zs"
 
 // Characters.
