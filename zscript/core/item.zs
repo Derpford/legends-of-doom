@@ -382,6 +382,9 @@ class HPBonus : Inventory replaces HealthBonus {
         } else {
             other.GiveBody(heals,other.GetMaxHealth(true));
         }
+        if(other.player) {
+            other.player.health = other.health;
+        }
         GoAwayAndDie();
     }
 
