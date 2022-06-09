@@ -110,9 +110,11 @@ class JudgementSnake : LegendShot {
 
     override void Tick() {
         Super.Tick();
-        if (Vec3To(tracer).length() < (tracer.radius + self.radius)) {
-            // We're about to hit.
-            bNOCLIP = false;
+        if(tracer) {
+            if (Vec3To(tracer).length() < (tracer.radius + self.radius)) {
+                // We're about to hit.
+                bNOCLIP = false;
+            }
         }
     }
 
