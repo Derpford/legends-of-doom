@@ -349,14 +349,21 @@ class HPBonus : Inventory replaces HealthBonus {
 
     int heals;
     Property Heal : heals;
+    bool overheal;
+    Property Overheal : overheal;
 
     default {
         HPBonus.Heal 1;
+        HPBonus.Overheal true;
         Inventory.PickupMessage "Health bonus!";
     }
 
     override void AttachToOwner (Actor other) {
-        other.GiveBody(heals,int.max);
+        if(overheal) {
+            other.GiveBody(heals,int.max);
+        } else {
+            other.GiveBody(heals,other.GetMaxHealth(true));
+        }
         GoAwayAndDie();
     }
 
