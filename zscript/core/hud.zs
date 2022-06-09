@@ -30,8 +30,8 @@ class LegendHud : BaseStatusBar {
 		int rtxtflags = DI_SCREEN_RIGHT_BOTTOM|DI_TEXT_ALIGN_RIGHT;
 		int cbarflags = DI_SCREEN_CENTER_BOTTOM|DI_ITEM_CENTER_BOTTOM;
         // Statbar goes in upper left.
-        int statbarflags = DI_SCREEN_LEFT_TOP|DI_ITEM_LEFT_TOP;
-        int stattxtflags = DI_SCREEN_LEFT_TOP|DI_TEXT_ALIGN_LEFT;
+        int statbarflags = DI_SCREEN_LEFT_BOTTOM|DI_ITEM_LEFT_BOTTOM;
+        int stattxtflags = DI_SCREEN_LEFT_BOTTOM|DI_TEXT_ALIGN_LEFT;
 
 		if(plr)
 		{
@@ -87,35 +87,35 @@ class LegendHud : BaseStatusBar {
 			for (int i = 0; i < 4; i++) {
 				int amt, cap;
 				[amt, cap] = GetAmount(ammoTypes[i]);
-				DrawBar(ammoBars[i].."B0",ammoBars[i].."A0",amt,cap,(ammoXPos,-36 - (9 * i)),2,0,rbarflags);
+				DrawBar(ammoBars[i].."B0",ammoBars[i].."A0",amt,cap,(8 + ammoXPos - (9 * i),-48),2,SHADER_VERT,rbarflags);
 			}
 
-			// The XP bar should be just above the keys.
-			DrawBar("XBARB0","XBARA0",xp,xpmax,(0,-24),2,SHADER_REVERSE,cbarflags);
+			// The XP bar.
+			DrawBar("XBARB0","XBARA0",xp,xpmax,(0,-08),2,SHADER_REVERSE,cbarflags);
 
             // Finally, the stats.
             int statXPos = 16;
             int statTextXPos = statXPos+8;
-            int statYPos = 36;
-			// Level.
-			DrawImage("SLVL",(statXPos,statYPos),statbarflags);
-			DrawString(mConFont,String.Format("%d",lvl),(statTextXPos,statYPos),stattxtflags,Font.CR_WHITE);
-			statYPos += 9;
-			// Power.
-			DrawImage("SPOW",(statXPos,statYPos),statbarflags);
-            DrawString(mConFont,String.Format("%.2f",power),(statTextXPos,statYPos),stattxtflags,Font.CR_ORANGE);
-			statYPos += 9;
-			// Precision.
-			DrawImage("SPRC",(statXPos,statYPos),statbarflags);
-            DrawString(mConFont,String.Format("%.2f",precision),(statTextXPos,statYPos),stattxtflags,Font.CR_PURPLE);
-			statYPos += 9;
-			// Toughness.
-			DrawImage("STUF",(statXPos,statYPos),statbarflags);
-            DrawString(mConFont,String.Format("%.2f",toughness),(statTextXPos,statYPos),stattxtflags,Font.CR_BLUE);
-			statYPos += 9;
+            int statYPos = -56;
 			// Luck.
 			DrawImage("SLUK",(statXPos,statYPos),statbarflags);
-            DrawString(mConFont,String.Format("%.2f",luck),(statTextXPos,statYPos),stattxtflags,Font.CR_GREEN);
+            DrawString(mConFont,String.Format("%.2f",luck),(statTextXPos,statYPos-8),stattxtflags,Font.CR_GREEN);
+			statYPos -= 9;
+			// Toughness.
+			DrawImage("STUF",(statXPos,statYPos),statbarflags);
+            DrawString(mConFont,String.Format("%.2f",toughness),(statTextXPos,statYPos-8),stattxtflags,Font.CR_BLUE);
+			statYPos -= 9;
+			// Precision.
+			DrawImage("SPRC",(statXPos,statYPos),statbarflags);
+            DrawString(mConFont,String.Format("%.2f",precision),(statTextXPos,statYPos-8),stattxtflags,Font.CR_PURPLE);
+			statYPos -= 9;
+			// Power.
+			DrawImage("SPOW",(statXPos,statYPos),statbarflags);
+            DrawString(mConFont,String.Format("%.2f",power),(statTextXPos,statYPos-8),stattxtflags,Font.CR_ORANGE);
+			statYPos -= 9;
+			// Level.
+			DrawImage("SLVL",(statXPos,statYPos),statbarflags);
+			DrawString(mConFont,String.Format("%d",lvl),(statTextXPos,statYPos-8),stattxtflags,Font.CR_WHITE);
 
 			// Don't forget keys!
 			String keySprites[6] =
