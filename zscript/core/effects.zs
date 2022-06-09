@@ -3,8 +3,9 @@ mixin class PlayerVac {
     property dontSuck : shouldSuck;
     void Suck() {
         if(shouldSuck) {return;}
-        if (target) {
+        if (target && !target.bCORPSE) {
             if (GetAge() > 48) { bNOGRAVITY = true; }
+            bNOCLIP = (vec3To(target).length() > target.radius+radius);
             vel += vec3To(target).unit() * (min(GetAge(),48) * 0.1);
         } else {
             ThinkerIterator it = ThinkerIterator.Create("LegendPlayer");
@@ -135,7 +136,7 @@ class Jam : Inventory {
             owner.TakeInventory("Jam",1);
         }
 
-        if(GetAge() % 10 == 0) { 
+        if(owner && owner.GetAge() % 10 == 0) { 
             owner.A_SpawnItemEX("JamPuff",xofs:owner.radius,zofs:owner.height+8,angle:owner.GetAge()); 
             owner.A_SpawnItemEX("JamPuff",xofs:owner.radius,zofs:owner.height+8,angle:owner.GetAge()+180); 
         }
