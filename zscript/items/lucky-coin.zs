@@ -4,8 +4,9 @@ class LuckyCoin : LegendItem {
 
     default {
         Inventory.Icon "COINA0";
-        Inventory.PickupMessage "Lucky Coin: Picking up bonuses makes you lucky.";
         LegendItem.Timer 5.;
+        Tag "Lucky Coin";
+        LegendItem.Desc "Picking up bonuses makes you lucky.";
     }
 
     override void PickupBonus(Inventory item) {

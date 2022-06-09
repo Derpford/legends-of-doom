@@ -2,8 +2,9 @@ Class StoneskinAmulet : LegendItem {
     // Not quite immortality.
     default {
         Inventory.Icon "AMLTA0";
-        Inventory.PickupMessage "Stoneskin Amulet: Consume armor for healing...whether you like it or not.";
         LegendItem.Timer 0.5;
+        Tag "Stoneskin Amulet";
+        LegendItem.Desc "Consume armor for healing, even if your HP's full.";
     }
 
     override void OnTimer() {

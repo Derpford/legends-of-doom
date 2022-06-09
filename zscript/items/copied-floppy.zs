@@ -2,7 +2,8 @@ class CopiedFloppy : LegendItem {
     // Yar har!
     default {
         Inventory.Icon "FLOPA0";
-        Inventory.PickupMessage "Copied Floppy: Bonus XP on kill.";
+        Tag "Copied Floppy";
+        LegendItem.Desc "Gain bonus XP on kill.";
     }
 
     override void OnKill (Actor src, Actor tgt) {

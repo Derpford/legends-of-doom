@@ -2,7 +2,8 @@ class BehemothShell : LegendItem {
     // I Can't Believe It's Not Brilliant Behemoth
     default {
         Inventory.Icon "ROCKA0";
-        Inventory.PickupMessage "Behemoth Shell: All of your attacks explode!";
+        Tag "Behemoth Shell";
+        LegendItem.Desc "All of your attacks explode!";
     }
 
     override void OnHit(int dmg, Name type, Actor src, Actor inf, Actor tgt) {

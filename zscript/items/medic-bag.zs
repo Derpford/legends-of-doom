@@ -2,7 +2,8 @@ class MedicBag : LegendItem {
     // AAAAAAUUGH I'M DYYYYIIIIING
     default {
         Inventory.Icon "MBAGA0";
-        Inventory.PickupMessage "Medic Bag: Enemies drop healing items on death.";
+        Tag "Medic Bag";
+        LegendItem.Desc "Enemies drop healing orbs on death.";
     }
 
     override void OnKill(Actor src, Actor tgt) {

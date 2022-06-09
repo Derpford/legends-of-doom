@@ -3,7 +3,8 @@ class OwlsightAmulet : LegendItem {
     bool active;
     default {
         Inventory.Icon "AMLTE0";
-        Inventory.PickupMessage "Owlsight Amulet: Boosts Precision...but when monsters are near, penalizes you.";
+        Tag "Owlsight Amulet";
+        LegendItem.Desc "Boosts Precision, but penalizes you if monsters are near.";
     }
 
     override double GetPrecision() {

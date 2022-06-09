@@ -2,8 +2,9 @@ class LifeChannelAmulet : LegendItem {
     // Cast from HP.
     default {
         Inventory.Icon "AMLTC0";
-        Inventory.PickupMessage "Life-Channel Amulet: Gain incredible Power, but occasionally suffer Bleeding.";
         LegendItem.Timer 15.;
+        Tag "Life-Channel Amulet";
+        LegendItem.Desc "Gain Power, but occasionally suffer Bleeding.";
     }
 
     override void OnTimer() {

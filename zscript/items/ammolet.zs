@@ -3,7 +3,8 @@ class Ammolet : LegendItem {
     int charge;
     default {
         Inventory.Icon "AMLTD0";
-        Inventory.PickupMessage "Ammolet: Picking up health occasionally spawns ammo.";
+        Tag "Ammolet";
+        LegendItem.Desc "Picking up health occasionally spawns ammo.";
     }
 
     override void PickupHealth(Inventory it) {

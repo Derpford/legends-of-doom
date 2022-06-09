@@ -2,7 +2,8 @@ class BloodSaw : LegendItem {
     // Is that tomato sauce?
     default {
         Inventory.Icon "BSAWA0";
-        Inventory.PickupMessage "Bloodsaw: Chance to inflict bleed on hit.";
+        Tag "Bloodsaw";
+        LegendItem.Desc "Chance to inflict bleed on hit.";
     }
 
     override void OnHit(int dmg, Name type, Actor src, Actor inf, Actor tgt) {

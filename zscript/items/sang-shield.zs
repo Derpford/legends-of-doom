@@ -5,6 +5,8 @@ class SanguineShield : LegendItem {
         Inventory.Icon "SHLDA0";
         Inventory.PickupMessage "Sanguine Shield: Absorb some incoming damage, creating armor.";
         LegendItem.Timer .25;
+        Tag "Sanguine Shield";
+        LegendItem.Desc "Absorb some incoming damage, creating armor.";
     }
 
     override void OnRetaliate (int dmg, Name type, Actor src, Actor inf, Actor tgt) {

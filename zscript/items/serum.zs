@@ -5,8 +5,9 @@ class BloodySerum : LegendItem {
 
     default {
         Inventory.Icon "SRUMA0";
-        Inventory.PickupMessage "Bloody Serum: Gain max health on kill.";
         BloodySerum.kills 0;
+        Tag "Bloody Serum";
+        LegendItem.Desc "Gain max health on kill.";
     }
 
     override void OnKill (Actor src, Actor tgt) {

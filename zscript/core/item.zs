@@ -12,6 +12,11 @@ class LegendItem : Inventory {
     Property StartStacks : stacks;
     Property Alarm : alarm, alarmPitch;
 
+    string remark; // the witty joke
+    string shortdesc; // the short explanation
+    Property Remark : remark;
+    Property Desc : shortdesc;
+
     default {
         +BRIGHT; // Items should always be visible.
         Inventory.Amount 1;
@@ -26,6 +31,10 @@ class LegendItem : Inventory {
         Super.PostBeginPlay();
         alarmSet = true;
         SetTimer();
+    }
+
+    override string PickupMessage () {
+        return String.Format("%s: %s",GetTag(),GetShortDesc());
     }
 
     clearscope int GetStacks() {
@@ -123,6 +132,15 @@ class LegendItem : Inventory {
             OnTimer();
         }
     }
+
+    virtual string GetRemark () { return remark; }
+    // A witty remark for the item.
+
+    virtual string GetShortDesc () { return shortdesc; }
+    // A short explanation of the item.
+
+    virtual string GetLongDesc () { return "Not yet implemented!"; }
+    // A longer, more detailed explanation of the item.
 
     virtual bool IconState () { return true; }
     // Return true if icon should be normal, or false if it should be dimmed.

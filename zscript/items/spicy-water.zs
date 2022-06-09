@@ -6,9 +6,10 @@ class SpicyWater : LegendItem {
     default {
         Scale 0.5;
         Inventory.Icon "BAR1A0";
-        Inventory.PickupMessage "Spicy Water: Retaliate with a radioactive aura.";
         LegendItem.Timer 5.;
         SpicyWater.Trigger 10;
+        Tag "Spicy Water";
+        LegendItem.Desc "Retaliate with a radioactive aura.";
     }
 
     override void OnRetaliate(int dmg, Name type, Actor src, Actor inf, Actor tgt) {

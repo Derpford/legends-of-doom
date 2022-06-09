@@ -2,9 +2,10 @@ class HardHelmet : LegendItem {
     // OSHA-compliant.
 
     default {
-        Scale 2;
-        Inventory.PickupMessage "Hard Helmet: Being healthy grants Toughness.";
+        Scale 1.5;
         Inventory.Icon "BON2A0";
+        Tag "Hard Helmet";
+        LegendItem.Desc "Being healthy grants Toughness.";
     }
 
     override double GetToughness () {
