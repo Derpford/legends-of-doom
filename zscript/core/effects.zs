@@ -117,6 +117,44 @@ class Pain : Inventory {
     }
 }
 
+class Jam : Inventory {
+    // Flinches the target whenever they try to attack.
+    // Loses half of stacks each time it triggers.
+    default {
+        Inventory.Amount 1;
+        Inventory.MaxAmount 999;
+    }
+
+    override void DoEffect() {
+        if (owner.health > 0 && !owner.bCORPSE && owner.ResolveState("pain")) {
+            if (owner.InStateSequence(owner.curstate,owner.ResolveState("Melee")) || owner.InStateSequence(owner.curstate,owner.ResolveState("Missile"))) {
+                owner.SetState(owner.ResolveState("Pain"));
+                owner.TakeInventory("Jam",ceil(0.5 * owner.CountInv("Jam")));
+            }
+        } else {
+            owner.TakeInventory("Jam",1);
+        }
+
+        if(GetAge() % 10 == 0) { 
+            owner.A_SpawnItemEX("JamPuff",xofs:owner.radius,zofs:owner.height+8,angle:owner.GetAge()); 
+            owner.A_SpawnItemEX("JamPuff",xofs:owner.radius,zofs:owner.height+8,angle:owner.GetAge()+180); 
+        }
+    }
+}
+
+class JamPuff : Actor {
+    // A puff of smoke to indicate jammed-ness.
+    default {
+        +NOINTERACTION;
+    }
+
+    states {
+        Spawn:
+            PUFF ABCD 3 Bright { vel.z += 1; }
+            Stop;
+    }
+}
+
 class Bleed : Inventory {
     // Deals damage over time at a flat rate of 5 per second per stack.
     int frames;
