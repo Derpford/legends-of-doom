@@ -13,6 +13,7 @@ version "4.6"
 
 // Items.
 #include "zscript/items/ammolet.zs"
+#include "zscript/items/barrel.zs"
 #include "zscript/items/behemoth.zs"
 #include "zscript/items/bloodsaw.zs"
 #include "zscript/items/copied-floppy.zs"
