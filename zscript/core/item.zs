@@ -41,6 +41,15 @@ class LegendItem : Inventory {
         return stacks;
     }
 
+    void HealOwner(int amount, bool overheal = false) {
+        let plr = LegendPlayer(owner);
+        if (plr) {
+            plr.GiveHealth(amount,overheal);
+        } else {
+            owner.GiveBody(amount);
+        }
+    }
+
     double GetOwnerLuck() {
         // Returns 0 or parent's luck. Monsters don't get lucky!
         if (owner is "LegendPlayer") {
@@ -377,15 +386,11 @@ class HPBonus : Inventory replaces HealthBonus {
     }
 
     override void AttachToOwner (Actor other) {
-        if(overheal) {
-            other.GiveBody(heals,int.max);
-        } else {
-            other.GiveBody(heals,other.GetMaxHealth(true));
+        let plr = LegendPlayer(other);
+        if(plr) {
+            plr.GiveHealth(heals,overheal);
+            GoAwayAndDie();
         }
-        if(other.player) {
-            other.player.health = other.health;
-        }
-        GoAwayAndDie();
     }
 
     states {
@@ -429,7 +434,7 @@ class MegaSoul : SuperSoul replaces Megasphere {
 
     override void AttachToOwner (Actor other) {
         other.GiveInventory("BlueArmor",1);
-        other.GiveBody(heals,int.max);
+        super.AttachToOwner();
     }
 
     states {

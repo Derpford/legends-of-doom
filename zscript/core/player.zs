@@ -41,6 +41,22 @@ class LegendPlayer : DoomPlayer {
         Player.MaxHealth 100; // Make sure this is set.
     }
 
+    void GiveHealth(int amount, bool overheal = false) {
+        // Since GiveBody keeps failing.
+        if(overheal) {
+            GiveBody(amount,GetMaxHealth(true));
+        } else {
+            GiveBody(amount,int.MAX);
+        }
+
+        player.health = health; //sync health
+    }
+
+    void TakeHealth(int amount) {
+        health -= amount;
+        player.health = health;
+    }
+
     override void Tick() {
         super.Tick();
         TryLevel();
@@ -51,15 +67,14 @@ class LegendPlayer : DoomPlayer {
             // Restore 1% max health every 5 seconds.
             if(health < mhp) {
                 int amt = floor(0.01*mhp);
-                GiveBody(amt);
+                GiveHealth(amt);
             }
         }
         // Also, tick overheal down until it's at mhp+100.
         if(GetAge() % 7 == 0) {
             if(health > mhp+100) {
                 int amt = ceil(0.01*(health - (mhp+100)));
-                health -= amt;
-                player.health = health;
+                TakeHealth(amt);
             }
         }
     }

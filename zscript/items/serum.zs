@@ -16,8 +16,10 @@ class BloodySerum : LegendItem {
             if(owner is "LegendPlayer") {
                 let plr = LegendPlayer(owner);
                 plr.BonusHealth += 1;
+                plr.GiveHealth(1);
+            } else {
+                owner.GiveBody(1);
             }
-            owner.GiveBody(1);
             owner.A_StartSound("misc/i_pkup",2,pitch:0.8);
         }
     }
