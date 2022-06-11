@@ -166,6 +166,9 @@ class LegendItem : Inventory {
     virtual void OnKill (Actor src, Actor tgt) {} 
     // Called when owner (src) killed tgt.
 
+    virtual void OnSmash (Actor src, Actor tgt) {} 
+    // Called when src killed tgt, but tgt.bISMONSTER is false.
+
     virtual void OnReload () {} 
     // Called whenever our weapon calls ReloadProc.
 
@@ -335,7 +338,11 @@ class ItemPassiveHandler : EventHandler {
             while (it) {
                 let lit = LegendItem(it);
                 if (lit) {
-                    lit.OnKill(e.Inflictor.target, e.Thing);
+                    if (e.Thing.bISMONSTER) {
+                        lit.OnKill(e.Inflictor.target, e.Thing);
+                    } else {
+                        lit.OnSmash(e.Inflictor.target,e.Thing);
+                    }
                 }
                 it = it.inv;
             }
