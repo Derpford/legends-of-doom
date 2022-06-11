@@ -363,7 +363,7 @@ class ItemPassiveHandler : EventHandler {
     }
 }
 
-class bonusdrop : actor {
+class BonusDrop : actor {
     // spawns either an hpbonus or an armorbonus.
 
     states {
@@ -385,83 +385,83 @@ class bonusdrop : actor {
     }
 }
 
-class hpbonus : inventory replaces healthbonus {
+class HPBonus : Inventory replaces HealthBonus {
     // adds 1 to health. does *not* respect max health (or any maximum!).
 
-    mixin playervac;
-    override void tick() {
-        super.tick();
-        suck();
+    mixin PlayerVac;
+    override void Tick() {
+        super.Tick();
+        Suck();
     }
 
     int heals;
-    property heal : heals;
+    property Heal : heals;
     bool overheal;
-    property overheal : overheal;
+    property Overheal : overheal;
 
     default {
-        hpbonus.heal 1;
-        hpbonus.overheal true;
-        inventory.pickupmessage "health bonus!";
+        HPBonus.Heal 1;
+        HPBonus.Overheal true;
+        Inventory.PickupMessage "Health Bonus!";
     }
 
-    override void attachtoowner (actor other) {
-        let plr = legendplayer(other);
+    override void AttachToOwner (actor other) {
+        let plr = LegendPlayer(other);
         if(plr) {
-            plr.givehealth(heals,overheal);
-            goawayanddie();
+            plr.GiveHealth(heals,overheal);
+            GoAwayAndDie();
         }
     }
 
     states {
         spawn:
-            bon1 abcdcb 5;
-            loop;
+            BON1 ABCDCB 5;
+            Loop;
     }
 }
 
-class armbonus: armorbonus replaces armorbonus {
+class ArmBonus: ArmorBonus replaces ArmorBonus {
     // just the old armorbonus, plus succ.
-    mixin playervac;
-    override void tick() {
-        super.tick();
-        suck();
+    mixin PlayerVAc;
+    override void Tick() {
+        super.Tick();
+        Suck();
     }
     default {
-        inventory.pickupmessage "armor bonus!";
+        Inventory.PickupMessage "Armor Bonus!";
     }
 }
 
-class supersoul : hpbonus replaces soulsphere {
+class Supersoul : HPBonus replaces Soulsphere {
     // the soulsphere, but without a maximum!
 
     default {
-        hpbonus.heal 100;
-        hpbonus.dontsuck true;
-        inventory.pickupmessage "super soul!";
+        HPBonus.Heal 100;
+        HPBonus.DontSuck true;
+        Inventory.PickupMessage "Super Soul!";
     }
 
     states {
         spawn:
-            soul abcdcb 6 bright;
+            SOUL ABCDCB 6 Bright;
     }
 }
 
-class megasoul : supersoul replaces megasphere {
+class MegaSoul : SuperSoul replaces MegaSphere {
     // the megasphere, but without a (health) maximum!
     default {
-        hpbonus.heal 200;
-        hpbonus.dontsuck true;
-        inventory.pickupmessage "mega soul!";
+        HPBonus.Heal 200;
+        HPBonus.DontSuck true;
+        Inventory.PickupMessage "Mega Soul!";
     }
 
-    override void attachtoowner (actor other) {
-        other.giveinventory("bluearmor",1);
-        super.attachtoowner(other);
+    override void AttachToOwner (actor other) {
+        other.GiveInventory("BlueArmor",1);
+        super.AttachToOwner(other);
     }
 
     states {
         spawn:
-            mega abcd 6 bright;
+            MEGA ABCD 6 bright;
     }
 }
