@@ -52,7 +52,8 @@ class LegendHud : BaseStatusBar {
             double luck = plr.GetLuck();
             let wpn = CPlayer.ReadyWeapon;
 			LegendItem itm;
-			if (plr.recentItems.size() > 0) { itm = plr.recentItems[0]; }
+			int itms = plr.recentItems.size();
+			if (itms > 0) { itm = plr.recentItems[0]; }
 
             // Start with health.
             DrawImage("MEDIA0",(24,-2),lbarflags);
@@ -126,24 +127,26 @@ class LegendHud : BaseStatusBar {
 			// If there's an item in the recentItems array, display it.
 			if (itm) {
 				string nm = itm.GetTag();
-				BrokenLines desc = Smallfont.BreakLines(itm.GetShortDesc(),160);
+				BrokenLines desc = Smallfont.BreakLines(itm.GetShortDesc(),200);
 				string remark = itm.GetRemark();
 				double time = plr.itemTimer / 5.;
 				int remaining = 160 - floor(160. * time);
 				// BG.
-				Fill(Color(128,64,64,64), -80,-64,160,40,cbarflags);
+				Fill(Color(128,64,64,64), -80,-64,200,40,cbarflags);
 				// Icon BG.
 				Fill(Color(192,64,64,64),-120,-64,40,40,cbarflags);
 				// Time remaining before next item.
 				Fill(Color(255,255,255,255),-80,-24,remaining,2,cbarflags);
 				// The icon.
-				DrawTexture(itm.icon,(-100,-24),cbarflags);
+				DrawTexture(itm.icon,(-100,-24),cbarflags,scale:itm.scale);
 				// Details.
 				DrawString(mDetailFont,nm,(-80,-64),ctxtflags,Font.CR_WHITE);
-				DrawString(mDetailFont,remark,(-80,-56),ctxtflags,Font.CR_BLACK);
+				DrawString(mDetailFont,remark,(-80,-56),ctxtflags,Font.CR_DARKGRAY);
 				for (int i = 0; i < desc.Count(); i++) {
 					DrawString(mDetailFont,desc.StringAt(i),(-80,-48+(8 * i)),ctxtflags,Font.CR_RED);
 				}
+				if (itms > 1)
+				DrawString(mDetailFont,String.Format("%d...",itms),(120,-40),ctxtflags,Font.CR_DARKGRAY,scale:(2,2));
 			}
 
 			// Don't forget keys!

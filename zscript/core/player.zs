@@ -86,12 +86,6 @@ class LegendPlayer : DoomPlayer {
             itemTimer += 1./35.;
             if (itemTimer > 5.) {
                 recentItems.Delete(0);
-                if (recentItems.size() > 0) {
-                    console.printf("Remaining items: ");
-                    for (int i = 0; i < recentItems.Size(); i++) {
-                        console.printf("%s",recentItems[i].GetClassName());
-                    }
-                }
                 itemTimer = 0.;
             }
         }
