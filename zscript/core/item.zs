@@ -414,6 +414,9 @@ class ArmBonus: ArmorBonus replaces ArmorBonus {
         Super.Tick();
         Suck();
     }
+    default {
+        Inventory.PickupMessage "Armor bonus!";
+    }
 }
 
 class SuperSoul : HPBonus replaces Soulsphere {
