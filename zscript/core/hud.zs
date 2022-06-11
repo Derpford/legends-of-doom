@@ -132,9 +132,9 @@ class LegendHud : BaseStatusBar {
 				double time = plr.itemTimer / 5.;
 				int remaining = 160 - floor(160. * time);
 				// BG.
-				Fill(Color(128,64,64,64), -80,-64,200,40,cbarflags);
+				Fill(Color(128,0,0,0), -80,-64,200,40,cbarflags);
 				// Icon BG.
-				Fill(Color(192,64,64,64),-120,-64,40,40,cbarflags);
+				Fill(Color(192,0,0,0),-120,-64,40,40,cbarflags);
 				// Time remaining before next item.
 				Fill(Color(255,255,255,255),-80,-24,remaining,2,cbarflags);
 				// The icon.
