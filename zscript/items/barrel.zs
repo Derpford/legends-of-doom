@@ -13,6 +13,7 @@ class BarrelOfFun : LegendItem {
             if (it) {
                 it.vel = (frandom(-4,4),frandom(-4,4),frandom(6,8));
                 it.power = floor(dmg * 3.5);
+                it.target = owner;
             }
         }
     }
