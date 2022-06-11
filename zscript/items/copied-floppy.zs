@@ -57,4 +57,10 @@ class CorruptFloppy : LegendItem {
         }
     }
 
+    states {
+        Spawn:
+            FLOP B -1;
+            Stop;
+    }
+
 }
