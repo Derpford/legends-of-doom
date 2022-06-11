@@ -76,8 +76,7 @@ class RuneOfJudgement : LegendItem {
     // AND THY PUNISHMENT IS DEATH.
     default {
         Inventory.Icon "ZKYYA0";
-        LegendItem.Timer 2.;
-        LegendItem.Alarm "misc/p_pkup",1.5;
+        LegendItem.Timer .2;
         Tag "Rune of Judgement";
         LegendItem.Desc "Retaliate with a homing projectile.";
         LegendItem.Remark "JUDGEMENT!";
