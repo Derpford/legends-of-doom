@@ -193,6 +193,7 @@ class LegendPlayer : DoomPlayer {
         // Grabs the current Power value. If `raw`, skip the precision doubling check.
         double lucky = GetPrecision();
         double multi = RollDown(lucky);
+        if (CountInv("PowerStrength") > 0) { multi += 1; } // Grabbing a Zerk increases your multiplier for the rest of the level.
 
         Inventory it = inv;
         double bonus = 0.;
