@@ -176,6 +176,9 @@ class SlayerChaingun : LegendWeapon {
     // The chaingun attacks rapidly for 5+pow*0.1 damage with a small amount of spread.
     int stacks;
     int ammo;
+    int atics;
+    int ticproc; // How many times has SetChainTics been called?
+    int count; // How many bullets do we fire this tick?
 
     default {
         LegendWeapon.Damage 5, 0.1;
@@ -184,28 +187,64 @@ class SlayerChaingun : LegendWeapon {
         Weapon.AmmoUse 1;
     }
 
-    action void PainBullet() {
-        A_StartSound("weapons/chngun",pitch:1.1);
-        Shoot("PainBullet",ang: frandom(-2,2),pitch: frandom(-1.0,1.0));
+    action void PainBullet(double spread) {
+        A_StartSound("weapons/chngun",1,pitch:1.1);
+        Shoot("PainBullet",ang: frandom(-spread*2.,spread*2.),pitch: frandom(-spread,spread*0.5));
         invoker.stacks -= 5;
     }
 
-    action void Bullet(bool accurate) {
-        double multi = 1.;
-        if (!accurate) {
-            multi = 2.;
-        }
-
+    action void Bullet(double spread) {
         A_StartSound("weapons/chngun");
-        Shoot("BulletShot",ang: frandom(-4,4)*multi,pitch: frandom(-1.5,0.5)*multi);
+        Shoot("BulletShot",ang: frandom(-spread*2.,spread*2.),pitch: frandom(-spread,spread*0.5));
     }
 
-    action void ChainBullet(bool accurate) {
-        invoker.stacks += 1;
-        if(invoker.stacks >= 5) {
-            PainBullet();
+    action void ChainBullet(double spread) {
+        double realspread = 3 - spread;
+        for (int i = 0; i < invoker.count; i++) {
+            A_TakeInventory("GreenAmmo",1);
+            invoker.stacks += 1;
+            if(invoker.stacks >= 5) {
+                PainBullet(realspread);
+            } else {
+                Bullet(realspread);
+            }
+        }
+        SetChainTics();
+    }
+
+    action void ChainTics() {
+        A_SetTics(min(invoker.atics,4));
+    }
+    action void SetChainTics(bool reset = false) {
+        if (reset) {
+            invoker.ticproc = 0;
+            invoker.atics = 3;
+            invoker.count = 1;
         } else {
-            Bullet(accurate);
+            invoker.ticproc += 1;
+            switch (invoker.atics) {
+                case 0:
+                    // Something broke!
+                case 1:
+                    if (invoker.ticproc >= 30) {
+                        invoker.count = 2;
+                        invoker.ticproc = 0;
+                    }
+                    break;
+                case 2:
+                    if (invoker.ticproc >= 10) {
+                        invoker.atics -= 1;
+                        invoker.ticproc = 0;
+                    }
+                    break;
+                case 3:
+                    if (invoker.ticproc >= 2) {
+                        invoker.atics -= 1;
+                        invoker.ticproc = 0;
+                    }
+                    break;
+
+            }
         }
     }
 
@@ -217,31 +256,32 @@ class SlayerChaingun : LegendWeapon {
             CHGG A 1 A_Lower(35);
             Loop;
         Ready:
-            CHGG A 1 A_WeaponReady();
+            CHGG A 1 {
+                A_WeaponReady();
+                SetChainTics(true);
+            }
             Loop;
         Fire:
             CHGG A 1 {
-                A_TakeInventory("GreenAmmo",1);
                 invoker.ammo += 1;
+                ChainTics();
 
                 if(invoker.ammo >= 10) {
                     Reload();
                     invoker.ammo = 0;
                 }
 
-                ChainBullet(true);
+                ChainBullet(invoker.atics);
 
                 A_GunFlash();
             }
-            CHGG A 1;
+            CHGG A 1 ChainTics();
             CHGG B 1 {
                 A_GunFlash("Flash2");
-                if (GetPlayerInput(INPUT_BUTTONS) & BT_ALTATTACK) {
-                    A_TakeInventory("GreenAmmo",1);
-                    ChainBullet(false);
-                }
+                ChainTics();
+                ChainBullet(invoker.atics);
             }
-            CHGG B 1;
+            CHGG B 1 ChainTics();
             CHGG B 0 A_Refire();
             Goto Ready;
 
@@ -359,6 +399,8 @@ class SlayerLauncher : LegendWeapon {
         Weapon.SlotNumber 5;
         Weapon.AmmoType "YellowAmmo";
         Weapon.AmmoUse 5;
+        +Weapon.NOAUTOFIRE;
+        +Weapon.EXPLOSIVE;
     }
 
     states {
