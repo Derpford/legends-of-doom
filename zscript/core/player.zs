@@ -18,7 +18,10 @@ class LegendPlayer : DoomPlayer {
     // In addition, we use BonusHealth for health increases.
     double BonusHealthGrow;
 
-    int Level;
+    Array<LegendItem> recentItems; // Holds LegendItems we just picked up.
+    double itemTimer; // Counts up. At ~5s, remove the first entry in recentItems.
+
+    int level;
     double xp;
     // Every so often, you level up. 
     // This increases your core stats.
@@ -75,6 +78,21 @@ class LegendPlayer : DoomPlayer {
             if(health > mhp+100) {
                 int amt = ceil(0.01*(health - (mhp+100)));
                 TakeHealth(amt);
+            }
+        }
+
+        // Tick the HUD item stuff.
+        if (recentItems.Size() > 0) {
+            itemTimer += 1./35.;
+            if (itemTimer > 5.) {
+                recentItems.Delete(0);
+                if (recentItems.size() > 0) {
+                    console.printf("Remaining items: ");
+                    for (int i = 0; i < recentItems.Size(); i++) {
+                        console.printf("%s",recentItems[i].GetClassName());
+                    }
+                }
+                itemTimer = 0.;
             }
         }
     }

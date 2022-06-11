@@ -1,12 +1,14 @@
 class LegendHud : BaseStatusBar {
     HUDFont mConFont;
 	HUDFont mStatFont;
+	HUDFont mDetailFont;
 	override void Init()
 	{
 		Super.Init();
 		SetSize(0,320,240);
 
 		mConFont = HUDFont.Create("CONFONT");
+		mDetailFont = HUDFont.Create("SMALLFONT");
 		mStatFont = HUDFont.Create("DBIGFONT");
 	}	
 
@@ -29,6 +31,8 @@ class LegendHud : BaseStatusBar {
 		int ltxtflags = DI_SCREEN_LEFT_BOTTOM|DI_TEXT_ALIGN_LEFT;
 		int rtxtflags = DI_SCREEN_RIGHT_BOTTOM|DI_TEXT_ALIGN_RIGHT;
 		int cbarflags = DI_SCREEN_CENTER_BOTTOM|DI_ITEM_CENTER_BOTTOM;
+		int ctxtflags = DI_SCREEN_CENTER_BOTTOM|DI_TEXT_ALIGN_LEFT;
+		int crtxtflags = DI_SCREEN_CENTER_BOTTOM|DI_TEXT_ALIGN_RIGHT;
         // Statbar goes in upper left.
         int statbarflags = DI_SCREEN_LEFT_BOTTOM|DI_ITEM_LEFT_BOTTOM;
         int stattxtflags = DI_SCREEN_LEFT_BOTTOM|DI_TEXT_ALIGN_LEFT;
@@ -47,6 +51,8 @@ class LegendHud : BaseStatusBar {
             double toughness = plr.GetToughness();
             double luck = plr.GetLuck();
             let wpn = CPlayer.ReadyWeapon;
+			LegendItem itm;
+			if (plr.recentItems.size() > 0) { itm = plr.recentItems[0]; }
 
             // Start with health.
             DrawImage("MEDIA0",(24,-2),lbarflags);
@@ -117,6 +123,29 @@ class LegendHud : BaseStatusBar {
 			DrawImage("SLVL",(statXPos,statYPos),statbarflags);
 			DrawString(mConFont,String.Format("%d",lvl),(statTextXPos,statYPos-8),stattxtflags,Font.CR_WHITE);
 
+			// If there's an item in the recentItems array, display it.
+			if (itm) {
+				string nm = itm.GetTag();
+				BrokenLines desc = Smallfont.BreakLines(itm.GetShortDesc(),160);
+				string remark = itm.GetRemark();
+				double time = plr.itemTimer / 5.;
+				int remaining = 160 - floor(160. * time);
+				// BG.
+				Fill(Color(128,64,64,64), -80,-64,160,40,cbarflags);
+				// Icon BG.
+				Fill(Color(192,64,64,64),-120,-64,40,40,cbarflags);
+				// Time remaining before next item.
+				Fill(Color(255,255,255,255),-80,-24,remaining,2,cbarflags);
+				// The icon.
+				DrawTexture(itm.icon,(-100,-24),cbarflags);
+				// Details.
+				DrawString(mDetailFont,nm,(-80,-64),ctxtflags,Font.CR_WHITE);
+				DrawString(mDetailFont,remark,(-80,-56),ctxtflags,Font.CR_BLACK);
+				for (int i = 0; i < desc.Count(); i++) {
+					DrawString(mDetailFont,desc.StringAt(i),(-80,-48+(8 * i)),ctxtflags,Font.CR_RED);
+				}
+			}
+
 			// Don't forget keys!
 			String keySprites[6] =
 			{
@@ -130,7 +159,13 @@ class LegendHud : BaseStatusBar {
 
 			for(int i = 0; i < 6; i++)
 			{
-				if(plr.CheckKeys(i+1,false,true)) { DrawImage(keySprites[i],(-40+(16*i),-8),cbarflags,scale:(2,2)); }
+				if(plr.CheckKeys(i+1,false,true)) { 
+					if(i < 3) {
+						DrawImage(keySprites[i],(-44-(8*i),-9),cbarflags,scale:(1,1)); 
+					} else {
+						DrawImage(keySprites[i],(44+(8*(i-3)),-9),cbarflags,scale:(1,1)); 
+					}
+				}
 			}
         }
     }

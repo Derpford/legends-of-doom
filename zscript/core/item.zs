@@ -142,13 +142,13 @@ class LegendItem : Inventory {
         }
     }
 
-    virtual string GetRemark () { return remark; }
+    virtual clearscope string GetRemark () { return remark; }
     // A witty remark for the item.
 
-    virtual string GetShortDesc () { return shortdesc; }
+    virtual clearscope string GetShortDesc () { return shortdesc; }
     // A short explanation of the item.
 
-    virtual string GetLongDesc () { return "Not yet implemented!"; }
+    virtual clearscope string GetLongDesc () { return "Not yet implemented!"; }
     // A longer, more detailed explanation of the item.
 
     virtual bool IconState () { return true; }
@@ -232,9 +232,17 @@ class LegendItem : Inventory {
             // We might be doing stacks instead.
             it.stacks += 1;
             selfRemove = true;
+            let plr = LegendPlayer(toucher);
+            if (plr) {
+                plr.recentItems.push(it);
+            }
         } else {
             bool res;
             [res, toucher] = CallTryPickup(toucher);
+            let plr = LegendPlayer(toucher);
+            if (plr) {
+                plr.recentItems.push(self);
+            }
             if (!res) return;
         }
 
