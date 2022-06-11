@@ -10,7 +10,7 @@ class Ammolet : LegendItem {
     override void PickupHealth(Inventory it) {
         charge += it.amount * GetStacks();
         while (charge >= 25) {
-            let it = owner.Spawn("AmmoSpawner",owner.pos);
+            let it = owner.Spawn("AmmoDrop",owner.pos);
             it.vel = (frandom(-3,3),frandom(-3,3),frandom(4,6));
             charge -= 25;
         }

@@ -165,7 +165,7 @@ class Efficiency : Inventory {
     override void DoEffect() {
         if (owner.bISMONSTER && owner.health <= 0) {
             for (int i = random(1,3); i > 0; i--) {
-                owner.Spawn("AmmoSpawner",owner.pos);
+                owner.Spawn("AmmoDrop",owner.pos);
             }
             owner.A_TakeInventory("Efficiency",1);
         }
