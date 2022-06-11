@@ -350,7 +350,7 @@ class SlayerPlasma : LegendWeapon {
     int ammo;
 
     default {
-        LegendWeapon.Damage 0., .6;
+        LegendWeapon.Damage 0., .8;
         Weapon.SlotNumber 4;
         Weapon.AmmoType "BlueAmmo";
         Weapon.AmmoUse 4;
