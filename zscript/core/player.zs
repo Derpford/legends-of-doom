@@ -217,7 +217,7 @@ class LegendPlayer : DoomPlayer {
         // We're measuring health with the growth calculator.
         // Sadly, checking against inventory items fails.
         if (withUpgrades) {
-            return MaxHealth + BonusHealth + Floor(BonusHealthGrow * Level);
+            return MaxHealth + stamina + Floor(BonusHealthGrow * Level);
         } else {
             return MaxHealth;
         }

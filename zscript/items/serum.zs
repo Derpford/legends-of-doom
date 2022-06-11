@@ -16,7 +16,7 @@ class BloodySerum : LegendItem {
             kills += 1;
             if(owner is "LegendPlayer") {
                 let plr = LegendPlayer(owner);
-                plr.BonusHealth += 1;
+                plr.stamina += 1;
                 plr.GiveHealth(1);
             } else {
                 owner.GiveBody(1);
