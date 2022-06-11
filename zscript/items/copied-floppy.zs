@@ -30,7 +30,7 @@ class TreasuredFloppy : LegendItem {
     }
 
     override void OnKill (Actor src, Actor tgt) {
-        int amt = RollDown(5. * GetStacks()) - 1;
+        int amt = RollDown(5. + (5. * GetStacks())) - 1;
         for (int i = 0; i < amt; i++) {
             tgt.spawn("AmmoSpawner",tgt.pos);
         }
@@ -52,7 +52,7 @@ class CorruptFloppy : LegendItem {
     }
 
     override void OnKill (Actor src, Actor tgt) {
-        if (LuckRoll(5. * GetStacks(),true)) {
+        if (LuckRoll(10. * GetStacks(),true)) {
             tgt.spawn(tgt.GetClassName(),tgt.pos);
         }
     }
