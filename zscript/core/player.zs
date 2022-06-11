@@ -43,7 +43,7 @@ class LegendPlayer : DoomPlayer {
 
     void GiveHealth(int amount, bool overheal = false) {
         // Since GiveBody keeps failing.
-        if(overheal) {
+        if(!overheal) {
             GiveBody(amount,GetMaxHealth(true));
         } else {
             GiveBody(amount,int.MAX);
