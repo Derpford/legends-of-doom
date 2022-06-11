@@ -5,6 +5,7 @@ class StrawberryJam : LegendItem {
         Scale 1.5;
         Tag "Strawberry Jam";
         LegendItem.Desc "Chance to jam enemies on hit.";
+        LegendItem.Remark "Finally...Bosstonium.";
     }
 
     override void OnHit (int dmg, Name type, Actor src, Actor inf, Actor tgt) {

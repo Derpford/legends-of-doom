@@ -1,10 +1,10 @@
 class Ammolet : LegendItem {
-    // From the demesne formerly known as Gungeon.
     int charge;
     default {
         Inventory.Icon "AMLTD0";
         Tag "Ammolet";
         LegendItem.Desc "Picking up health occasionally spawns ammo.";
+        LegendItem.Remark "Gungeon Souvenir";
     }
 
     override void PickupHealth(Inventory it) {

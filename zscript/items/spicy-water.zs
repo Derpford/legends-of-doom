@@ -10,6 +10,7 @@ class SpicyWater : LegendItem {
         SpicyWater.Trigger 10;
         Tag "Spicy Water";
         LegendItem.Desc "Retaliate with a radioactive aura.";
+        LegendItem.Remark "Mmmm. [slorp]";
     }
 
     override void OnRetaliate(int dmg, Name type, Actor src, Actor inf, Actor tgt) {

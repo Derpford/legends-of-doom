@@ -8,6 +8,7 @@ class BloodySerum : LegendItem {
         BloodySerum.kills 0;
         Tag "Bloody Serum";
         LegendItem.Desc "Gain max health on kill.";
+        LegendItem.Remark "You feel rabid.";
     }
 
     override void OnKill (Actor src, Actor tgt) {

@@ -4,6 +4,7 @@ class BehemothShell : LegendItem {
         Inventory.Icon "ROCKA0";
         Tag "Behemoth Shell";
         LegendItem.Desc "All of your attacks explode!";
+        LegendItem.Remark "Legally Distinct Brillaince";
     }
 
     override void OnHit(int dmg, Name type, Actor src, Actor inf, Actor tgt) {

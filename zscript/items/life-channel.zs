@@ -5,6 +5,7 @@ class LifeChannelAmulet : LegendItem {
         LegendItem.Timer 15.;
         Tag "Life-Channel Amulet";
         LegendItem.Desc "Gain Power, but occasionally suffer Bleeding.";
+        LegendItem.Remark "Lightning bolt!";
     }
 
     override void OnTimer() {

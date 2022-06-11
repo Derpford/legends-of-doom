@@ -5,6 +5,7 @@ class BarrelOfFun : LegendItem {
         Inventory.Icon "BAR1A0";
         Tag "Barrel of Fun";
         LegendItem.Desc "Chance of spawning a time-bomb barrel on hit.";
+        LegendItem.Remark "*not actually fun";
     }
 
     override void OnHit(int dmg, Name type, Actor src, Actor inf, Actor tgt) {

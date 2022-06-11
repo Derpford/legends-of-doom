@@ -4,6 +4,7 @@ class MedicBag : LegendItem {
         Inventory.Icon "MBAGA0";
         Tag "Medic Bag";
         LegendItem.Desc "Enemies drop healing orbs on death.";
+        LegendItem.Remark "AAAA I'M DYING";
     }
 
     override void OnKill(Actor src, Actor tgt) {

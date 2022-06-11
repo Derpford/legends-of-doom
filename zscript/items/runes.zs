@@ -6,6 +6,7 @@ class RuneOfPain : LegendItem {
         LegendItem.Timer .25;
         Tag "Rune of Pain";
         LegendItem.Desc "Hitting pained enemies spawns XP.";
+        LegendItem.Remark "Sadness in a box.";
     }
 
     override void OnHit(int dmg, Name type, Actor src, Actor inf, Actor tgt) {
@@ -40,6 +41,7 @@ class RuneOfEyes : LegendItem {
         LegendItem.Timer 2.5;
         Tag "Rune of Eyes";
         LegendItem.Desc "Precision hits grant a bit of luck.";
+        LegendItem.Remark "I am the God-Particle!";
     }
 
     override void OnPrecisionHit() {
@@ -78,6 +80,7 @@ class RuneOfJudgement : LegendItem {
         LegendItem.Alarm "misc/p_pkup",1.5;
         Tag "Rune of Judgement";
         LegendItem.Desc "Retaliate with a homing projectile.";
+        LegendItem.Remark "JUDGEMENT!";
     }
 
     override void OnRetaliate(int dmg, Name type, Actor src, Actor inf, Actor tgt) {

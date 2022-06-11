@@ -6,6 +6,7 @@ class HardHelmet : LegendItem {
         Inventory.Icon "BON2A0";
         Tag "Hard Helmet";
         LegendItem.Desc "Being healthy grants Toughness.";
+        LegendItem.Remark "OSHA-compliant.";
     }
 
     override double GetToughness () {

@@ -4,6 +4,7 @@ class BloodSaw : LegendItem {
         Inventory.Icon "BSAWA0";
         Tag "Bloodsaw";
         LegendItem.Desc "Chance to inflict bleed on hit.";
+        LegendItem.Remark "Is that tomato sauce?";
     }
 
     override void OnHit(int dmg, Name type, Actor src, Actor inf, Actor tgt) {

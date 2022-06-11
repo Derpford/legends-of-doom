@@ -7,6 +7,7 @@ class SanguineShield : LegendItem {
         LegendItem.Timer .25;
         Tag "Sanguine Shield";
         LegendItem.Desc "Absorb some incoming damage, creating armor.";
+        LegendItem.Remark "Bargain-bin halo?";
     }
 
     override void OnRetaliate (int dmg, Name type, Actor src, Actor inf, Actor tgt) {

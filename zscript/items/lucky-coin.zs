@@ -7,6 +7,7 @@ class LuckyCoin : LegendItem {
         LegendItem.Timer 5.;
         Tag "Lucky Coin";
         LegendItem.Desc "Picking up bonuses makes you lucky.";
+        LegendItem.Remark "Ooh, a potion!";
     }
 
     override void PickupBonus(Inventory item) {
