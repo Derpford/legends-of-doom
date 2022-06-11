@@ -81,3 +81,10 @@ class LegendFastShot : Actor {
         DamageFunction (power);
     }
 }
+
+class LegendPuff : BulletPuff {
+    // Needs +PUFFGETSOWNER to function correctly.
+    default {
+        +PUFFGETSOWNER;
+    }
+}

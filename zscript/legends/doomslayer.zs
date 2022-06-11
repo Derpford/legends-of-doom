@@ -32,6 +32,7 @@ class BulletShot : LegendShot {
         Speed 80;
         Radius 2;
         Height 2;
+        Decal "BulletChip";
     }
 
     states {
@@ -150,7 +151,7 @@ class SlayerSaw : LegendWeapon {
         Fire:
             SAWG AB 4 {
                 A_StartSound("weapons/sawhit");
-                A_CustomPunch(invoker.GetDamage(),true,CPF_PULLIN);
+                A_CustomPunch(invoker.GetDamage(),true,CPF_PULLIN,"LegendPuff");
                 let tgt = invoker.owner.AimTarget();
                 if(tgt && invoker.owner.Vec3To(tgt).length() < 64 + tgt.radius) {
                     tgt.GiveInventory("Efficiency",1);
