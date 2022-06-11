@@ -12,7 +12,6 @@ class MedicBag : LegendItem {
             it.vel = (frandom(-2,2),frandom(-2,2),frandom(4,8));
             let it = MedicOrb(it);
             it.heals = 5 * GetStacks();
-            console.printf("Heals: "..it.heals);
         }
     }
 

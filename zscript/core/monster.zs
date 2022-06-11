@@ -10,7 +10,6 @@ class LevelToken : Inventory {
         if(!passive) {
             double multi = 1.0 + (owner.CountInv("LevelToken")*0.1);
             new = floor(dmg * multi);
-            console.printf("Monster damage: "..dmg.." to "..new);
         }
     }
 }
