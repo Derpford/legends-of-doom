@@ -441,7 +441,7 @@ class MegaSoul : SuperSoul replaces Megasphere {
 
     override void AttachToOwner (Actor other) {
         other.GiveInventory("BlueArmor",1);
-        super.AttachToOwner();
+        super.AttachToOwner(other);
     }
 
     states {
