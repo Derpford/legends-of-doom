@@ -315,27 +315,37 @@ class ItemPassiveHandler : EventHandler {
     override void WorldThingDamaged(WorldEvent e) {
         // First call OnHit on any items in DamageSource's inventory.
         Inventory it;
+        Actor realsrc;
         if (e.DamageSource && e.DamageSource.inv) { 
-            it = e.DamageSource.inv; 
+            realsrc = e.DamageSource;
         } else if (e.Inflictor && e.Inflictor.inv ) {
-            it = e.Inflictor.inv; 
+            realsrc = e.Inflictor;
         }
-        while (it) {
-            let lit = LegendItem(it);
-            if (lit) {
-                lit.OnHit(e.Damage, e.DamageType, e.DamageSource, e.Inflictor, e.Thing);
+
+        if (realsrc) {
+            if (realsrc.FindInventory("LegendItem",true)) {
+                // Only do this if the source has any LegendItems!
+                it = realsrc.inv;
+                while (it) {
+                    let lit = LegendItem(it);
+                    if (lit) {
+                        lit.OnHit(e.Damage, e.DamageType, e.DamageSource, e.Inflictor, e.Thing);
+                    }
+                    it = it.inv;
+                }
             }
-            it = it.inv;
         }
         // Next, do the same for the victim and OnRetaliate.
-        it = null;
-        if (e.Thing && e.Thing.inv) { it = e.Thing.inv; }
-        while (it) {
-            let lit = LegendItem(it);
-            if (lit) {
-                lit.OnRetaliate(e.Damage, e.DamageType, e.DamageSource, e.Inflictor, e.Thing);
+        if (e.Thing.FindInventory("LegendItem",true)) {
+            it = null;
+            if (e.Thing && e.Thing.inv) { it = e.Thing.inv; }
+            while (it) {
+                let lit = LegendItem(it);
+                if (lit) {
+                    lit.OnRetaliate(e.Damage, e.DamageType, e.DamageSource, e.Inflictor, e.Thing);
+                }
+                it = it.inv;
             }
-            it = it.inv;
         }
     }
 

@@ -4,11 +4,12 @@ mixin class PlayerVac {
     void Suck() {
         if(shouldSuck) {return;}
         if (target && !target.bCORPSE) {
+            Vector3 tv = vec3To(target);
             if (GetAge() > 48) { bNOGRAVITY = true; }
-            bNOCLIP = (vec3To(target).length() > target.radius+radius);
-            vel += vec3To(target).unit() * (min(GetAge(),48) * 0.1);
+            bNOCLIP = (tv.length() > target.radius+radius);
+            vel += tv.unit() * (min(GetAge(),48) * 0.1);
         } else {
-            ThinkerIterator it = ThinkerIterator.Create("LegendPlayer");
+            ThinkerIterator it = ThinkerIterator.Create("LegendPlayer",Thinker.STAT_PLAYER);
             double dist = -1.;
             Actor m;
             Actor closest;
@@ -182,7 +183,7 @@ class Bleed : Inventory {
             }
             frames = 0;
         }
-        if (timer >= timermax) {
+        if (timer >= timermax || owner.bCORPSE || owner.health < 1) {
             owner.TakeInventory("Bleed",1);
         }
     }
