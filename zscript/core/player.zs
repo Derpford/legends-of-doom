@@ -21,6 +21,8 @@ class LegendPlayer : DoomPlayer {
     Array<LegendItem> recentItems; // Holds LegendItems we just picked up.
     double itemTimer; // Counts up. At ~5s, remove the first entry in recentItems.
 
+    double healthtimer; // Counts up. At ~.5s, take 1% maxhp.
+
     int level;
     double xp;
     // Every so often, you level up. 
@@ -74,11 +76,15 @@ class LegendPlayer : DoomPlayer {
             }
         }
         // Also, tick overheal down until it's at mhp+100.
-        if(GetAge() % 7 == 0) {
-            if(health > mhp+100) {
+        if(health > mhp+100) {
+            healthTimer += 1./35.;
+            if (healthTimer >= .5) {
                 int amt = ceil(0.01*(health - (mhp+100)));
                 TakeHealth(amt);
+                healthTimer = 0;
             }
+        } else {
+            healthTimer = -5.; // Overheal doesn't tick down until at least 5s after overhealing.
         }
 
         // Tick the HUD item stuff.
