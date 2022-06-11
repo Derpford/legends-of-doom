@@ -415,12 +415,14 @@ class HPBonus : Inventory replaces HealthBonus {
         Inventory.PickupMessage "Health Bonus!";
     }
 
-    override void AttachToOwner (actor other) {
+    override bool TryPickup (in out actor other) {
         let plr = LegendPlayer(other);
         if(plr) {
             plr.GiveHealth(heals,overheal);
             GoAwayAndDie();
+            return true;
         }
+        return false;
     }
 
     states {
@@ -465,9 +467,9 @@ class MegaSoul : SuperSoul replaces MegaSphere {
         Inventory.PickupMessage "Mega Soul!";
     }
 
-    override void AttachToOwner (actor other) {
+    override bool TryPickup (in out actor other) {
         other.GiveInventory("BlueArmor",1);
-        super.AttachToOwner(other);
+        return super.TryPickup(other);
     }
 
     states {
