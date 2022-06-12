@@ -1,0 +1,74 @@
+/// Used to determine what to be drawn to the screen for boxes.
+class LegendZFBoxTextures ui {
+	string boxTexture;
+	bool scaleSides;
+	bool scaleMiddle;
+
+	Vector2 midSliceTopLeft;
+	Vector2 midSliceBottomRight;
+
+	static LegendZFBoxTextures createSingleTexture(string tex, bool scaleTex) {
+		let ret = new('LegendZFBoxTextures');
+
+		ret.setSingleTexture(tex);
+		ret.scaleMiddle = scaleTex;
+
+		return ret;
+	}
+
+	static LegendZFBoxTextures createTexturePixels(string boxTex, Vector2 topLeft, Vector2 bottomRight, bool scaleSides,
+		                                       bool scaleMiddle) {
+		let ret = new('LegendZFBoxTextures');
+
+		ret.setTexturePixels(boxTex, topLeft, bottomRight);
+		ret.scaleSides = scaleSides;
+		ret.scaleMiddle = scaleMiddle;
+
+		return ret;
+	}
+
+	static LegendZFBoxTextures createTextureNormalized(string boxTex, Vector2 topLeft, Vector2 bottomRight, bool scaleSides,
+		                                           bool scaleMiddle) {
+		let ret = new('LegendZFBoxTextures');
+
+		ret.setTextureNormalized(boxTex, topLeft, bottomRight);
+		ret.scaleSides = scaleSides;
+		ret.scaleMiddle = scaleMiddle;
+
+		return ret;
+	}
+
+	void setSingleTexture(string tex) {
+		boxTexture = tex;
+
+		midSliceTopLeft = (0, 0);
+		midSliceBottomRight = (1, 1);
+	}
+
+	void setTexturePixels(string boxTex, Vector2 topLeft, Vector2 bottomRight) {
+		boxTexture = boxTex;
+
+		Vector2 texSize = TexMan.getScaledSize(TexMan.checkForTexture(boxTexture, TexMan.Type_Any));
+		midSliceTopLeft = (topLeft.x / texSize.x, topLeft.y / texSize.y);
+		midSliceBottomRight = (bottomRight.x / texSize.x, bottomRight.y / texSize.y);
+	}
+
+	void setTextureNormalized(string boxTex, Vector2 topLeft, Vector2 bottomRight) {
+		boxTexture = boxTex;
+
+		midSliceTopLeft = topLeft;
+		midSliceBottomRight = bottomRight;
+	}
+
+	LegendZFBoxTextures duplicate() {
+		let ret = new('LegendZFBoxTextures');
+
+		ret.boxTexture = boxTexture;
+		ret.scaleSides = scaleSides;
+
+		ret.midSliceTopLeft = midSliceTopLeft;
+		ret.midSliceBottomRight = midSliceBottomRight;
+
+		return ret;
+	}
+}

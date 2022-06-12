@@ -1,0 +1,10 @@
+class LegendZFHandler ui {
+	virtual void buttonClickCommand(LegendZFButton caller, string command) {
+	}
+	
+	virtual void buttonHeldCommand(LegendZFButton caller, string command) {
+	}
+
+	virtual void elementHoverChanged(LegendZFElement caller, string command, bool unhovered) {
+	}
+}
