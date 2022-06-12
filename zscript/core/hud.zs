@@ -145,7 +145,7 @@ class LegendHud : BaseStatusBar {
 				// Time remaining before next item.
 				Fill(Color(255,255,255,255),-80,-24,remaining,2,cbarflags);
 				// The icon.
-				DrawTexture(itm.icon,(-100,-24),cbarflags,scale:itm.scale);
+				DrawImage(itm.invicon,(-100,-24),cbarflags,scale:itm.scale);
 				// Details.
 				DrawString(mDetailFont,nm,(-80,-64),ctxtflags,Font.CR_RED);
 				DrawString(mDetailFont,remark,(-80,-56),ctxtflags,Font.CR_DARKGRAY);
