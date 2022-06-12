@@ -10,6 +10,10 @@ version "4.6"
 #include "zscript/core/xp.zs"
 #include "zscript/core/spawn.zs"
 #include "zscript/core/weapon.zs"
+#include "zscript/core/item-menu.zs"
+
+// ZForms.
+#include "/LegendZForms/Include.zsc"
 
 // Items.
 #include "zscript/items/ammolet.zs"
