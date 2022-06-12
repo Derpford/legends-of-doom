@@ -1,7 +1,7 @@
 class BehemothShell : LegendItem {
     // I Can't Believe It's Not Brilliant Behemoth
     default {
-        Inventory.Icon "ROCKA0";
+        LegendItem.Icon "ROCKA0";
         Tag "Behemoth Shell";
         LegendItem.Desc "All of your attacks explode!";
         LegendItem.Remark "Legally Distinct Brillaince";

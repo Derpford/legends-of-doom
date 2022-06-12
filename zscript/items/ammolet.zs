@@ -1,7 +1,7 @@
 class Ammolet : LegendItem {
     int charge;
     default {
-        Inventory.Icon "AMLTD0";
+        LegendItem.Icon "AMLTD0";
         Tag "Ammolet";
         LegendItem.Desc "Picking up health occasionally spawns ammo.";
         LegendItem.Remark "Gungeon Souvenir";

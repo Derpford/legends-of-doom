@@ -1,7 +1,7 @@
 class StrawberryJam : LegendItem {
     // Finally. Bosstonium.
     default {
-        Inventory.Icon "JAMMA0";
+        LegendItem.Icon "JAMMA0";
         Scale 1.5;
         Tag "Strawberry Jam";
         LegendItem.Desc "Chance to jam enemies on hit.";

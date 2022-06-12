@@ -17,6 +17,9 @@ class LegendItem : Inventory {
     Property Remark : remark;
     Property Desc : shortdesc;
 
+    string invicon; // The inventory icon.
+    Property Icon : invicon;
+
     default {
         +BRIGHT; // Items should always be visible.
         Inventory.Amount 1;

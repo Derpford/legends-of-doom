@@ -1,7 +1,7 @@
 class BloodSaw : LegendItem {
     // Is that tomato sauce?
     default {
-        Inventory.Icon "BSAWA0";
+        LegendItem.Icon "BSAWA0";
         Tag "Bloodsaw";
         LegendItem.Desc "Chance to inflict bleed on hit.";
         LegendItem.Remark "Is that tomato sauce?";

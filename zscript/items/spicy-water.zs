@@ -5,7 +5,7 @@ class SpicyWater : LegendItem {
     Property Trigger : maxstack; // How many stacks before the next damage instance?
     default {
         Scale 1.5;
-        Inventory.Icon "JNUKA0";
+        LegendItem.Icon "JNUKA0";
         LegendItem.Timer 5.;
         SpicyWater.Trigger 10;
         Tag "Spicy Water";

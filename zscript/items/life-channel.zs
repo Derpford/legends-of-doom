@@ -1,7 +1,7 @@
 class LifeChannelAmulet : LegendItem {
     // Cast from HP.
     default {
-        Inventory.Icon "AMLTC0";
+        LegendItem.Icon "AMLTC0";
         LegendItem.Timer 15.;
         Tag "Life-Channel Amulet";
         LegendItem.Desc "Gain Power, but occasionally suffer Bleeding.";

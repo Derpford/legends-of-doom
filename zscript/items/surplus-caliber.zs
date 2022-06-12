@@ -4,7 +4,7 @@ class SurplusCaliber : LegendItem {
     double power;
 
     default {
-        Inventory.Icon "CRATA0";
+        LegendItem.Icon "CRATA0";
         LegendItem.Timer 1.;
         Tag "Surplus Caliber";
         LegendItem.Desc "On Reload, gain a power boost.";

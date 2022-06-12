@@ -1,7 +1,7 @@
 class MedicBag : LegendItem {
     // AAAAAAUUGH I'M DYYYYIIIIING
     default {
-        Inventory.Icon "MBAGA0";
+        LegendItem.Icon "MBAGA0";
         Tag "Medic Bag";
         LegendItem.Desc "Enemies drop healing orbs on death.";
         LegendItem.Remark "AAAA I'M DYING";

@@ -1,6 +1,6 @@
 class CopiedFloppy : LegendItem {
     default {
-        Inventory.Icon "FLOPA0";
+        LegendItem.Icon "FLOPA0";
         Tag "Copied Floppy";
         LegendItem.Desc "Gain bonus XP on kill.";
         LegendItem.Remark "Yar har!";
@@ -23,7 +23,7 @@ class CopiedFloppy : LegendItem {
 
 class TreasuredFloppy : LegendItem {
     default {
-        Inventory.Icon "FLOPC0";
+        LegendItem.Icon "FLOPC0";
         Tag "Treasured Floppy";
         LegendItem.Desc "Chance of dropping ammo on kill.";
         LegendItem.Remark "I loved this one!";
@@ -45,7 +45,7 @@ class TreasuredFloppy : LegendItem {
 
 class CorruptFloppy : LegendItem {
     default {
-        Inventory.Icon "FLOPB0";
+        LegendItem.Icon "FLOPB0";
         Tag "Corrupt Floppy";
         LegendItem.Desc "Killing an enemy sometimes spawns a duplicate.";
         LegendItem.Remark "NIGHTMARE.EXE";

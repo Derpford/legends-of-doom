@@ -3,7 +3,7 @@ class LuckyCoin : LegendItem {
     bool active;
 
     default {
-        Inventory.Icon "COINA0";
+        LegendItem.Icon "COINA0";
         LegendItem.Timer 5.;
         Tag "Lucky Coin";
         LegendItem.Desc "Picking up bonuses makes you lucky.";

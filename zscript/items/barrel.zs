@@ -2,7 +2,7 @@ class BarrelOfFun : LegendItem {
     // This isn't Barrels Of Fun at all!
     default {
         Scale 0.75;
-        Inventory.Icon "BAR1A0";
+        LegendItem.Icon "BAR1A0";
         Tag "Barrel of Fun";
         LegendItem.Desc "Chance of spawning a time-bomb barrel on hit.";
         LegendItem.Remark "*not actually fun";

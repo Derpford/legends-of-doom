@@ -3,7 +3,7 @@ class HardHelmet : LegendItem {
 
     default {
         Scale 1.5;
-        Inventory.Icon "BON2A0";
+        LegendItem.Icon "BON2A0";
         Tag "Hard Helmet";
         LegendItem.Desc "Being healthy grants Toughness.";
         LegendItem.Remark "OSHA-compliant.";

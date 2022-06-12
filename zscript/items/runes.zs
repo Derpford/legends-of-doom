@@ -2,7 +2,7 @@ class RuneOfPain : LegendItem {
     // It has such sights to show you...
     bool active;
     default {
-        Inventory.Icon "RKYYA0";
+        LegendItem.Icon "RKYYA0";
         LegendItem.Timer .25;
         Tag "Rune of Pain";
         LegendItem.Desc "Hitting pained enemies spawns XP.";
@@ -37,7 +37,7 @@ class RuneOfEyes : LegendItem {
     double power;
 
     default {
-        Inventory.Icon "SKYYA0";
+        LegendItem.Icon "SKYYA0";
         LegendItem.Timer 2.5;
         Tag "Rune of Eyes";
         LegendItem.Desc "Precision hits grant a bit of luck.";
@@ -75,7 +75,7 @@ class RuneOfEyes : LegendItem {
 class RuneOfJudgement : LegendItem {
     // AND THY PUNISHMENT IS DEATH.
     default {
-        Inventory.Icon "ZKYYA0";
+        LegendItem.Icon "ZKYYA0";
         LegendItem.Timer .2;
         Tag "Rune of Judgement";
         LegendItem.Desc "Retaliate with a homing projectile.";

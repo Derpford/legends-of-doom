@@ -2,7 +2,7 @@ class SanguineShield : LegendItem {
     // 'Til Death Do Us Part
     int stock;
     default {
-        Inventory.Icon "SHLDA0";
+        LegendItem.Icon "SHLDA0";
         Inventory.PickupMessage "Sanguine Shield: Absorb some incoming damage, creating armor.";
         LegendItem.Timer .25;
         Tag "Sanguine Shield";
