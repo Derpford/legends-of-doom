@@ -470,6 +470,11 @@ class SlayerBFG : LegendWeapon {
             BFGG B 10 A_TakeInventory("PinkAmmo",100);
             BFGG A 0 A_SelectWeapon(null,SWF_SELECTPRIORITY); // Switch immediately away from the BFG. We used all our ammo!
             Goto Deselect;
+
+        Flash:
+            BFGF A 11 Bright A_Light1();
+            BFGF B 6 Bright A_Light2();
+            Goto LightDone;
     }
 }
 
@@ -482,6 +487,16 @@ class BFGShot : LegendShot {
         SeeSound "weapons/bfgx";
         DeathSound "weapons/bfgx";
     }
+
+    override bool CanCollideWith (Actor other, bool passive) {
+        // Only collide with +BOSS enemies.
+        if (other.bISMONSTER && !other.bBOSS) {
+            return false;
+        } else {
+            return super.CanCollideWith(other,passive);
+        }
+    }
+
 
     states {
         Spawn:
