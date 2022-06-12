@@ -147,10 +147,10 @@ class LegendHud : BaseStatusBar {
 				// The icon.
 				DrawTexture(itm.icon,(-100,-24),cbarflags,scale:itm.scale);
 				// Details.
-				DrawString(mDetailFont,nm,(-80,-64),ctxtflags,Font.CR_WHITE);
+				DrawString(mDetailFont,nm,(-80,-64),ctxtflags,Font.CR_RED);
 				DrawString(mDetailFont,remark,(-80,-56),ctxtflags,Font.CR_DARKGRAY);
 				for (int i = 0; i < desc.Count(); i++) {
-					DrawString(mDetailFont,desc.StringAt(i),(-80,-48+(8 * i)),ctxtflags,Font.CR_RED);
+					DrawString(mDetailFont,desc.StringAt(i),(-80,-48+(8 * i)),ctxtflags,Font.CR_WHITE);
 				}
 				if (itms > 1)
 				DrawString(mDetailFont,String.Format("%d...",itms),(120,-40),ctxtflags,Font.CR_DARKGRAY,scale:(2,2));
