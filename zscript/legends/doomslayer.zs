@@ -24,100 +24,6 @@ class Doomslayer : LegendPlayer {
     }
 }
 
-class BulletShot : LegendShot {
-    // A small bullet projectile.
-
-    default {
-        Scale 0.5;
-        Speed 80;
-        Radius 2;
-        Height 2;
-        Decal "BulletChip";
-    }
-
-    states {
-        Spawn:
-            PUFF AB 3 Bright;
-            Loop;
-        Death:
-        Crash:
-            PUFF BCD 4;
-            Stop;
-        XDeath:
-            TNT1 A 0;
-            Stop;
-    }
-}
-
-class PainBullet : BulletShot {
-    // Every so often, the Chaingun fires a particularly pain-inducing bullet.
-    override int DoSpecialDamage(Actor tgt, int dmg, Name type) {
-        int diff = 17 - tgt.CountInv("Pain");
-        tgt.A_GiveInventory("Pain",diff);
-        return super.DoSpecialDamage(tgt,dmg,type);
-    }
-}
-
-class PlasmaShot : LegendShot {
-    // Slower, wider, more likely to melt your face.
-    default {
-        Radius 13;
-        Height 8;
-        Speed 30;
-        DeathSound "weapons/plasmax";
-    }
-
-    states {
-        Spawn:
-            PLSS AB 5 Bright;
-            Loop;
-        Death:
-            PLSE ABCDE 4 Bright;
-            Stop;
-    }
-}
-
-class RocketShot : LegendShot {
-    // Big, slightly slower than PlasmaShot, but it explodes!
-    default {
-        Radius 13;
-        Height 8;
-        Speed 24;
-        DeathSound "weapons/rocklx";
-    }
-    
-    states {
-        Spawn:
-            MISL A 1;
-            Loop;
-        Death:
-            MISL BC 4;
-            MISL D 4 A_Explode(power*5,128);
-            MISL E 4;
-            TNT1 A 0;
-            Stop;
-    }
-}
-
-class VorpalSplash : LegendShot {
-    // An invisible shockwave that bursts for Vorpal damage.
-
-    default {
-        Speed 25;
-        Scale 0.5;
-        RenderStyle "Add";
-        +NOCLIP;
-    }
-
-    states {
-        Spawn:
-        Death:
-            MISL BCD 2;
-            MISL D 2 A_Explode(96, 96, XF_EXPLICITDAMAGETYPE,damagetype:"Vorpal");
-            Stop;
-    }
-}
-
 class SlayerSaw : LegendWeapon {
     // Chainsaw! The great communicator!
     // Damaging an enemy with this weapon gives them Efficiency.
@@ -295,6 +201,40 @@ class SlayerChaingun : LegendWeapon {
     }
 }
 
+class BulletShot : LegendShot {
+    // A small bullet projectile.
+
+    default {
+        Scale 0.5;
+        Speed 80;
+        Radius 2;
+        Height 2;
+        Decal "BulletChip";
+    }
+
+    states {
+        Spawn:
+            PUFF AB 3 Bright;
+            Loop;
+        Death:
+        Crash:
+            PUFF BCD 4;
+            Stop;
+        XDeath:
+            TNT1 A 0;
+            Stop;
+    }
+}
+
+class PainBullet : BulletShot {
+    // Every so often, the Chaingun fires a particularly pain-inducing bullet.
+    override int DoSpecialDamage(Actor tgt, int dmg, Name type) {
+        int diff = 17 - tgt.CountInv("Pain");
+        tgt.A_GiveInventory("Pain",diff);
+        return super.DoSpecialDamage(tgt,dmg,type);
+    }
+}
+
 class SlayerShotgun : LegendWeapon {
     // The shotgun fires 21 pellets, each of which does pow*0.16 damage. It also produces a blast in front of it that does Vorpal damage.
 
@@ -341,6 +281,25 @@ class SlayerShotgun : LegendWeapon {
             SHT2 I 4 Bright A_Light1();
             SHT2 J 3 Bright A_Light2();
             Goto LightDone;
+    }
+}
+
+class VorpalSplash : LegendShot {
+    // An invisible shockwave that bursts for Vorpal damage.
+
+    default {
+        Speed 25;
+        Scale 0.5;
+        RenderStyle "Add";
+        +NOCLIP;
+    }
+
+    states {
+        Spawn:
+        Death:
+            MISL BCD 2;
+            MISL D 2 A_Explode(96, 96, XF_EXPLICITDAMAGETYPE,damagetype:"Vorpal");
+            Stop;
     }
 }
 
@@ -391,6 +350,25 @@ class SlayerPlasma : LegendWeapon {
     }
 }
 
+class PlasmaShot : LegendShot {
+    // Slower, wider, more likely to melt your face.
+    default {
+        Radius 13;
+        Height 8;
+        Speed 30;
+        DeathSound "weapons/plasmax";
+    }
+
+    states {
+        Spawn:
+            PLSS AB 5 Bright;
+            Loop;
+        Death:
+            PLSE ABCDE 4 Bright;
+            Stop;
+    }
+}
+
 class SlayerLauncher : LegendWeapon {
     // Fires rockets that impact for pow*1.0 damage and explode for up to pow*5.0 damage.
     int ammo;
@@ -435,4 +413,34 @@ class SlayerLauncher : LegendWeapon {
             MISF CD 4 Bright A_Light2();
             Goto LightDone;
     }
+}
+
+class RocketShot : LegendShot {
+    // Big, slightly slower than PlasmaShot, but it explodes!
+    default {
+        Radius 13;
+        Height 8;
+        Speed 24;
+        DeathSound "weapons/rocklx";
+    }
+    
+    states {
+        Spawn:
+            MISL A 1;
+            Loop;
+        Death:
+            MISL BC 4;
+            MISL D 4 A_Explode(power*5,128);
+            MISL E 4;
+            TNT1 A 0;
+            Stop;
+    }
+}
+
+class SlayerBFG : LegendWeapon {
+    // The one weapon to rule them all. 
+    // Fires a massive ball of plasma, which zaps monsters for 1*POW damage on the first pass.
+    // Upon impacting, the ball does 6*POW damage to its target, and 6*POW damage to everything that was hit earlier.
+
+
 }
