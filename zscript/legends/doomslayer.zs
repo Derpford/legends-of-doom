@@ -478,7 +478,8 @@ class BFGShot : LegendShot {
     default {
         Radius 12;
         Height 12;
-        Speed 32;
+        Speed 16;
+        SeeSound "weapons/bfgx";
         DeathSound "weapons/bfgx";
     }
 
