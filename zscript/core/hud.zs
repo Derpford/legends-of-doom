@@ -66,17 +66,19 @@ class LegendHud : BaseStatusBar {
             }
 
             // Next, ammo.
-			Name ammoTypes[4] = {
+			Name ammoTypes[5] = {
 				"GreenAmmo",
 				"RedAmmo",
 				"YellowAmmo",
-				"BlueAmmo"
+				"BlueAmmo",
+				"PinkAmmo"
 			};
-			String ammoBars[4] = {
+			String ammoBars[5] = {
 				"GBAR",
 				"RBAR",
 				"YBAR",
-				"BBAR"
+				"BBAR",
+				"PBAR"
 			};
             int ammoXPos = -24;
 			int ammoTextXPos = ammoXPos-32;
@@ -91,7 +93,7 @@ class LegendHud : BaseStatusBar {
 				}
 			}
 
-			for (int i = 0; i < 4; i++) {
+			for (int i = 0; i < 5; i++) {
 				int amt, cap;
 				[amt, cap] = GetAmount(ammoTypes[i]);
 				DrawBar(ammoBars[i].."B0",ammoBars[i].."A0",amt,cap,(8 + ammoXPos - (9 * i),-48),2,SHADER_VERT,rbarflags);

@@ -17,10 +17,13 @@ class Doomslayer : LegendPlayer {
         Player.StartItem "GreenAmmo",60;
         Player.StartItem "RedAmmo",10;
         Player.StartItem "SlayerChaingun";
+        Player.StartItem "SlayerBFG";
         Player.StartItem "SlayerSaw";
         Player.StartItem "SlayerShotgun";
         Player.StartItem "SlayerPlasma";
         Player.StartItem "SlayerLauncher";
+
+        LegendPlayer.BFG "SlayerBFG";
     }
 }
 
@@ -440,7 +443,102 @@ class RocketShot : LegendShot {
 class SlayerBFG : LegendWeapon {
     // The one weapon to rule them all. 
     // Fires a massive ball of plasma, which zaps monsters for 1*POW damage on the first pass.
-    // Upon impacting, the ball does 6*POW damage to its target, and 6*POW damage to everything that was hit earlier.
+    // Upon impacting, the ball does 66*POW damage in a wide splash, and 6*POW damage to everything that was hit earlier.
+    default {
+        LegendWeapon.Damage 0, 1.;
+        Weapon.SlotNumber 6; // should also be usable via the Zoom key as a shortcut
+        Weapon.AmmoType "PinkAmmo";
+        Weapon.AmmoUse 100;
+    }
 
+    states {
+        Select: 
+            BFGG A 1 A_Raise(35);
+            Loop;
+        Deselect:
+            BFGG A 1 A_Lower(35);
+            Loop;
+        Ready:
+            BFGG A 15 A_StartSound("weapons/bfgr");
+        RealReady:
+            BFGG A 1 A_WeaponReady();
+            Loop;
+        Fire:
+            BFGG A 10 A_StartSound("weapons/bfgf");
+            BFGG B 10 A_GunFlash();
+            BFGG B 10 Shoot("BFGShot");
+            BFGG B 10 A_TakeInventory("PinkAmmo",100);
+            BFGG A 0 A_SelectWeapon(null,SWF_SELECTPRIORITY); // Switch immediately away from the BFG. We used all our ammo!
+            Goto Deselect;
+    }
+}
 
+class BFGShot : LegendShot {
+    ThinkerIterator it; // For figuring out which monsters are close enough.
+    default {
+        Radius 12;
+        Height 12;
+        Speed 32;
+        DeathSound "weapons/bfgx";
+    }
+
+    states {
+        Spawn:
+            BFS1 A 0;
+            BFS1 A 0 {
+                it = ThinkerIterator.create("Actor",Thinker.STAT_DEFAULT);
+            }
+        FlyLoop:
+            BFS1 AB 4 Bright {
+                it.Reinit();
+                Actor mo;
+                while (mo = Actor(it.next())) {
+                    if (mo.bISMONSTER && !(mo == target) && Vec3To(mo).length() < 512) {
+                        let itm = mo.GiveInventoryType("BFGZap");
+                        if (itm) {
+                            itm.master = self;
+                            mo.DamageMobj(self,target,power,"BFG");
+                        }
+                    }
+                }
+            }
+            Loop;
+        Death:
+            BFE1 AB 8 Bright;
+            BFE1 C 8 Bright A_Explode(power*66,512,0,damagetype:"BFG");
+            BFE1 DE 8 Bright;
+            Stop;
+    }
+}
+
+class BFGZap : Inventory {
+    // Handles stunlocking and damaging enemies that are caught by BFG beams.
+    int power;
+    default {
+        Inventory.Amount 1;
+        Inventory.MaxAmount 1;
+    }
+
+    override void DoEffect () {
+        let m = BFGShot(master);
+        if (m) {
+            // Keep this monster in pain.
+            if (!owner.bCORPSE && !(owner.health < 1) && !owner.InStateSequence(owner.curstate,owner.ResolveState("Pain"))) {
+                owner.SetState(owner.ResolveState("Pain"));
+            }
+            // Also, set some important pointers and spawn visual effects.
+            target = m.target;
+            power = m.power * 6;
+            if (GetAge() % 10 == 0) {
+                let it = owner.Spawn("RadSparkle",owner.pos);
+                if (it) {
+                    it.vel = (frandom(-4,4),frandom(-4,4),frandom(6,12));
+                }
+            }
+        } else {
+            // Time to explode!
+            owner.DamageMobj(target,self,power,"BFG");
+            owner.TakeInventory("BFGZap",1);
+        }
+    }
 }

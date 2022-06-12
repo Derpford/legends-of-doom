@@ -10,7 +10,40 @@ class AmmoDrop : RandomSpawner {
     }
 }
 
+mixin class PinkGiver {
+    // On pickup, also give the user pink ammo.
+    override bool TryPickup(in out actor other) {
+        bool success = super.TryPickup(other);
+        if (success) {
+            other.GiveInventory("PinkAmmo",1);
+        }
+        return success;
+    }
+}
+
+class AmmoBig : Inventory {
+    // Spawns four of AmmoType when "picked up".
+    Name ammotype;
+    Property Type : ammotype;
+
+    default {
+        +FLOATBOB;
+        +BRIGHT;
+        Scale 1.5;
+    }
+    
+    override bool TryPickup(in out actor other) {
+        A_SpawnItemEX(ammotype,zvel:4);
+        for (int i = 0; i < 4; i++) {
+            A_SpawnItemEX(ammotype,xvel:2,zvel:4,angle:45 + (i * 90));
+        }
+        GoAwayAndDie();
+        return true;
+    }
+}
+
 class GreenAmmo : Ammo replaces Clip {
+    mixin PinkGiver;
     default {
         +FLOATBOB;
         +BRIGHT;
@@ -28,10 +61,9 @@ class GreenAmmo : Ammo replaces Clip {
     }
 }
 
-class GreenAmmoBig : GreenAmmo replaces ClipBox {
+class GreenAmmoBig : AmmoBig replaces ClipBox {
     default {
-        Scale 1.5;
-        Inventory.Amount 75;
+        AmmoBig.Type "GreenAmmo";
     }
 
     states {
@@ -42,6 +74,7 @@ class GreenAmmoBig : GreenAmmo replaces ClipBox {
 }
 
 class RedAmmo : Ammo replaces Shell {
+    mixin PinkGiver;
     default {
         +FLOATBOB;
         +BRIGHT;
@@ -59,10 +92,9 @@ class RedAmmo : Ammo replaces Shell {
     }
 }
 
-class RedAmmoBig : RedAmmo replaces ShellBox {
+class RedAmmoBig : AmmoBig replaces ShellBox {
     default {
-        Scale 1.5;
-        Inventory.Amount 20;
+        AmmoBig.Type "RedAmmo";
     }
 
     states {
@@ -73,6 +105,7 @@ class RedAmmoBig : RedAmmo replaces ShellBox {
 }
 
 class YellowAmmo : Ammo replaces RocketAmmo {
+    mixin PinkGiver;
     default {
         +FLOATBOB;
         +BRIGHT;
@@ -90,10 +123,9 @@ class YellowAmmo : Ammo replaces RocketAmmo {
     }
 }
 
-class YellowAmmoBig : YellowAmmo replaces RocketBox {
+class YellowAmmoBig : AmmoBig replaces RocketBox {
     default {
-        Scale 1.5;
-        Inventory.Amount 25;
+        AmmoBig.Type "YellowAmmo";
     }
 
     states {
@@ -104,6 +136,7 @@ class YellowAmmoBig : YellowAmmo replaces RocketBox {
 }
 
 class BlueAmmo : Ammo replaces Cell {
+    mixin PinkGiver;
     default {
         +FLOATBOB;
         +BRIGHT;
@@ -121,15 +154,45 @@ class BlueAmmo : Ammo replaces Cell {
     }
 }
 
-class BlueAmmoBig : BlueAmmo replaces CellPack {
+class BlueAmmoBig : AmmoBig replaces CellPack {
     default {
-        Scale 1.5;
-        Inventory.Amount 100;
+        AmmoBig.Type "BlueAmmo";
     }
 
     states {
         Spawn:
             AMMB B -1;
+            Stop;
+    }
+}
+
+class PinkAmmo : Ammo {
+    // Exclusively for Big Fucking Guns.
+    default {
+        +FLOATBOB;
+        +BRIGHT;
+        Inventory.PickupMessage "Ultra Ammo!";
+        Inventory.Amount 1;
+        Inventory.MaxAmount 100;
+        Ammo.BackpackAmount 0;
+        Ammo.BackpackMaxAmount 100; // Does not get bigger with backpack.
+    }
+
+    states {
+        Spawn:
+            AMMP A -1;
+            Stop;
+    }
+}
+
+class PinkAmmoBig : AmmoBig {
+    default {
+        AmmoBig.Type "PinkAmmo";
+    }
+
+    states {
+        Spawn:
+            AMMP B -1;
             Stop;
     }
 }

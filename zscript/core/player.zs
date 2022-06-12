@@ -15,6 +15,14 @@ class LegendPlayer : DoomPlayer {
     // For every 1.0 Luck, the roll used by LuckRoll() is adjusted by 1%. 
     // Which direction this goes in is decided by the "isBad" argument (default false, meaning more luck = more likely to return true).
 
+    // The 'grow' vars determine how much is added with each level.
+    Property Power : Power, PowerGrow;
+    Property Precision : Precision, PrecisionGrow;
+    Property Toughness : Toughness, ToughnessGrow;
+    Property Luck : Luck, LuckGrow;
+    Property BonusHealth : BonusHealth, BonusHealthGrow;
+    Property Level : Level;
+
     // In addition, we use BonusHealth for health increases.
     double BonusHealthGrow;
 
@@ -28,13 +36,9 @@ class LegendPlayer : DoomPlayer {
     // Every so often, you level up. 
     // This increases your core stats.
 
-    // The 'grow' vars determine how much is added with each level.
-    Property Power : Power, PowerGrow;
-    Property Precision : Precision, PrecisionGrow;
-    Property Toughness : Toughness, ToughnessGrow;
-    Property Luck : Luck, LuckGrow;
-    Property BonusHealth : BonusHealth, BonusHealthGrow;
-    Property Level : Level;
+    Name bfg; // A weapon you can quickly select using the Zoom key.
+    Property BFG : bfg;
+
 
     default {
         LegendPlayer.Power 25., 5.;
@@ -85,6 +89,12 @@ class LegendPlayer : DoomPlayer {
             }
         } else {
             healthTimer = -5.; // Overheal doesn't tick down until at least 5s after overhealing.
+        }
+
+        // If we're currently pressing BT_ZOOM, select the BFG.
+        int buttons = GetPlayerInput(INPUT_BUTTONS);
+        if (buttons & BT_ZOOM) {
+            A_SelectWeapon(bfg);
         }
 
         // Tick the HUD item stuff.
