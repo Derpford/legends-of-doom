@@ -96,7 +96,12 @@ class LegendHud : BaseStatusBar {
 			for (int i = 0; i < 5; i++) {
 				int amt, cap;
 				[amt, cap] = GetAmount(ammoTypes[i]);
-				DrawBar(ammoBars[i].."B0",ammoBars[i].."A0",amt,cap,(8 + ammoXPos - (9 * i),-48),2,SHADER_VERT,rbarflags);
+				Vector2 pos = (8 + ammoXPos - (9 * i),-48);
+				if (amt == cap && (plr.GetAge() % 10 > 5)) { 
+					DrawImage(ammoBars[i].."A0",pos,rbarflags); // Ammo bars flash when full!
+				} else {
+					DrawBar(ammoBars[i].."B0",ammoBars[i].."A0",amt,cap,pos,2,SHADER_VERT,rbarflags);
+				}
 			}
 
 			// The XP bar.
