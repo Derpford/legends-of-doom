@@ -325,14 +325,15 @@ class ItemPassiveHandler : EventHandler {
             realsrc = e.Inflictor;
         }
 
-        if (realsrc) {
+        if (realsrc && realsrc != e.Thing) { // Skip on-hits if the source is the target.
             if (realsrc.FindInventory("LegendItem",true)) {
                 // Only do this if the source has any LegendItems!
                 it = realsrc.inv;
                 while (it) {
                     let lit = LegendItem(it);
                     if (lit) {
-                        lit.OnHit(e.Damage, e.DamageType, e.DamageSource, e.Inflictor, e.Thing);
+                        int dmg = it.ApplyDamageFactors(it.GetClassName(),e.DamageType,e.Damage,e.Damage);
+                        lit.OnHit(dmg, e.DamageType, e.DamageSource, e.Inflictor, e.Thing);
                     }
                     it = it.inv;
                 }
@@ -345,7 +346,8 @@ class ItemPassiveHandler : EventHandler {
             while (it) {
                 let lit = LegendItem(it);
                 if (lit) {
-                    lit.OnRetaliate(e.Damage, e.DamageType, e.DamageSource, e.Inflictor, e.Thing);
+                    int dmg = it.ApplyDamageFactors(it.GetClassName(),e.DamageType,e.Damage,e.Damage);
+                    lit.OnRetaliate(dmg, e.DamageType, e.DamageSource, e.Inflictor, e.Thing);
                 }
                 it = it.inv;
             }

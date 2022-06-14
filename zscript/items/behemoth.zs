@@ -5,6 +5,7 @@ class BehemothShell : LegendItem {
         Tag "Behemoth Shell";
         LegendItem.Desc "All of your attacks explode!";
         LegendItem.Remark "Legally Distinct Brillaince";
+        DamageFactor "Explosion", 0.5;
     }
 
     override void OnHit(int dmg, Name type, Actor src, Actor inf, Actor tgt) {
