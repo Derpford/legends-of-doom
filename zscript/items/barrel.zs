@@ -9,7 +9,7 @@ class BarrelOfFun : LegendItem {
     }
 
     override void OnHit(int dmg, Name type, Actor src, Actor inf, Actor tgt) {
-        if(LuckRoll(10. + (2.5 * GetStacks()))) {
+        if(LuckRoll(2.5 + (2.5 * GetStacks()))) {
             let it = TimeBarrel(tgt.Spawn("TimeBarrel",tgt.pos));
             if (it) {
                 it.vel = (frandom(-4,4),frandom(-4,4),frandom(6,8));
