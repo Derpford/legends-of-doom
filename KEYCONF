@@ -1,0 +1,8 @@
+addkeysection "Legends Of Doom" LegendsOfDoom
+addmenukey "Open Item Menu" menu_item
+addmenukey "Select BFG Weapon" +use_bfg
+alias menu_item "openmenu itemmenu"
+alias +use_bfg "+zoom"
+alias -use_bfg "-zoom"
+defaultbind menu_item x
+defaultbind use_bfg f
