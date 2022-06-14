@@ -254,7 +254,13 @@ class ItemMenuHandler : LegendZFHandler {
         int idx = cmd.toInt();
         if (idx == link.iid) {
             link.displayTooltip = !link.displayTooltip;
+            if(link.displayTooltip) {
+                Menu.MenuSound("menu/activate");
+            } else {
+                Menu.MenuSound("menu/clear");
+            }
         } else {
+            Menu.MenuSound("menu/activate");
             link.displayTooltip = true;
             link.iid = idx;
             let ts = link.tooltipSize;
