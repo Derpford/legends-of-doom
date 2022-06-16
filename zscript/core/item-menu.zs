@@ -139,6 +139,8 @@ class ItemMenu : LegendZFGenericMenu {
             let tx = LegendZFBoxTextures.CreateSingleTexture(items[i].invicon, true);
             let size = mainFrame.texSize(items[i].invicon);
             let stacks = items[i].GetStacks();
+            String info; int icolor;
+            [info, icolor] = items[i].GetItemInfo();
 
             let xslots = floor(bgsize.x/64.); // How many items wide is this list?
             int xsp = i % xslots; 
@@ -159,6 +161,7 @@ class ItemMenu : LegendZFGenericMenu {
             ibtn.pack(mainFrame);
             LegendZFBoxImage.Create(pos+offs,size,tx,(1,1)).pack(mainFrame); // add the item icon in the center of the slot.
             LegendZFLabel.Create(pos+(48,48),(64,64),text:String.Format("%d",stacks),autosize:true).pack(mainFrame); // And the slot number.
+            LegendZFLabel.Create(pos+(2,2),(64,64),text:info, autosize:true,textColor:icolor).pack(mainFrame); // And the item's info!
             
         }
 

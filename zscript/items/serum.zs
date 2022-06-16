@@ -11,8 +11,12 @@ class BloodySerum : LegendItem {
         LegendItem.Remark "You feel rabid.";
     }
 
+    clearscope int MaxStacks() {
+        return (100 * GetStacks());
+    }
+
     override void OnKill (Actor src, Actor tgt) {
-        if (kills < (100 * GetStacks())) {
+        if (kills < MaxStacks()) {
             kills += 1;
             if(owner is "LegendPlayer") {
                 let plr = LegendPlayer(owner);
@@ -23,6 +27,12 @@ class BloodySerum : LegendItem {
             }
             owner.A_StartSound("misc/i_pkup",2,pitch:0.8);
         }
+    }
+
+    override string, int GetItemInfo() {
+        int c = Font.CR_WHITE;
+        if (kills > MaxStacks()) { c = Font.CR_RED; }
+        return String.Format("+%d",kills), c;
     }
 
     states {

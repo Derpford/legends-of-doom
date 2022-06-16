@@ -154,6 +154,9 @@ class LegendItem : Inventory {
     virtual clearscope string GetLongDesc () { return "Not yet implemented!"; }
     // A longer, more detailed explanation of the item.
 
+    virtual clearscope string, int GetItemInfo () { return "",Font.CR_WHITE; }
+    // A bit of info to display on the item menu. Optionally, also a font color.
+
     virtual bool IconState () { return true; }
     // Return true if icon should be normal, or false if it should be dimmed.
 
