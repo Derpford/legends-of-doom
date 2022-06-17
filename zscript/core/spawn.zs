@@ -20,7 +20,7 @@ class ItemSpawnHandler : StaticEventHandler {
             console.printf("Checking "..it);
             if(cit) {
                 let cit = GetDefaultByType(cit);
-                console.printf("Class registered: "..cit.GetClassName());
+                console.printf("Class registered: %s (%s)",cit.GetClassName(),cit.rarity);
                 let r = cit.GetRarity();
                 itemList.insert(cit.GetClassName(),r);
                 // items.Push(cit);
