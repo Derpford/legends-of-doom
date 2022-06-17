@@ -30,12 +30,14 @@ class AmmoBig : Inventory {
         +FLOATBOB;
         +BRIGHT;
         Scale 1.5;
+        Inventory.PickupMessage "Unpacked some ammo...";
     }
     
     override bool TryPickup(in out actor other) {
         A_SpawnItemEX(ammotype,zvel:4);
+        double ang = random(0,18) * 5;
         for (int i = 0; i < 4; i++) {
-            A_SpawnItemEX(ammotype,xvel:2,zvel:4,angle:45 + (i * 90));
+            A_SpawnItemEX(ammotype,xvel:2,zvel:4,angle:ang + (i * 90));
         }
         GoAwayAndDie();
         return true;
