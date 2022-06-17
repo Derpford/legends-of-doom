@@ -1,3 +1,22 @@
+mixin class SplashDamage {
+    // A function for less-awful splash damage.
+    action void A_SplashDamage(int damage, double radius = -1, int mindamage = 0, Name type = "Explosion", bool selfdmg = true) {
+        if (radius < 0) { radius = damage; }
+        let hits = BlockThingsIterator.Create(self,radius*2);
+        while (hits.next()) {
+            if (!selfdmg && hits.Thing == target) { continue; }
+            double len = max(0,Vec3To(hits.Thing).length()-hits.Thing.radius);
+            double multi = 1. - (len/radius);
+            if (len <= radius) { // BlockThingsIterator is imprecise!
+                int deltadmg = damage - mindamage;
+                int finaldmg = mindamage + (deltadmg * multi);
+                hits.Thing.DamageMobj(self,target,finaldmg,type,DMG_EXPLOSION);
+                hits.Thing.vel.z += finaldmg / hits.Thing.mass;
+            }
+        }
+    }
+}
+
 class LegendWeapon : Weapon {
     // A weapon held by a Legend.
     
@@ -57,6 +76,7 @@ class LegendWeapon : Weapon {
 
 class LegendShot : Actor {
     // A projectile fired by a LegendWeapon.
+    mixin SplashDamage;
 
     int power;
 
@@ -71,6 +91,7 @@ class LegendShot : Actor {
 
 class LegendFastShot : Actor {
     // FastProjectile for LegendWeapons.
+    mixin SplashDamage;
 
     int power;
 

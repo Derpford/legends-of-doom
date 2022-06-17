@@ -301,7 +301,7 @@ class VorpalSplash : LegendShot {
         Spawn:
         Death:
             MISL BCD 2;
-            MISL D 2 A_Explode(96, 96, XF_EXPLICITDAMAGETYPE,damagetype:"Vorpal");
+            MISL D 2 A_SplashDamage(96, 96, type:"Vorpal", selfdmg: false);
             Stop;
     }
 }
@@ -433,7 +433,7 @@ class RocketShot : LegendShot {
             Loop;
         Death:
             MISL BC 4;
-            MISL D 4 A_Explode(power*5,128);
+            MISL D 4 A_SplashDamage(power*5,128,power*2, selfdmg: false);
             MISL E 4;
             TNT1 A 0;
             Stop;
@@ -521,7 +521,7 @@ class BFGShot : LegendShot {
             Loop;
         Death:
             BFE1 AB 8 Bright;
-            BFE1 C 8 Bright A_Explode(power*66,512,0,damagetype:"BFG");
+            BFE1 C 8 Bright A_SplashDamage(power*66,512,type:"BFG");
             BFE1 DE 8 Bright;
             Stop;
     }

@@ -64,6 +64,7 @@ class RadBurst : Actor {
     // Emits radiation, creates sparkles, and stops existing.
     int radius;
     int power;
+    mixin SplashDamage;
 
     default {
         RenderStyle "Add";
@@ -74,7 +75,7 @@ class RadBurst : Actor {
         Spawn:
             TNT1 A 0;
             APLS A 0 {
-                A_Explode(power,radius,0,fulldamagedistance:radius,damagetype:"Radiation");
+                A_SplashDamage(power,radius,power,type:"Radiation",selfdmg:false);
                 for (double i = 0; i < 360.; i += (360./8)) {
                     A_SpawnItemEX("RadSparkle",xofs:radius,angle:i);
                 }

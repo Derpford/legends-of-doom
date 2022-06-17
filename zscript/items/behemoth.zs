@@ -29,6 +29,7 @@ class BehemothShell : LegendItem {
 class BehemothBlast : Actor {
     int power;
     int stacks;
+    Mixin SplashDamage;
 
     default {
         Gravity -0.1;
@@ -39,7 +40,7 @@ class BehemothBlast : Actor {
         Spawn:
             MISL C 0;
             MISL C 4 {
-                A_Explode(power,128*stacks,flags:0,fulldamagedistance:(128*stacks)-power,damagetype:"Behemoth");
+                A_SplashDamage(power,128*stacks,type:"Behemoth",selfdmg:false);
                 A_StartSound("weapons/barrelx",volume:0.5);
                 double scl = float(power)/64.;
                 //scale = (scl, scl);
