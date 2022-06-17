@@ -433,7 +433,7 @@ class RocketShot : LegendShot {
             Loop;
         Death:
             MISL BC 4;
-            MISL D 4 A_SplashDamage(power*5,128,power*2, selfdmg: false);
+            MISL D 4 A_SplashDamage(power*5,128, selfdmg: false);
             MISL E 4;
             TNT1 A 0;
             Stop;
