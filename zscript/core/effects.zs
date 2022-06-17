@@ -183,7 +183,7 @@ class Root : Inventory {
                     posSet = true;
                 }
 
-                owner.SetOrigin(oldpos,false);
+                owner.SetOrigin((oldpos.x,oldpos.y,owner.pos.z),false);
 
                 owner.TakeInventory("Root",1);
 
