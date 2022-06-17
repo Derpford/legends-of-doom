@@ -6,6 +6,7 @@ Class StoneskinAmulet : LegendItem {
         Tag "Stoneskin Amulet";
         LegendItem.Desc "Consume armor for healing, even if your HP's full.";
         LegendItem.Remark "Not quite immortal.";
+        LegendItem.Rarity "CURSED";
     }
 
     override void OnTimer() {

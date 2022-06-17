@@ -9,6 +9,7 @@ class BloodySerum : LegendItem {
         Tag "Bloody Serum";
         LegendItem.Desc "Gain max health on kill.";
         LegendItem.Remark "You feel rabid.";
+        LegendItem.Rarity "RARE";
     }
 
     clearscope int MaxStacks() {

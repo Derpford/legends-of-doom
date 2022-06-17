@@ -49,11 +49,13 @@ class CorruptFloppy : LegendItem {
         Tag "Corrupt Floppy";
         LegendItem.Desc "Killing an enemy sometimes spawns a duplicate.";
         LegendItem.Remark "NIGHTMARE.EXE";
+        LegendItem.Rarity "CURSED";
     }
 
     override void OnKill (Actor src, Actor tgt) {
-        if (LuckRoll(10. * GetStacks(),true)) {
+        if (LuckRoll(20. * GetStacks(),true)) {
             tgt.spawn(tgt.GetClassName(),tgt.pos);
+            tgt.spawn("TeleportFog",tgt.pos);
         }
     }
 

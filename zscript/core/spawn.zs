@@ -1,28 +1,101 @@
-class ItemSpawnHandler : EventHandler {
+class ItemSpawnHandler : StaticEventHandler {
     // Reads all ICOMMON, IRARE, IEPIC, and ICURSED lumps.
     // Replaces non-dropped weapons with an item from the above lumps.
     // Replaces dropped weapons with ammo.
 
-    Array<Class<Actor> > commonList;
-    Array<Class<Actor> > rareList;
-    Array<Class<Actor> > epicList;
-    Array<Class<Actor> > cursedList;
     Array<Class<Actor> > AmmoList;
 
-    void ParseItems(String found, out Array<Class<Actor> > items) {
+    Dictionary itemList; // Holds all items and their rarities.
+    Dictionary tierList; // Holds all rarity tiers.
+    Dictionary sparkList; // Holds one spark per rarity tier.
+
+    void ParseItems(String found) {
         Array<String> toks;
         found.Split(toks, "\n",TOK_SKIPEMPTY);
         for (int i = 0; i < toks.Size(); i++) {
             string it = toks[i].filter();
-            console.printf("Got "..it);
             it.replace("\n","");
             it.replace("\r",""); // WINDOOOOOWS
-            class<Actor> cit = it;
+            class<LegendItem> cit = it;
             console.printf("Checking "..it);
             if(cit) {
-                console.printf("Found "..cit.GetClassName());
-                items.Push(cit);
+                let cit = GetDefaultByType(cit);
+                console.printf("Class registered: "..cit.GetClassName());
+                let r = cit.GetRarity();
+                itemList.insert(cit.GetClassName(),r);
+                // items.Push(cit);
             }
+        }
+    }
+
+    void AppendToDict(out Dictionary a, Dictionary b) {
+        let it = DictionaryIterator.Create(b);
+        while (it.next()) {
+            a.Insert(it.key(),it.value());
+        }
+    }
+
+    void ParseDict(out Dictionary dict, String found) {
+        // Basically just appends found to tierlist.
+        AppendToDict(dict, Dictionary.FromString(found));
+    }
+
+    int WeightedRandom(Array<Double> weights) {
+        double sum;
+        for (int i = 0; i < weights.size(); i++) {
+            sum += weights[i];
+        }
+
+        console.printf("Total weight: %0.2f",sum);
+
+        // And now we roll.
+        double roll = frandom(0,sum);
+        console.printf("Roll was %0.2f",roll);
+        for (int i = 0; i < weights.size(); i++) {
+            console.printf("Weight of %d is %0.2f",i,weights[i]);
+            if (roll < weights[i]) {
+                return i;
+            } else {
+                roll -= weights[i];
+            }
+        }
+        // If we reach this point, something went wrong.
+        return -1;
+    }
+
+    String SelectRarity() {
+        Array<String> tiers;
+        Array<Double> weights;
+        DictionaryIterator it = DictionaryIterator.Create(tierList);
+        while (it.next()) {
+            console.printf("Tier: %s, Weight: %s",it.key(),it.value());
+            tiers.push(it.key());
+            weights.push(it.value().toDouble());
+        }
+
+        // Now do a weighted random roll on weights...
+        int idx = WeightedRandom(weights);
+        // And that's the tier we return.
+        console.printf("Selected %d:%s",idx,tiers[idx]);
+        return tiers[idx];
+    }
+
+    String SelectItem(String tier) {
+        // Given a tier, collect all items from that tier, then spawn one at random.
+        Array<String> spawns;
+        DictionaryIterator it = DictionaryIterator.Create(itemList);
+        console.printf("Iterator started");
+        while (it.next()) {
+            console.printf("Checked item %s: %s",it.key(),it.value());
+            if(it.value() == tier) {
+                spawns.push(it.key());
+            }
+        }
+        console.printf("Iterator finished");
+        if(spawns.size() > 0) {
+            return spawns[random(0,spawns.size()-1)];
+        } else {
+            return "";
         }
     }
 
@@ -36,37 +109,31 @@ class ItemSpawnHandler : EventHandler {
         AmmoList.push(ra);
         AmmoList.push(ya);
         AmmoList.push(ba);
-        // Start with commons.
-        int clump = Wads.FindLump("ICOMMON");
-        while (clump != -1) {
-            String found = Wads.ReadLump(clump);
-            console.printf("Found:\n"..found);
-            ParseItems(found,commonList);
-            clump = Wads.FindLump("ICOMMON",clump+1);
+
+        itemList = Dictionary.Create();
+        tierList = Dictionary.Create();
+        sparkList = Dictionary.Create();
+
+        int tlump = Wads.FindLump("TIERS");
+        while (tlump != -1) {
+            string found = Wads.ReadLump(tlump);
+            ParseDict(tierList,found);
+            tlump = Wads.FindLump("TIERS",tlump+1);
         }
-        // Next, rares.
-        int rlump = Wads.FindLump("IRARE");
-        while (rlump != -1) {
-            String found = Wads.ReadLump(rlump);
-            console.printf("Found:\n"..found);
-            ParseItems(found,rareList);
-            rlump = Wads.FindLump("IRARE",rlump+1);
+
+        int slump = Wads.FindLump("ISPARKS");
+        while (slump != -1) {
+            string found = Wads.ReadLump(slump);
+            ParseDict(sparkList,found);
+            slump = Wads.FindLump("ISPARKS",slump+1);
         }
-        // Now Epics.
-        int elump = Wads.FindLump("IEPIC");
-        while (elump != -1) {
-            String found = Wads.ReadLump(elump);
+
+        int ilump = Wads.FindLump("ITEMS");
+        while (ilump != -1) {
+            string found = Wads.ReadLump(ilump);
             console.printf("Found:\n"..found);
-            ParseItems(found,epicList);
-            elump = Wads.FindLump("IEPIC",elump+1);
-        }
-        // And finally, Curseds.
-        int blump = Wads.FindLump("ICURSED");
-        while (blump != -1) {
-            String found = Wads.ReadLump(blump);
-            console.printf("Found:\n"..found);
-            ParseItems(found,cursedList);
-            blump = Wads.FindLump("ICURSED",blump+1);
+            ParseItems(found);
+            ilump = Wads.FindLump("ITEMS",ilump+1);
         }
     }
 
@@ -81,31 +148,28 @@ class ItemSpawnHandler : EventHandler {
             let it = DummyItem(e.Thing);
             if(e.Thing.bDROPPED) {
                 // Tell it to spawn an ammo item.
-                it.spawnList.Copy(AmmoList);
-                it.rarity = -1;
+                it.spawntype = "AmmoDrop";
             } else {
-
                 // Items spawn 70% common, 20% rare, 5% epic, 5% cursed.
                 // TODO: Better weighting system.
-                static const Int odds[] = {0,0,0,0,0,0,0,0,0,0,
-                                0,0,0,0,1,1,1,1,2,3};
-                int rarity = odds[random(0,19)];
-                switch (rarity) {
-                    case 0:
-                        it.spawnList.Copy(commonList);
-                        break;
-                    case 1:
-                        it.spawnList.Copy(rareList);
-                        break;
-                    case 2:
-                        it.spawnList.Copy(epicList);
-                        break;
-                    case 3:
-                        it.spawnList.Copy(cursedList);
-                        break;
-                }
+                // static const Int odds[] = {0,0,0,0,0,0,0,0,0,0,
+                //                 0,0,0,0,1,1,1,1,2,3};
+                String rarity;
+                rarity = SelectRarity();
+                it.spawntype = SelectItem(rarity);
+                it.sparkType = sparkList.at(rarity);
                 it.rarity = rarity;
             }
+        }
+
+        if (e.Thing is "LegendItem") {
+            // Spawn an item spark.
+            let lit = LegendItem(e.Thing);
+            let rarity = lit.GetRarity();
+            let sparkType = sparkList.at(rarity);
+            let spark = ItemSparkSpawner(lit.spawn("ItemSparkSpawner",lit.pos));
+            spark.master = lit;
+            spark.sparkType = sparkType;
         }
     }
 }
@@ -113,43 +177,21 @@ class ItemSpawnHandler : EventHandler {
 class DummyItem : Actor {
     // Placeholder for an item spawn.
     Array<Class<Actor> > spawnList;
-    int rarity;
+    Class<Actor> spawntype;
+    String rarity;
+    String sparkType;
     
     states {
         Spawn:
             TNT1 A 0;
             TNT1 A 0 {
                 // Spawn something random from our spawnList.
-                if (spawnList.Size() > 0) {
-                    Class<Actor> sp = spawnList[random(0,spawnList.Size()-1)];
-                    let it = Spawn(sp,invoker.pos);
-                    if (it) {
-                        // Transfer our special to it.
-                        it.A_SetSpecial(invoker.Special,invoker.Args[0],invoker.Args[1],invoker.Args[2],invoker.Args[3],invoker.Args[4]);
-                        it.ChangeTID(invoker.TID);
-                        // Spawn a sparkle spawner based on rarity.
-                        if (rarity >= 0) {
-
-                            Name sparkType;
-                            switch (rarity) {
-                                case 0:
-                                    sparkType = "ItemSparkSpawner";
-                                    break;
-                                case 1:
-                                    sparkType = "RareSparkSpawner";
-                                    break;
-                                case 2:
-                                    sparkType = "EpicSparkSpawner";
-                                    break;
-                                case 3:
-                                    sparkType = "CursedSparkSpawner";
-                                    break;
-                            }
-                            
-                            let sp = Spawn(sparkType,pos);
-                            sp.master = it;
-                        }
-                    }
+                if (spawntype == "") {return;}
+                let it = Spawn(spawntype,invoker.pos);
+                if (it) {
+                    // Transfer our special to it.
+                    it.A_SetSpecial(invoker.Special,invoker.Args[0],invoker.Args[1],invoker.Args[2],invoker.Args[3],invoker.Args[4]);
+                    it.ChangeTID(invoker.TID);
                 }
             }
             TNT1 A 0;

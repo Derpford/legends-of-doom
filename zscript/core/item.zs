@@ -17,6 +17,9 @@ class LegendItem : Inventory {
     Property Remark : remark;
     Property Desc : shortdesc;
 
+    string rarity; // what rarity tier is this item?
+    Property Rarity: rarity; // Will be allcaps'd for QoL
+
     string invicon; // The inventory icon.
     Property Icon : invicon;
 
@@ -28,6 +31,13 @@ class LegendItem : Inventory {
         LegendItem.Timer 0; // Timer must be set to be used correctly!
         LegendItem.StartStacks 1;
         LegendItem.Alarm "dsempty", 1.0;
+        LegendItem.Rarity "Common";
+    }
+
+    String GetRarity() {
+        let s = rarity;
+        s.ToUpper();
+        return s;
     }
 
     override void PostBeginPlay() {

@@ -1,0 +1,6 @@
+{
+    "COMMON": "CommonSpark",
+    "RARE": "RareSpark",
+    "EPIC": "EpicSpark",
+    "CURSED": "CursedSpark"
+}

@@ -9,6 +9,7 @@ class SurplusCaliber : LegendItem {
         Tag "Surplus Caliber";
         LegendItem.Desc "On Reload, gain a power boost.";
         LegendItem.Remark "*slaps roof of gun*";
+        LegendItem.Rarity "RARE";
     }
 
     override void DoEffect() {
