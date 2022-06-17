@@ -4,7 +4,7 @@ mixin class SplashDamage {
         if (radius < 0) { radius = damage; }
         let hits = BlockThingsIterator.Create(self,radius*2);
         while (hits.next()) {
-            if (!selfdmg && hits.Thing == target) { continue; }
+            if (selfdmg && hits.Thing == target) { continue; }
             double len = max(0,Vec3To(hits.Thing).length()-hits.Thing.radius);
             double multi = 1. - (len/radius);
             if (len <= radius) { // BlockThingsIterator is imprecise!

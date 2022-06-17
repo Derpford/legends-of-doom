@@ -62,7 +62,7 @@ class TimeBarrel : LegendShot {
             BEXP A 5 Bright A_StartSound("world/barrelx");
             BEXP B 4 Bright;
             BEXP C 3 Bright;
-            BEXP D 3 Bright A_Explode(power,128,flags:0,fulldamagedistance:128 - power);
+            BEXP D 3 Bright A_SplashDamage(power,128,selfdmg:false);
             BEXP E 5 Bright;
             TNT1 A 0;
             Stop;
