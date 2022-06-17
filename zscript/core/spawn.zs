@@ -46,13 +46,9 @@ class ItemSpawnHandler : StaticEventHandler {
             sum += weights[i];
         }
 
-        console.printf("Total weight: %0.2f",sum);
-
         // And now we roll.
         double roll = frandom(0,sum);
-        console.printf("Roll was %0.2f",roll);
         for (int i = 0; i < weights.size(); i++) {
-            console.printf("Weight of %d is %0.2f",i,weights[i]);
             if (roll < weights[i]) {
                 return i;
             } else {
@@ -68,7 +64,6 @@ class ItemSpawnHandler : StaticEventHandler {
         Array<Double> weights;
         DictionaryIterator it = DictionaryIterator.Create(tierList);
         while (it.next()) {
-            console.printf("Tier: %s, Weight: %s",it.key(),it.value());
             tiers.push(it.key());
             weights.push(it.value().toDouble());
         }
@@ -76,7 +71,6 @@ class ItemSpawnHandler : StaticEventHandler {
         // Now do a weighted random roll on weights...
         int idx = WeightedRandom(weights);
         // And that's the tier we return.
-        console.printf("Selected %d:%s",idx,tiers[idx]);
         return tiers[idx];
     }
 
@@ -84,14 +78,11 @@ class ItemSpawnHandler : StaticEventHandler {
         // Given a tier, collect all items from that tier, then spawn one at random.
         Array<String> spawns;
         DictionaryIterator it = DictionaryIterator.Create(itemList);
-        console.printf("Iterator started");
         while (it.next()) {
-            console.printf("Checked item %s: %s",it.key(),it.value());
             if(it.value() == tier) {
                 spawns.push(it.key());
             }
         }
-        console.printf("Iterator finished");
         if(spawns.size() > 0) {
             return spawns[random(0,spawns.size()-1)];
         } else {
@@ -115,12 +106,14 @@ class ItemSpawnHandler : StaticEventHandler {
         sparkList = Dictionary.Create();
 
         int tlump = Wads.FindLump("TIERS");
+        console.printf("Loading rarity TIERS");
         while (tlump != -1) {
             string found = Wads.ReadLump(tlump);
             ParseDict(tierList,found);
             tlump = Wads.FindLump("TIERS",tlump+1);
         }
 
+        console.printf("Loading ISPARKS");
         int slump = Wads.FindLump("ISPARKS");
         while (slump != -1) {
             string found = Wads.ReadLump(slump);
@@ -128,6 +121,7 @@ class ItemSpawnHandler : StaticEventHandler {
             slump = Wads.FindLump("ISPARKS",slump+1);
         }
 
+        console.printf("Loading ITEMS");
         int ilump = Wads.FindLump("ITEMS");
         while (ilump != -1) {
             string found = Wads.ReadLump(ilump);
