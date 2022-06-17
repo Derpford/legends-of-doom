@@ -122,7 +122,7 @@ class Pain : Inventory {
 
 class Jam : Inventory {
     // Flinches the target whenever they try to attack.
-    // Loses half of stacks each time it triggers.
+    bool flinched;
     default {
         Inventory.Amount 1;
         Inventory.MaxAmount 999;
@@ -132,10 +132,15 @@ class Jam : Inventory {
         if (owner.health > 0 && !owner.bCORPSE && owner.ResolveState("pain")) {
             if (owner.InStateSequence(owner.curstate,owner.ResolveState("Melee")) || owner.InStateSequence(owner.curstate,owner.ResolveState("Missile"))) {
                 owner.SetState(owner.ResolveState("Pain"));
-                owner.TakeInventory("Jam",ceil(0.5 * owner.CountInv("Jam")));
+                flinched = true;
             }
-        } else {
-            owner.TakeInventory("Jam",1);
+
+            if (flinched && !owner.InStateSequence(owner.curstate,owner.ResolveState("Pain"))) {
+                owner.SetState(owner.ResolveState("Pain"));
+            }
+        }
+        if (flinched || owner.health <= 0 || owner.bCORPSE) {
+            owner.TakeInventory("Jam",2);
         }
 
         if(owner && owner.GetAge() % 10 == 0) { 
