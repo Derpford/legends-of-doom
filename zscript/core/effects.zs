@@ -32,7 +32,7 @@ class VorpalHandler : EventHandler {
 
     override void WorldThingSpawned (WorldEvent e) {
         // Give all players and monsters the VorpalModifier.
-        if (e.Thing.bISMONSTER || e.Thing is "PlayerPawn") {
+        if (e.Thing.bSHOOTABLE) {
             e.Thing.GiveInventory("VorpalModifier",1);
         }
     }
@@ -52,10 +52,55 @@ class VorpalModifier : Inventory {
                 double bhealth = owner.GetSpawnHealth();
                 double level = owner.CountInv("LevelToken");
                 double maxhealth = bhealth + (0.1*bhealth*level);
-                console.printf("Vorpal hit for "..maxhealth*0.1.." damage!");
-                new = floor(maxhealth*0.1);
 
             }
+        }
+    }
+}
+
+class SmiteHandler : EventHandler {
+    // Catches and modifies Smite damage to gain up to +100% bonus damage, based on the difference between target's HP and the attacker's HP.
+
+    override void WorldThingSpawned (WorldEvent e) {
+        if (e.Thing.bSHOOTABLE) {
+            e.Thing.GiveInventory("SmiteModifier",1);
+        }
+    }
+}
+
+class SmiteModifier : Inventory {
+    // Uses ModifyDamage to apply Smite effects.
+
+    override void ModifyDamage (int dmg, Name type, out int new, bool passive, Actor inflictor, Actor src, int flags) {
+        if (passive && type == "Smite") {
+            int ownhp;
+            int otherhp;
+            // Get our own HP.
+            if (owner is "LegendPlayer") {
+                ownhp = owner.GetMaxHealth(true);
+            } else {
+                double bhealth = owner.GetSpawnHealth();
+                double level = owner.CountInv("LevelToken");
+                double maxhealth = bhealth + (0.1*bhealth*level);
+                ownhp = floor(maxhealth);
+            }
+            // Get the attacker's HP.
+            if (src) {
+                if (src is "LegendPlayer") {
+                    otherhp = src.GetMaxHealth(true);
+                } else {
+                    double bhealth = owner.GetSpawnHealth();
+                    double level = owner.CountInv("LevelToken");
+                    double maxhealth = bhealth + (0.1*bhealth*level);
+                    otherhp = floor(maxhealth);
+                }
+            } else {
+                otherhp = ownhp; // If there's no source, assume self-damage.
+            }
+
+            double multi = 1 + (1 - (ownhp/otherhp));
+            multi = clamp(0.5,2,multi); // at most a factor of 2 in either direction
+            new = floor(dmg * multi);
         }
     }
 }
