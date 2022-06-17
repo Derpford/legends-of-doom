@@ -1,0 +1,7 @@
+// Support for DamNums!
+[enu default]
+
+DAMNUM_TYPECOLOR_VORPAL = "DamWhite";
+DAMNUM_TYPECOLOR_BLEEDING = "DamDarkRed";
+DAMNUM_TYPECOLOR_BEHEMOTH = "DamOrange";
+DAMNUM_TYPECOLOR_RADIATION = "DamDarkGreen";
