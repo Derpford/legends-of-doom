@@ -12,6 +12,13 @@ class LegendItem : Inventory {
     Property StartStacks : stacks;
     Property Alarm : alarm, alarmPitch;
 
+    double randomDecay; 
+    double randomAdjust;
+    Property RandomDecay: randomDecay;
+    // Percentage adjustment of random rolls.
+    // randomDecay determines how fast random rolls return to 0.
+    // Allows for some PRNG.
+
     string remark; // the witty joke
     string shortdesc; // the short explanation
     Property Remark : remark;
@@ -75,6 +82,13 @@ class LegendItem : Inventory {
 
     bool LuckRoll(double chance, bool isBad = false) {
         // If the owner is a player, call their LuckRoll. Otherwise, raw random.
+        if(isBad) {
+            chance = chance * (1.0 + randomAdjust);
+        } else {
+            chance = chance * (1.0 - randomAdjust);
+        }
+        // Adding to randomAdjust is done manually.
+
         if (owner is "LegendPlayer") {
             let plr = LegendPlayer(owner);
             return plr.LuckRoll(chance,isBad);
@@ -147,7 +161,15 @@ class LegendItem : Inventory {
 
     override void DoEffect () {
         if (owner.bCORPSE) { return; }
+        // Adjust the randomAdjust percentage.
+        if (randomAdjust > 0) {
+            randomAdjust = max(0,randomAdjust - (randomDecay * 1./35.));
+        } else {
+            randomAdjust = min(0,randomAdjust + (randomDecay * 1./35.));
+        }
+
         timer -= 1./35.;
+
         if(alarmSet && timer <= 0.) {
             owner.A_StartSound(alarm,7);
             alarmSet = false;

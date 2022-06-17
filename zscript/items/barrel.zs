@@ -6,16 +6,18 @@ class BarrelOfFun : LegendItem {
         Tag "Barrel of Fun";
         LegendItem.Desc "Chance of spawning a time-bomb barrel on hit.";
         LegendItem.Remark "*not actually fun";
+        LegendItem.RandomDecay 0.01; // Barrels should be infrequent.
     }
 
     override void OnHit(int dmg, Name type, Actor src, Actor inf, Actor tgt) {
-        if(LuckRoll(2.5 + (2.5 * GetStacks()))) {
+        if(LuckRoll(5  * GetStacks())) {
             let it = TimeBarrel(tgt.Spawn("TimeBarrel",tgt.pos));
             if (it) {
                 it.vel = (frandom(-4,4),frandom(-4,4),frandom(6,8));
                 it.power = floor(dmg * 3.5);
                 it.target = owner;
             }
+            randomAdjust += 0.1;
         }
     }
 
