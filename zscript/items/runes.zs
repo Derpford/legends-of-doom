@@ -109,6 +109,7 @@ class JudgementSnake : LegendShot {
         +NOCLIP;
         +SEEKERMISSILE;
         Speed 20;
+        RenderStyle "Add";
         radius 20;
         height 10;
     }
@@ -126,8 +127,12 @@ class JudgementSnake : LegendShot {
     states {
         Spawn:
             FATB AB 2 Bright {
-                A_SeekerMissile(10,15,SMF_PRECISE|SMF_LOOK);
                 Spawn("JudgementTail",invoker.pos);
+                A_SeekerMissile(10,15,SMF_PRECISE|SMF_LOOK,128,5);
+                if(!tracer) {
+                    angle += 30; // Spin in place if there's no target.
+                    VelFromAngle(speed,angle);
+                }
             }
             Loop;
         Death:
@@ -142,11 +147,12 @@ class JudgementTail : Actor {
     default {
         +NOINTERACTION;
         Scale 2.;
+        RenderStyle "Add";
     }
 
     states {
         Spawn:
-            PUFF AB 2 A_FadeOut();
+            PUFF A 2 A_FadeOut();
             Loop;
     }
 }
