@@ -163,6 +163,56 @@ class JamPuff : Actor {
     }
 }
 
+class Root : Inventory {
+    // Locks the target's X/Y movement.
+    Vector3 oldpos;
+    bool posSet;
+    default {
+        Inventory.Amount 1;
+        Inventory.MaxAmount 999;
+        +INVENTORY.KEEPDEPLETED;
+    }
+
+    override void DoEffect() {
+        if (owner) {
+            if (owner.CountInv("Root") > 0) {
+                owner.vel = (0,0,owner.vel.z);
+                //GROSS HAX AHEAD
+                if(!posSet) {
+                    oldpos = owner.pos;
+                    posSet = true;
+                }
+
+                owner.SetOrigin(oldpos,false);
+
+                owner.TakeInventory("Root",1);
+
+                if (owner && owner.GetAge() % 10 == 0) {
+                    owner.A_SpawnItemEX("RootSmoke",xofs:owner.radius, zofs:0,angle:owner.GetAge());
+                    owner.A_SpawnItemEX("RootSmoke",xofs:owner.radius, zofs:0,angle:-owner.GetAge());
+                }
+            } else {
+                posSet = false; // If the root has ended, reset the oldpos.
+            }
+
+        }
+    }
+}
+
+class RootSmoke : Actor {
+    // Indicates rooted-ness.
+    default {
+        Scale 0.2;
+        +NOINTERACTION;
+    }
+
+    states {
+        Spawn:
+            TRE2 A 1 A_FadeOut();
+            Loop;
+    }
+}
+
 class Bleed : Inventory {
     // Deals damage over time at a flat rate of 5 per second per stack.
     int frames;
