@@ -77,7 +77,6 @@ class Burn : StatusEffect {
         owner.DamageMobj(self,master,stacks,"Fire",DMG_NO_PAIN|DMG_NO_ARMOR|DMG_THRUSTLESS);
 
         if (frandom(0,1) < 0.05) {
-            owner.A_RadiusGive("Burn",owner.radius * 4,RGF_PLAYERS|RGF_MONSTERS); // TODO: Should this friendly-fire?
             let b = FlameBurst(owner.Spawn("FlameBurst",owner.pos+(0,0,owner.height/2)));
             if (b) {
                 b.power = 1;
@@ -86,6 +85,11 @@ class Burn : StatusEffect {
         }
 
         if (frandom(0,1) < 0.05) {
+            TakeStacks(1);
+        }
+
+        if (owner.bCORPSE || owner.health <= 0) {
+            // Burn out as our owner dies.
             TakeStacks(1);
         }
 
@@ -115,13 +119,11 @@ class FlameBurst : Actor {
             TNT1 A 1;
             BAL1 C 5 Bright {
                 // Iterate over all nearby things.
-                console.printf("Burn set off!");
                 let it = ThinkerIterator.create("Actor",Thinker.STAT_DEFAULT);
                 Actor mo;
                 while (mo = Actor(it.next())) {
-                    if (mo.bSHOOTABLE && (Vec3To(mo).length() - mo.radius) < giveradius) {
+                    if (mo.bSHOOTABLE && (Vec3To(mo).length() - mo.radius) < giveradius && CheckSight(mo)) {
                         console.printf("Within range for "..mo.GetClassName());
-                        console.printf("Stats: %d, %0.2f",power,giveradius);
                         let itm = mo.GiveInventory("Burn",power);
                     }
                 }
