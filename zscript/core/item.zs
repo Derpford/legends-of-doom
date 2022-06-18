@@ -1,6 +1,5 @@
 class LegendItem : Inventory {
     // A class that contains a bunch of handy functions and overrides for handling procs.
-
     double timer;
     double timelimit;
     string alarm; // What sound, if any, should we play when the timer's up?
@@ -155,7 +154,7 @@ class LegendItem : Inventory {
         self.alarmSet = true;
     }
 
-    bool TimeUp () {
+    clearscope bool TimeUp () {
         return timer <= 0.;
     }
 
