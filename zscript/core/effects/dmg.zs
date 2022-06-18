@@ -23,7 +23,8 @@ class VorpalModifier : Inventory {
                 double bhealth = owner.GetSpawnHealth();
                 double level = owner.CountInv("LevelToken");
                 double maxhealth = bhealth + (0.1*bhealth*level);
-
+                int amt = floor(maxhealth * 0.1);
+                new = amt;
             }
         }
     }
