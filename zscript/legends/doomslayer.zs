@@ -520,7 +520,7 @@ class BFGShot : LegendShot {
             Loop;
         Death:
             BFE1 AB 8 Bright;
-            BFE1 C 8 Bright A_SplashDamage(power*66,512,type:"BFG");
+            BFE1 C 8 Bright A_SplashDamage(power*66,512,type:"BFG",selfdmg:false);
             BFE1 DE 8 Bright;
             Stop;
     }
