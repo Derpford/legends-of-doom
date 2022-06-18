@@ -232,8 +232,7 @@ class BulletShot : LegendShot {
 class PainBullet : BulletShot {
     // Every so often, the Chaingun fires a particularly pain-inducing bullet.
     override int DoSpecialDamage(Actor tgt, int dmg, Name type) {
-        int diff = 17 - tgt.CountInv("Pain");
-        tgt.A_GiveInventory("Pain",diff);
+        tgt.A_GiveInventory("Pain",17);
         return super.DoSpecialDamage(tgt,dmg,type);
     }
 }
