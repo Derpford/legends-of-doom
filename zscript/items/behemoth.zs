@@ -16,7 +16,6 @@ class BehemothShell : LegendItem {
             it.power = dmg;
             it.stacks = GetStacks();
             it.target = src;
-            console.printf("Exploded from "..src.GetClassName());
         }
     }
 
@@ -41,7 +40,6 @@ class BehemothBlast : Actor {
         Spawn:
             MISL C 0;
             MISL C 4 {
-                console.printf("Explosion for "..target.GetClassName());
                 A_SplashDamage(power,128*stacks,type:"Behemoth",selfdmg:false);
                 A_StartSound("weapons/barrelx",volume:0.5);
                 double scl = float(power)/64.;
