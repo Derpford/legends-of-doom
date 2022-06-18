@@ -68,3 +68,29 @@ class TimeBarrel : LegendShot {
             Stop;
     }
 }
+
+class OilBarrel : LegendItem {
+    // Captain Planet villain.
+    default {
+        Scale 0.75;
+        LegendItem.Icon "FCANA0";
+        Tag "Oil Barrel";
+        LegendItem.Desc "On kill, ignite everything nearby.";
+        LegendItem.Remark "Captain Planet villain.";
+    }
+
+    override void OnKill(Actor src, Actor tgt) {
+        let b = FlameBurst(tgt.Spawn("FlameBurst",tgt.pos+(0,0,tgt.height/2)));
+        if (b) {
+            b.power = GetStacks();
+            b.giveradius = 384;
+            b.target = owner;
+        }
+    } 
+
+    states {
+        Spawn:
+            FCAN ABC 4 Bright;
+            Loop;
+    }
+}
