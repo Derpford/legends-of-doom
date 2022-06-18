@@ -14,10 +14,21 @@ class SealedPentagram : LegendItem {
         if (TimeUp()) {
             // Flag our timer for triggering next tic.
             used = true;
-            // Give the target Root.
-            if (tgt.CountInv("Root") == 0) { // But only if they're not already rooted!
-                tgt.GiveInventory("Root",30 + (5 * GetStacks()));
+            int amt = 9 + GetStacks();
+            let tinv = StatusEffect(tgt.FindInventory("Root"));
+            if (tinv && tinv.stacks > 0) {
+                amt = 0;
             }
+            tgt.GiveInventory("Root",amt);
+
+        }
+    }
+
+    override string,int GetItemInfo() {
+        if (!TimeUp()) {
+            return String.Format("%0.2f",timer), Font.CR_DARKGRAY;
+        } else {
+            return "READY", Font.CR_WHITE;
         }
     }
 
