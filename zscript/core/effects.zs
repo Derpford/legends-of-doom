@@ -52,7 +52,7 @@ class StatusEffect : Inventory abstract {
         // Set this effect's stacks to StackGiven.
         // Just in case this is manually set, though...
         if (stacks <= 0) {
-            stacks = stackGiven;
+            GiveStacks(stackGiven);
         }
     }
 
@@ -128,7 +128,6 @@ class StatusEffect : Inventory abstract {
     // Called every tick. Separate from DoEffect to avoid Super.DoEffect footguns.
 
     virtual void OnTimer() { 
-        console.printf("Stack count "..stacks);
         if (stacks < timeLimit) {
             SetTimer(stacks);
         } else {
