@@ -7,12 +7,12 @@ class Retribution : LegendItem {
         LegendItem.Desc "On-hit, chance to smite a foe.";
         LegendItem.Remark "Go Medieval On Thy Foes";
         LegendItem.Rarity "RARE";
-        LegendItem.RandomDecay 0.01;
+        LegendItem.RandomDecay 0.1;
         +FLOATBOB;
     }
 
     override void OnHit (int dmg, Name type, Actor src, Actor inf, Actor tgt) {
-        if (LuckRoll(10)) {
+        if (LuckRoll(25)) {
             let it = LegendShot(Spawn("RetributionHammer",owner.pos+(0,0,owner.height/2)));
             if (it) {
                 it.target = owner;

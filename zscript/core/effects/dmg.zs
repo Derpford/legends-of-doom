@@ -71,8 +71,10 @@ class SmiteModifier : Inventory {
             }
 
             double multi = 1 + (1 - (ownhp/otherhp));
-            multi = clamp(0.5,2,multi); // at most a factor of 2 in either direction
+            multi = clamp(multi,0.5,2); // at most a factor of 2 in either direction
+            console.printf("Smite multiplier: "..multi);
             new = floor(dmg * multi);
+            console.printf("Smite damage: %d",new);
         }
     }
 }
