@@ -32,7 +32,7 @@ class BloodySerum : LegendItem {
 
     override string, int GetItemInfo() {
         int c = Font.CR_WHITE;
-        if (kills > MaxStacks()) { c = Font.CR_RED; }
+        if (kills >= MaxStacks()) { c = Font.CR_RED; }
         return String.Format("+%d",kills), c;
     }
 
