@@ -123,7 +123,6 @@ class FlameBurst : Actor {
                 Actor mo;
                 while (mo = Actor(it.next())) {
                     if (mo.bSHOOTABLE && (Vec3To(mo).length() - mo.radius) < giveradius && CheckSight(mo)) {
-                        console.printf("Within range for "..mo.GetClassName());
                         let itm = mo.GiveInventory("Burn",power);
                     }
                 }
