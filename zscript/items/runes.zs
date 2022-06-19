@@ -105,6 +105,8 @@ class RuneOfJudgement : LegendItem {
 
 class JudgementSnake : LegendShot {
     // JUDGEMENT.
+    mixin NoClipProj;
+
     default {
         +NOCLIP;
         +SEEKERMISSILE;
@@ -116,12 +118,7 @@ class JudgementSnake : LegendShot {
 
     override void Tick() {
         Super.Tick();
-        if(tracer) {
-            if (Vec3To(tracer).length() < (tracer.radius + self.radius)) {
-                // We're about to hit.
-                bNOCLIP = false;
-            }
-        }
+        ClipCheck();
     }
 
     states {

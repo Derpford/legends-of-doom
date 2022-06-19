@@ -17,6 +17,20 @@ mixin class SplashDamage {
     }
 }
 
+mixin class NoClipProj {
+    // A function that sets +NOCLIP based on distance to a tracer.
+    void ClipCheck () {
+        if(tracer) {
+            if (Vec3To(tracer).length() < (tracer.radius + self.radius)) {
+                // We're about to hit.
+                bNOCLIP = false;
+            } else {
+                bNOCLIP = true;
+            }
+        } 
+    }
+}
+
 class LegendWeapon : Weapon {
     // A weapon held by a Legend.
     
