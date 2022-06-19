@@ -73,24 +73,33 @@ class Burn : StatusEffect {
 
     override void OnTimer() {
         // if (!owner.bISMONSTER && !(owner is "LegendPlayer")) { super.OnTimer(); return; } //QoL: Non-monsters skip DoTs.
-
         owner.DamageMobj(self,master,stacks,"Fire",DMG_NO_PAIN|DMG_NO_ARMOR|DMG_THRUSTLESS);
+        bool ded = (owner.bCORPSE || owner.health <= 0);
 
-        if (frandom(0,1) < 0.05) {
-            let b = FlameBurst(owner.Spawn("FlameBurst",owner.pos+(0,0,owner.height/2)));
-            if (b) {
-                b.power = 1;
-                b.giveradius = owner.radius * 4;
-            }
-        }
-
-        if (frandom(0,1) < 0.05) {
-            TakeStacks(1);
-        }
-
-        if (owner.bCORPSE || owner.health <= 0) {
+        if (ded) {
             // Burn out as our owner dies.
+            // Dramatically increased chance of spreading when owner is dead.
             TakeStacks(1);
+            if (frandom(0,1) < 0.25) {
+                let b = FlameBurst(owner.Spawn("FlameBurst",owner.pos+(0,0,owner.height/2)));
+                if (b) {
+                    b.power = 1;
+                    b.giveradius = owner.radius * 4;
+                }
+            }
+        } else {
+            // Chance of either spreading or going out.
+            if (frandom(0,1) < 0.05) {
+                let b = FlameBurst(owner.Spawn("FlameBurst",owner.pos+(0,0,owner.height/2)));
+                if (b) {
+                    b.power = 1;
+                    b.giveradius = owner.radius * 4;
+                }
+            }
+
+            if (frandom(0,1) < 0.05) {
+                TakeStacks(1);
+            }
         }
 
         SetTimer();
