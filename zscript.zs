@@ -1,16 +1,17 @@
 version "4.6"
 
 // Core.
-#include "zscript/core/player.zs"
-#include "zscript/core/hud.zs"
-#include "zscript/core/monster.zs"
-#include "zscript/core/effects.zs"
 #include "zscript/core/ammo.zs"
+#include "zscript/core/effects.zs"
+#include "zscript/core/hud.zs"
+#include "zscript/core/item-menu.zs"
 #include "zscript/core/item.zs"
-#include "zscript/core/xp.zs"
+#include "zscript/core/mixins.zs"
+#include "zscript/core/monster.zs"
+#include "zscript/core/player.zs"
 #include "zscript/core/spawn.zs"
 #include "zscript/core/weapon.zs"
-#include "zscript/core/item-menu.zs"
+#include "zscript/core/xp.zs"
 
 // ZForms.
 #include "/LegendZForms/Include.zsc"

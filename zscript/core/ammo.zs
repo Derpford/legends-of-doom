@@ -10,17 +10,6 @@ class AmmoDrop : RandomSpawner {
     }
 }
 
-mixin class PinkGiver {
-    // On pickup, also give the user pink ammo.
-    override bool TryPickup(in out actor other) {
-        bool success = super.TryPickup(other);
-        if (success) {
-            other.GiveInventory("PinkAmmo",1);
-        }
-        return success;
-    }
-}
-
 class AmmoBig : Inventory {
     // Spawns four of AmmoType when "picked up".
     Name ammotype;
