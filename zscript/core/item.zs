@@ -224,8 +224,14 @@ class LegendItem : Inventory {
     virtual void PickupArmor (Inventory item) {} 
     // ...and armor...
 
-    virtual void BreakArmor (Actor src) {} 
+    virtual void BreakArmor () {} 
     // Called when an enemy breaks our armor (reduces Armor to 0).
+
+    virtual double DamageMulti (int dmg, Name type, Actor inf, Actor src, int flags) { return 1.0; }
+    // A multiplier to apply to outgoing damage.
+
+    virtual double HurtMulti (int dmg, Name type, Actor inf, Actor src, int flags) { return 1.0; }
+    // A multiplier to apply to incoming damage.
 
     override bool HandlePickup(Inventory item) {
         // bool res = item.TryPickup(owner);
@@ -251,6 +257,26 @@ class LegendItem : Inventory {
         }
 
         return false;
+    }
+
+    override void ModifyDamage (int dmg, Name type, out int new, bool passive, Actor inf, Actor src, int flags) {
+        // We don't call OnHit and OnRetaliate here, because those should only be called AFTER all multipliers are applied.
+        if (passive) {
+            new = dmg * HurtMulti(dmg,type,inf,src,flags);
+        } else {
+            new = dmg * DamageMulti(dmg,type,inf,src,flags);
+        }
+    }
+
+    override void AbsorbDamage (int dmg, Name type, out int newdamage) {
+        let arm = BasicArmor(owner.FindInventory("BasicArmor"));
+        if (arm) {
+            let save = arm.SavePercent;
+            int saved = int(dmg * save);
+            if (arm.Amount - saved <= 0) {
+                BreakArmor();
+            }
+        }
     }
 
     override void Touch (actor Toucher) {
