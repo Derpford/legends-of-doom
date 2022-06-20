@@ -146,7 +146,9 @@ class LegendPlayer : DoomPlayer {
             it = it.inv;
         }
         // Capped to 50!
-        return min(bonus + self.Luck + (self.LuckGrow * self.Level), 50.);
+        double baseLuck = self.Luck + (self.LuckGrow * self.Level);
+        double RealLuck = (atan((bonus+baseLuck)/50.) / 180.) * 2 * 50;
+        return RealLuck; //clamp(-50, 50,RealLuck);
     }
 
     clearscope double GetPrecision() {
