@@ -53,3 +53,37 @@ class BlackPowderPlate : LegendItem {
             Stop;
     }
 }
+
+class PanicBootton : LegendItem {
+    // Wizzardly.
+    int power;
+    default {
+        Tag "Panic Bootton";
+        LegendItem.Desc "Gain a burst of Luck when your armor breaks.";
+        LegendItem.Remark "Property Of Wizzard";
+        LegendItem.Icon "BOOTA0";
+        LegendItem.Timer 1.;
+    }
+
+    override void OnTimer() {
+        power = max(0,power - 1.);
+        if (power > 0) {
+            SetTimer();
+        }
+    }
+
+    override void BreakArmor() {
+        power = 10 + (5 * GetStacks());
+        SetTimer();
+    }
+
+    override double GetLuck() {
+        return power;
+    }
+
+    states {
+        Spawn:
+            BOOT A -1;
+            Stop;
+    }
+}

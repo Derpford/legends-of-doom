@@ -83,6 +83,7 @@ class ItemSpawnHandler : StaticEventHandler {
                 spawns.push(it.key());
             }
         }
+        console.printf("Selected tier %s, %d items available",tier,spawns.size());
         if(spawns.size() > 0) {
             return spawns[random(0,spawns.size()-1)];
         } else {
