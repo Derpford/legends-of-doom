@@ -13,20 +13,20 @@ class VorpalModifier : Inventory {
     // Uses ModifyDamage to apply Vorpal effects.
 
     override void ModifyDamage (int dmg, Name type, out int new, bool passive, Actor inflictor, Actor src, int flags) {
+        int amt;
         if(passive && type == "Vorpal") {
             if(owner is "LegendPlayer") {
-                int amt = floor(owner.GetMaxHealth() * 0.1);
-                new = amt;
+                amt = floor(owner.GetMaxHealth() * 0.1);
             } else {
                 // We have to calculate max HP from the target's level tokens.
                 // Otherwise I'd have to build a custom monster set!
                 double bhealth = owner.GetSpawnHealth();
                 double level = owner.CountInv("LevelToken");
                 double maxhealth = bhealth + (0.1*bhealth*level);
-                int amt = floor(maxhealth * 0.1);
-                new = amt;
+                amt = floor(maxhealth * 0.1);
             }
         }
+        new = max(dmg, amt);
     }
 }
 

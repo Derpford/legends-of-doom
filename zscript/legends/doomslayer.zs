@@ -238,10 +238,10 @@ class PainBullet : BulletShot {
 }
 
 class SlayerShotgun : LegendWeapon {
-    // The shotgun fires 21 pellets, each of which does pow*0.16 damage. It also produces a blast in front of it that does Vorpal damage.
+    // The shotgun fires 21 pellets, each of which does pow*0.1 damage. It also produces a blast in front of it that does Vorpal damage.
 
     default {
-        LegendWeapon.Damage 0., 0.16;
+        LegendWeapon.Damage 0., 0.10;
         Weapon.SlotNumber 3;
         Weapon.AmmoType "RedAmmo";
         Weapon.AmmoUse 2;
@@ -300,7 +300,7 @@ class VorpalSplash : LegendShot {
         Spawn:
         Death:
             MISL BCD 2;
-            MISL D 2 A_SplashDamage(96, 96, type:"Vorpal", selfdmg: false);
+            MISL D 2 A_SplashDamage(80, 96, 32, type:"Vorpal", selfdmg: false);
             Stop;
     }
 }
