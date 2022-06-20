@@ -228,7 +228,7 @@ class LegendItem : Inventory {
     // Called when an enemy breaks our armor (reduces Armor to 0).
 
     override bool HandlePickup(Inventory item) {
-        if (item is "HPBonus" || item is "BasicArmorBonus") {
+        if (item is "DummyHPBonus" || item is "ArmBonus") {
             PickupBonus(item);
         }
 
@@ -458,6 +458,7 @@ class HPBonus : Inventory replaces HealthBonus {
         let plr = LegendPlayer(other);
         if(plr) {
             plr.GiveHealth(heals,overheal);
+            plr.GiveInventory("DummyHPBonus",1);
             GoAwayAndDie();
             return true;
         }
@@ -468,6 +469,19 @@ class HPBonus : Inventory replaces HealthBonus {
         spawn:
             BON1 ABCDCB 5;
             Loop;
+    }
+}
+
+class DummyHPBonus : Inventory {
+    // Exists solely to trigger OnBonus correctly.
+    default {
+        Inventory.Amount 1;
+        Inventory.MaxAmount 9999;
+    }
+
+    override void DoEffect() {
+        // Clear all copies of DummyHPBonus!
+        owner.TakeInventory("DummyHPBonus",9999);
     }
 }
 
