@@ -83,7 +83,7 @@ class OilBarrel : LegendItem {
         let b = FlameBurst(tgt.Spawn("FlameBurst",tgt.pos+(0,0,tgt.height/2)));
         if (b) {
             b.power = GetStacks();
-            b.giveradius = 384;
+            b.giveradius = tgt.radius * 4;
             b.target = owner;
         }
     } 
