@@ -12,16 +12,14 @@ class LuckyCoin : LegendItem {
 
     override void PickupBonus(Inventory item) {
         // Picking up a bonus item grants +25 luck for 5s per stack.
-        active = true;
         SetTimer(timelimit * GetStacks());
     }
 
     override void OnTimer() {
-        active = false;
     }
 
     override double GetLuck() {
-        if (active) { return 10.; } else { return 0.; }
+        if (timer > 0) { return 10.; } else { return 0.; }
     }
 
     states {
