@@ -228,20 +228,26 @@ class LegendItem : Inventory {
     // Called when an enemy breaks our armor (reduces Armor to 0).
 
     override bool HandlePickup(Inventory item) {
-        if (item is "DummyHPBonus" || item is "ArmBonus") {
-            PickupBonus(item);
-        }
+        // bool res = item.TryPickup(owner);
+        bool res = ((item.bALWAYSPICKUP) ||
+                    (owner.CountInv(item.GetClassName()) < item.MaxAmount) || 
+                    ((item is "Ammo") && (owner.CountInv("BackpackItem") > 0) && (owner.CountInv(item.GetClassName()) < Ammo(item).BackpackAmount)));
+        if (res) {
+            if (item is "DummyHPBonus" || item is "ArmBonus") {
+                PickupBonus(item);
+            }
 
-        if (item is "Health" || item is "HPBonus") { // This technically overlaps with PickupBonus and several powerups...oh well.
-            PickupHealth(item); 
-        }
+            if (item is "Health" || item is "HPBonus") { // This technically overlaps with PickupBonus and several powerups...oh well.
+                PickupHealth(item); 
+            }
 
-        if (item is "Armor") { // Likewise, this overlaps with armor bonuses.
-            PickupArmor(item);
-        }
+            if (item is "Armor") { // Likewise, this overlaps with armor bonuses.
+                PickupArmor(item);
+            }
 
-        if (item is "Ammo") {
-            PickupAmmo(item);
+            if (item is "Ammo") {
+                PickupAmmo(item);
+            }
         }
 
         return false;
