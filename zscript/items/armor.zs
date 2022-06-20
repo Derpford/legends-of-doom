@@ -1,16 +1,21 @@
 class ArmorCladFaith : LegendItem {
     // I'M A CLOWN OF FAAAAAAATE
+    int count;
     default {
         Tag "Armor-Clad Faith";
-        LegendItem.Desc "Picking up armor rarely grants Ult Ammo.";
+        LegendItem.Desc "Picking up armor occasionally grants Ult Ammo.";
         LegendItem.Remark "I'm a fool, I know nothing";
         LegendItem.Icon "ARMIA0";
     }
 
     override void PickupArmor (Inventory item) {
-        int amount = RollDown(5 * GetStacks()) - 1;
-        if (amount > 0) {
-            owner.GiveInventory("PinkAmmo",amount);
+        double multi = RollDown(5 * GetStacks());
+        int amt = item.amount;
+        if (item is "BasicArmorPickup") { amt = BasicArmorPickup(item).SaveAmount; }
+        count += amt * multi; 
+        while (count >= 100) {
+            count -= 100;
+            owner.GiveInventory("PinkAmmo",1);
         }
     }
 
@@ -40,7 +45,7 @@ class BlackPowderPlate : LegendItem {
 
     override void PickupBonus (Inventory item) {
         if (item is "ArmBonus") {
-            int amount = RollDown(20 * GetStacks()) - 1;
+            int amount = RollDown(10 + (10 * GetStacks())) - 1;
             for (int i = 0; i < amount; i++) {
                 owner.Spawn("AmmoDrop",owner.pos);
             }
