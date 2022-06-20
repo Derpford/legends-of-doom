@@ -47,7 +47,7 @@ class RuneOfEyes : LegendItem {
     }
 
     override void OnPrecisionHit() {
-        power = min(power + 0.5 * GetStacks(), 50);
+        power += 0.5;
     }
 
     override void DoEffect() {
@@ -55,7 +55,7 @@ class RuneOfEyes : LegendItem {
         if (power > 0) {
             if(TimeUp()) {
                 SetTimer();
-                power = max(0, power - (1. * GetStacks()));
+                power = max(0, power - (0.5 * GetStacks()));
             } 
         } else {
                 SetTimer();
