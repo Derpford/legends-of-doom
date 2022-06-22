@@ -25,7 +25,7 @@ DoomEdNums {
 }
 
 map arena01 "Outpost Baphomet" {
-    Music = "D_COUNTD"
+    Music = "D_BETWEE"
 }
 
 episode arena01 {
