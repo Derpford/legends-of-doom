@@ -1,12 +1,31 @@
 // There are four types of ammo: Green, Red, Yellow, and Blue.
 // These correspond to Bullet, Shell, Rocket, and Cell in vanilla.
 
-class AmmoDrop : RandomSpawner {
-    default {
-        DropItem "GreenAmmo";
-        DropItem "RedAmmo";
-        DropItem "YellowAmmo";
-        DropItem "BlueAmmo";
+class AmmoDrop : Inventory {
+    default {}
+
+    override bool CanPickup(Actor other) {
+        // Not meant to be grabbed directly!
+        return false;
+    }
+
+    override void PostBeginPlay() {
+        // Spawn a random ammo type.
+        Array<String> ammo;
+        ammo.push("GreenAmmo");
+        ammo.push("RedAmmo");
+        ammo.push("YellowAmmo");
+        ammo.push("BlueAmmo");
+        let it = spawn(ammo[random(0,3)],pos);
+        it.target = target;
+        it.master = master;
+        it.tracer = tracer;
+        if (it.master && it.master.target) {
+            it.master.target = it; // handle SpawnAmmoBonus
+        }
+        it.A_SetSpecial(Special,Args[0],Args[1],Args[2],Args[3],Args[4]);
+        it.ChangeTID(TID);
+        GoAwayAndDie();
     }
 }
 
