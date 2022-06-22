@@ -3,42 +3,13 @@ class ItemSpawnHandler : StaticEventHandler {
     // Replaces non-dropped weapons with an item from the above lumps.
     // Replaces dropped weapons with ammo.
 
+    mixin LumpParser;
+
     Array<Class<Actor> > AmmoList;
 
     Dictionary itemList; // Holds all items and their rarities.
     Dictionary tierList; // Holds all rarity tiers.
     Dictionary sparkList; // Holds one spark per rarity tier.
-
-    void ParseItems(String found) {
-        Array<String> toks;
-        found.Split(toks, "\n",TOK_SKIPEMPTY);
-        for (int i = 0; i < toks.Size(); i++) {
-            string it = toks[i].filter();
-            it.replace("\n","");
-            it.replace("\r",""); // WINDOOOOOWS
-            class<LegendItem> cit = it;
-            console.printf("Checking "..it);
-            if(cit) {
-                let cit = GetDefaultByType(cit);
-                console.printf("Class registered: %s (%s)",cit.GetClassName(),cit.rarity);
-                let r = cit.GetRarity();
-                itemList.insert(cit.GetClassName(),r);
-                // items.Push(cit);
-            }
-        }
-    }
-
-    void AppendToDict(out Dictionary a, Dictionary b) {
-        let it = DictionaryIterator.Create(b);
-        while (it.next()) {
-            a.Insert(it.key(),it.value());
-        }
-    }
-
-    void ParseDict(out Dictionary dict, String found) {
-        // Basically just appends found to tierlist.
-        AppendToDict(dict, Dictionary.FromString(found));
-    }
 
     int WeightedRandom(Array<Double> weights) {
         double sum;
@@ -106,30 +77,9 @@ class ItemSpawnHandler : StaticEventHandler {
         tierList = Dictionary.Create();
         sparkList = Dictionary.Create();
 
-        int tlump = Wads.FindLump("TIERS");
-        console.printf("Loading rarity TIERS");
-        while (tlump != -1) {
-            string found = Wads.ReadLump(tlump);
-            ParseDict(tierList,found);
-            tlump = Wads.FindLump("TIERS",tlump+1);
-        }
-
-        console.printf("Loading ISPARKS");
-        int slump = Wads.FindLump("ISPARKS");
-        while (slump != -1) {
-            string found = Wads.ReadLump(slump);
-            ParseDict(sparkList,found);
-            slump = Wads.FindLump("ISPARKS",slump+1);
-        }
-
-        console.printf("Loading ITEMS");
-        int ilump = Wads.FindLump("ITEMS");
-        while (ilump != -1) {
-            string found = Wads.ReadLump(ilump);
-            console.printf("Found:\n"..found);
-            ParseItems(found);
-            ilump = Wads.FindLump("ITEMS",ilump+1);
-        }
+        LumpToDict("TIERS",tierList);
+        LumpToDict("ISPARKS",sparkList);
+        LumpToItems("ITEMS",itemList);
     }
 
     override void CheckReplacement (ReplaceEvent e) {

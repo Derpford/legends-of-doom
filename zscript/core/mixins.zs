@@ -72,3 +72,72 @@ mixin class NoClipProj {
         } 
     }
 }
+
+mixin class LumpParser {
+    // Has convenience functions for parsing lumps.
+
+    void LumpToArray (string lname, out Array<String> list) {
+        // Just pushes items to an array.
+        int lump = Wads.FindLump(lname);
+        console.printf("Loading %s",lname);
+        while (lump != -1) {
+            string found = Wads.ReadLump(lump);
+            list.push(found);
+            lump = Wads.FindLump(lname,lump+1);
+        }
+    }
+
+    void LumpToDict (string lname, out Dictionary list) {
+        // Takes in lumps formatted as a dictionary.
+        int lump = Wads.FindLump(lname);
+        console.printf("Loading %s",lname);
+        while (lump != -1) {
+            string found = Wads.ReadLump(lump);
+            ParseDict(list,found);
+            lump = Wads.FindLump(lname,lump+1);
+        }
+    }
+
+    void ParseDict(out Dictionary dict, String found) {
+        // Basically just appends found to tierlist.
+        AppendToDict(dict, Dictionary.FromString(found));
+    }
+
+    void AppendToDict(out Dictionary a, Dictionary b) {
+        let it = DictionaryIterator.Create(b);
+        while (it.next()) {
+            a.Insert(it.key(),it.value());
+        }
+    }
+
+    void LumpToItems (string lname, out Dictionary list) {
+        // Literally just LumpToDict but with ParseItemDict instead.
+        // First class functions in zscript when :P
+        int lump = Wads.FindLump(lname);
+        console.printf("Loading %s",lname);
+        while (lump != -1) {
+            string found = Wads.ReadLump(lump);
+            ParseItemDict(found,list);
+            lump = Wads.FindLump(lname,lump+1);
+        }
+    }
+
+    void ParseItemDict(String found, out Dictionary list) {
+        Array<String> toks;
+        found.Split(toks, "\n",TOK_SKIPEMPTY);
+        for (int i = 0; i < toks.Size(); i++) {
+            string it = toks[i].filter();
+            it.replace("\n","");
+            it.replace("\r",""); // WINDOOOOOWS
+            class<LegendItem> cit = it;
+            console.printf("Checking "..it);
+            if(cit) {
+                let cit = GetDefaultByType(cit);
+                console.printf("Class registered: %s (%s)",cit.GetClassName(),cit.rarity);
+                let r = cit.GetRarity();
+                list.insert(cit.GetClassName(),r);
+                // items.Push(cit);
+            }
+        }
+    }
+}
