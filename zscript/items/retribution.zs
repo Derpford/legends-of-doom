@@ -47,7 +47,12 @@ class RetributionHammer : LegendShot {
 
     states {
         Spawn:
-            HAMM ABCD 4 Bright A_SeekerMissile(70,90,SMF_PRECISE|SMF_LOOK);
+            HAMM ABCD 4 Bright { 
+                A_SeekerMissile(70,90,SMF_PRECISE|SMF_LOOK);
+                if (tracer == target) {
+                    tracer == null;
+                }
+            }
             Loop;
         Death:
             BAL1 CDE 5 Bright;
