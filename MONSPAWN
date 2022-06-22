@@ -1,0 +1,18 @@
+{
+    "ZombieMan" : "0",
+    "DoomImp" : "1",
+    "Demon" : "1.5",
+    "ShotgunGuy" : "1.5",
+    "ChaingunGuy" : "2.5",
+    "LostSoul" : "2",
+    "Spectre" : "2.5",
+    "Cacodemon" : "5",
+    "Hellknight" : "5",
+    "Revenant" : "7.5",
+    "Arachnotron" : "7.5",
+    "BaronOfHell" : "10",
+    "Fatso" : "10",
+    "Cyberdemon" : "100",
+    "SpiderMastermind" : "150",
+    "ArchVile" : "250"
+}

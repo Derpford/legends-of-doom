@@ -1,5 +1,32 @@
 GameInfo {
     PlayerClasses = "Doomslayer"
     StatusBarClass = "LegendHud"
-    AddEventHandlers = "XPDropHandler", "VorpalHandler", "SmiteHandler", "MonsterLevelHandler", "MonsterStaticHandler", "ItemPassiveHandler", "ItemSpawnHandler"
+    AddEventHandlers = "XPDropHandler", "VorpalHandler", "SmiteHandler", "MonsterLevelHandler", "MonsterStaticHandler", "ItemPassiveHandler", "ItemSpawnHandler", "WaveSpawnHandler"
+}
+
+DoomEdNums {
+    6661 = "SpawnMonster"
+    6662 = "SpawnMonsterBig"
+    6663 = "SpawnBoss"
+
+    6670 = "SpawnItem"
+    6671 = "SpawnHealth"
+    6672 = "SpawnGreenArmor"
+    6673 = "SpawnBlueArmor"
+    6674 = "SpawnGreenAmmo"
+    6675 = "SpawnRedAmmo"
+    6676 = "SpawnYellowAmmo"
+    6677 = "SpawnBlueAmmo"
+    6678 = "SpawnHPBonus"
+    6679 = "SpawnArmBonus"
+    6680 = "SpawnSuperSoul"
+    6681 = "SpawnAmmoBonus"
+}
+
+map arena01 "Outpost Baphomet" {
+    Music = "D_COUNTD"
+}
+
+episode arena01 {
+    Name = "Survival Arena"
 }

@@ -10,6 +10,8 @@ version "4.6"
 #include "zscript/core/monster.zs"
 #include "zscript/core/player.zs"
 #include "zscript/core/spawn.zs"
+#include "zscript/core/wave.zs"
+#include "zscript/core/waveitems.zs"
 #include "zscript/core/weapon.zs"
 #include "zscript/core/xp.zs"
 
