@@ -3,7 +3,7 @@ class SpawnMonster : Actor {
     // For demons and lower.
     // Spawn spots contain no logic of their own!
     default {
-        radius 30;
+        radius 32;
         +FLATSPRITE;
         +BRIGHT;
         +SYNCHRONIZED;
@@ -20,7 +20,10 @@ class SpawnMonsterBig : SpawnMonster {
     // For up to Arachnotron-size enemies.
     // This actually can fit Cyberdemons, but not Spider Masterminds.
     default {
-        radius 64;
+        radius 80;
+        +FLATSPRITE;
+        +BRIGHT;
+        +SYNCHRONIZED;
     }
 
     states {
@@ -30,11 +33,14 @@ class SpawnMonsterBig : SpawnMonster {
     }
 }
 
-class SpawnBoss : SpawnMonsterBig {
+class SpawnBoss : SpawnMonster {
     // For Cybies and Masterminds.
     default {
         Radius 128;
         Scale 2;
+        +FLATSPRITE;
+        +BRIGHT;
+        +SYNCHRONIZED;
     }
 
     states {
@@ -83,11 +89,13 @@ class SpawnGreenArmor : SpawnItem {
     // Spawns a green armor!
     default {
         SpawnItem.type "GreenArmor";
+        Scale 2;
+        SpawnItem.isMajor false; // Green armor is easy to replenish.
     }
 
     states {
         Spawn:
-            ARM1 AB 6;
+            PLSS AB 6;
             Loop;
     }
 }
@@ -96,11 +104,12 @@ class SpawnBlueArmor : SpawnItem {
     // A blue armor!
     default {
         SpawnItem.type "BlueArmor";
+        Scale 2;
     }
 
     states {
         Spawn:
-            ARM2 AB 6;
+            PLSS AB 6;
             Loop;
     }
 }
@@ -168,5 +177,11 @@ class SpawnSuperSoul : SpawnHPBonus {
         Scale 1;
         SpawnItem.Type "SuperSoul";
         SpawnItem.isMajor true;
+    }
+
+    states {
+        Spawn: 
+            PLSS AB 6;
+            Loop;
     }
 }

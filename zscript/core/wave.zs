@@ -1,4 +1,4 @@
-class WaveSpawnHandler : StaticEventHandler {
+class WaveSpawnBrain : Actor {
     // Handles the moment-to-moment details of spawning monsters.
     mixin LumpParser;
 
@@ -24,6 +24,7 @@ class WaveSpawnHandler : StaticEventHandler {
     Dictionary spawnList; // What's the cost of spawning monsters?
 
     ThinkerIterator spawnSpots; // Persists so that spawns can be spread across multiple tics.
+    SpawnMonster mspot;
     ThinkerIterator bossSpots; // The same, but for boss spots specifically.
 
     void Initialize() {
@@ -36,7 +37,7 @@ class WaveSpawnHandler : StaticEventHandler {
         spawnTimeLimit = 30; // Every 30 seconds, try to add more monsters to the spawnlist.
         seconds = 5; // Start with 5s before the first wave.
         tickTimer = 35;
-        spawncap = 25;
+        spawncap = 15;
         bosswave = 5;
         boss = null;
 
@@ -72,11 +73,13 @@ class WaveSpawnHandler : StaticEventHandler {
                 console.printf("Set boss to "..it.key());
                 bosscost = cost;
                 bossType = it.key();
+                bossSpawned = false;
             }
         }
+
         
         // Now we need to populate spawns with a bunch of monsters.
-        while (monsters.size() > 0 && spawns.size() < (spawncap + (spawncap * difficulty))) {
+        while (monsters.size() > 0 && spawns.size() < (spawncap + (5 * difficulty) + wave)) {
             // Pick a random monster from the monsters list!
             int idx = random(0,monsters.size()-1);
             Name mon = monsters[idx];
@@ -116,30 +119,32 @@ class WaveSpawnHandler : StaticEventHandler {
     void ProcessSpawns () {
         // As long as our spawn list isn't empty, we need to find places to spawn them.
         if (spawns.size() > 0) { // This is called every tick anyway.
-            let mo = SpawnMonster(spawnSpots.next());
+            console.printf("Spawns left: "..spawns.size());
+            mspot = SpawnMonster(spawnSpots.next());
             Class<Actor> mname = spawns[0];
-            if (mo && mname) {
+            if (mspot && mname) {
                 // Random chance of skipping a spawnspot.
                 if (frandom(0,1) < 0.2) {
-                    mo = SpawnMonster(spawnSpots.next());
-                    if (!mo) { return; }
+                    mspot = SpawnMonster(spawnSpots.next());
+                    if (!mspot) { return; }
                 }
                 let mon = GetDefaultByType(mname);
-                if (mon.radius > mo.radius) {
+                if (mon.radius > mspot.radius) {
                     // Too big! Continue to the next.
                     return;
                 }
-                BlockThingsIterator it = BlockThingsIterator.Create(mo,mo.radius);
+                BlockThingsIterator it = BlockThingsIterator.Create(mspot,mspot.radius);
                 while (it.next()) {
-                    if (CheckCollision(mo,it.Thing)) {
+                    if (CheckCollision(mspot,it.Thing)) {
                         // Something's blocking this spawnspot.
                         return;
                     }
                 }
 
                 // If we've reached this point, this spawnspot is safe! Spawn the thing.
-                mo.spawn(mon.GetClassName(),mo.pos);
-                mo.spawn("TeleportFog",mo.pos);
+                let sp = mspot.spawn(mon.GetClassName(),mspot.pos);
+                sp.angle = mspot.angle;
+                mspot.spawn("TeleportFog",mspot.pos);
                 spawns.delete(0);
             } else {
                 // OTOH, we might be out of spawnspots.
@@ -152,7 +157,7 @@ class WaveSpawnHandler : StaticEventHandler {
 
     void BossSpawn() {
         // Now we need to do all that, but for bosses :D
-        if (wave % bosswave == 0) {
+        if (!bossSpawned) {
             if (!boss || boss.bCORPSE) {
                 let mo = SpawnBoss(bossSpots.next());
                 Class<Actor> b = bossType;
@@ -172,9 +177,13 @@ class WaveSpawnHandler : StaticEventHandler {
                     // Now we can spawn the boss.
                     console.printf("Attempting to spawn a boss");
                     boss = mo.spawn(mon.GetClassName(),mo.pos);
-                    if (boss && !bossSpawned) {
+                    if (boss) {
                         boss.bBOSS = true;
+                        boss.angle = mo.angle;
                         boss.GiveInventory("BossSparkler",1);
+                        boss.GiveInventory("LevelToken",difficulty);
+                        boss.master = self;
+                        bossSpawned = true;
                         mo.spawn("TeleportFog",mo.pos);
                     }
                 } else {
@@ -184,19 +193,18 @@ class WaveSpawnHandler : StaticEventHandler {
         }
     }
 
-    override void NewGame () {
+    override void PostBeginPlay () {
         initialized = false;
         console.printf("Starting new game!");
     }
 
-    override void WorldTick () {
+    override void Tick () {
         if (!initialized) { Initialize(); }
         if (boss == null || boss.bCORPSE) { // Only tick the timer if the boss is dead!
             tickTimer -= 1;
             if (tickTimer < 0) {
                 tickTimer = 35;
                 seconds -= 1;
-                Console.MidPrint(Font.GetFont("SMALLFONT"),""..seconds,true);
             }
             if (seconds < 0) {
                 seconds = spawnTimeLimit;
@@ -208,13 +216,11 @@ class WaveSpawnHandler : StaticEventHandler {
         BossSpawn();
     }
 
-    override void WorldThingDied (WorldEvent e) {
+    void BossDied () {
         // When something with +BOSS dies, increment difficulty and spawn new items.
-        if (e.Thing.bBOSS) {
-            difficulty += 1;
-            SpawnItems();
-            MakeNewSpawns();
-        }
+        difficulty += 1;
+        SpawnItems();
+        MakeNewSpawns();
     }
 }
 
@@ -230,6 +236,10 @@ class BossSparkler : Inventory {
                 owner.Spawn("EpicSpark",owner.pos+offs);
             }
         } else {
+            let brain = WaveSpawnBrain(owner.master);
+            if (brain) {
+                brain.BossDied();
+            }
             GoAwayAndDie();
         }
     }

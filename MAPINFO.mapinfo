@@ -1,10 +1,11 @@
 GameInfo {
     PlayerClasses = "Doomslayer"
     StatusBarClass = "LegendHud"
-    AddEventHandlers = "XPDropHandler", "VorpalHandler", "SmiteHandler", "MonsterLevelHandler", "MonsterStaticHandler", "ItemPassiveHandler", "ItemSpawnHandler", "WaveSpawnHandler"
+    AddEventHandlers = "XPDropHandler", "VorpalHandler", "SmiteHandler", "MonsterLevelHandler", "MonsterStaticHandler", "ItemPassiveHandler", "ItemSpawnHandler"
 }
 
 DoomEdNums {
+    6660 = "WaveSpawnBrain"
     6661 = "SpawnMonster"
     6662 = "SpawnMonsterBig"
     6663 = "SpawnBoss"
