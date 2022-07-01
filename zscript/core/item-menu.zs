@@ -142,16 +142,18 @@ class ItemMenu : LegendZFGenericMenu {
             String info; int icolor;
             [info, icolor] = items[i].GetItemInfo();
 
-            let xslots = floor(bgsize.x/64.); // How many items wide is this list?
+            double btnsize = 64.; // Change padding here
+            double padding = 1.;
+            let xslots = floor(bgsize.x/btnsize+padding); // How many items wide is this list?
             int xsp = i % xslots; 
-            let lposx = listpos.x + (xsp * 64);
+            let lposx = listpos.x + (xsp * (btnsize+padding));
             int ysp = i / xslots;
-            let lposy = listpos.y + (ysp * 64);
+            let lposy = listpos.y + (ysp * (btnsize+padding));
             let pos = (lposx,lposy); // TODO: Wrapping
             let offs = (32 - (size.x * 0.5), 32 - (size.y * 0.5));
             let ibtn = LegendZFButton.Create (
                 pos, // TODO: Wrapping
-                (64,64),
+                (btnsize,btnsize),
                 cmdHandler: handler,
                 command: String.format("%d",i),
                 inactive: btex,
@@ -253,6 +255,7 @@ class ItemMenuHandler : LegendZFHandler {
     //         l.iid = idx;
     //     }
     // }
+
     override void buttonClickCommand(LegendZFButton caller, string cmd) {
         int idx = cmd.toInt();
         if (idx == link.iid) {
