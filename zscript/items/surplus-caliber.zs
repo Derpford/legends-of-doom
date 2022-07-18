@@ -17,7 +17,7 @@ class SurplusCaliber : LegendItem {
         if(power > 0) {
             if(TimeUp()) {
                 SetTimer();
-                power = max(0,power - (1.5 + GetStacks()));
+                power = max(0,power - (.20 + GetStacks()));
             }
         } else {
             SetTimer();

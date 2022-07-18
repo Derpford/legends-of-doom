@@ -27,7 +27,7 @@ class SpicyWater : LegendItem {
                 let it = RadBurst(owner.spawn("RadBurst",owner.pos+(0,0,16)));
                 if (it) {
                     it.target = owner;
-                    it.power = floor(GetOwnerPower()*0.1);
+                    it.power = floor(GetOwnerPower());
                     it.radius = 128;
                     stack -= maxstack;
                 }

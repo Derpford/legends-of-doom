@@ -8,7 +8,7 @@ class Doomslayer : LegendPlayer {
     // The Rocket Launcher explodes for 5xPower damage in a 128 unit AoE.
 
     default {
-        LegendPlayer.Power 47.6, 0.4;
+        LegendPlayer.Power 5, 0.4;
         LegendPlayer.Precision -1.5, 1.5;
         LegendPlayer.Toughness 0.,0.;
         LegendPlayer.Luck 0.,0.;
@@ -60,7 +60,7 @@ class SlayerSaw : LegendWeapon {
         Fire:
             SAWG AB 4 {
                 A_StartSound("weapons/sawhit");
-                A_CustomPunch(invoker.GetDamage(),true,CPF_PULLIN,"LegendPuff");
+                A_CustomPunch(invoker.GetDamage(invoker.GetPower()),true,CPF_PULLIN,"LegendPuff");
                 let tgt = invoker.owner.AimTarget();
                 if(tgt && invoker.owner.Vec3To(tgt).length() < 64 + tgt.radius) {
                     tgt.GiveInventory("Efficiency",1);
@@ -83,7 +83,7 @@ class Efficiency : Inventory {
 }
 
 class SlayerChaingun : LegendWeapon {
-    // The chaingun attacks rapidly for 5+pow*0.1 damage with a small amount of spread.
+    // The chaingun attacks rapidly for 5+pow*1 damage with a small amount of spread.
     int stacks;
     int ammo;
     int atics;
@@ -91,7 +91,7 @@ class SlayerChaingun : LegendWeapon {
     int count; // How many bullets do we fire this tick?
 
     default {
-        LegendWeapon.Damage 5, 0.1;
+        LegendWeapon.Damage 5, 1;
         Weapon.SlotNumber 2;
         Weapon.AmmoType "GreenAmmo";
         Weapon.AmmoUse 1;
@@ -238,10 +238,10 @@ class PainBullet : BulletShot {
 }
 
 class SlayerShotgun : LegendWeapon {
-    // The shotgun fires 21 pellets, each of which does pow*0.1 damage. It also produces a blast in front of it that does Vorpal damage.
+    // The shotgun fires 21 pellets, each of which does pow*1.1 damage. It also produces a blast in front of it that does Vorpal damage.
 
     default {
-        LegendWeapon.Damage 0., 0.10;
+        LegendWeapon.Damage 0., 1.1;
         Weapon.SlotNumber 3;
         Weapon.AmmoType "RedAmmo";
         Weapon.AmmoUse 2;
@@ -311,7 +311,7 @@ class SlayerPlasma : LegendWeapon {
     int ammo;
 
     default {
-        LegendWeapon.Damage 0., .8;
+        LegendWeapon.Damage 0., 8;
         Weapon.SlotNumber 4;
         Weapon.AmmoType "BlueAmmo";
         Weapon.AmmoUse 4;
@@ -372,11 +372,11 @@ class PlasmaShot : LegendShot {
 }
 
 class SlayerLauncher : LegendWeapon {
-    // Fires rockets that impact for pow*1.0 damage and explode for up to pow*5.0 damage.
+    // Fires rockets that impact for pow*10 damage and explode for up to pow*50 damage.
     int ammo;
     
     default {
-        LegendWeapon.Damage 0., 1.;
+        LegendWeapon.Damage 0., 10.;
         Weapon.SlotNumber 5;
         Weapon.AmmoType "YellowAmmo";
         Weapon.AmmoUse 5;
@@ -432,7 +432,7 @@ class RocketShot : LegendShot {
             Loop;
         Death:
             MISL BC 4;
-            MISL D 4 A_SplashDamage(power*5,128);
+            MISL D 4 A_SplashDamage(power*50,128);
             MISL E 4;
             TNT1 A 0;
             Stop;
@@ -441,10 +441,10 @@ class RocketShot : LegendShot {
 
 class SlayerBFG : LegendWeapon {
     // The one weapon to rule them all. 
-    // Fires a massive ball of plasma, which zaps monsters for 1*POW damage on the first pass.
-    // Upon impacting, the ball does 66*POW damage in a wide splash, and 6*POW damage to everything that was hit earlier.
+    // Fires a massive ball of plasma, which zaps monsters for 10*POW damage on the first pass.
+    // Upon impacting, the ball does 660*POW damage in a wide splash, and 60*POW damage to everything that was hit earlier.
     default {
-        LegendWeapon.Damage 0, 1.;
+        LegendWeapon.Damage 0, 10;
         Weapon.SlotNumber 6; // should also be usable via the Zoom key as a shortcut
         Weapon.AmmoType "PinkAmmo";
         Weapon.AmmoUse 100;
@@ -512,7 +512,7 @@ class BFGShot : LegendShot {
                         let itm = mo.GiveInventoryType("BFGZap");
                         if (itm) {
                             itm.master = self;
-                            mo.DamageMobj(self,target,power,"BFG");
+                            mo.DamageMobj(self,target,dmg,"BFG");
                         }
                     }
                 }
@@ -520,7 +520,7 @@ class BFGShot : LegendShot {
             Loop;
         Death:
             BFE1 AB 8 Bright;
-            BFE1 C 8 Bright A_SplashDamage(power*66,512,type:"BFG",selfdmg:false);
+            BFE1 C 8 Bright A_SplashDamage(power*660,512,type:"BFG",selfdmg:false);
             BFE1 DE 8 Bright;
             Stop;
     }
@@ -528,7 +528,7 @@ class BFGShot : LegendShot {
 
 class BFGZap : Inventory {
     // Handles stunlocking and damaging enemies that are caught by BFG beams.
-    int power;
+    double power;
     default {
         Inventory.Amount 1;
         Inventory.MaxAmount 1;
@@ -543,7 +543,7 @@ class BFGZap : Inventory {
             }
             // Also, set some important pointers and spawn visual effects.
             target = m.target;
-            power = m.power * 6;
+            power = m.power;
             if (GetAge() % 10 == 0) {
                 let it = owner.Spawn("RadSparkle",owner.pos);
                 if (it) {
@@ -552,7 +552,7 @@ class BFGZap : Inventory {
             }
         } else {
             // Time to explode!
-            owner.DamageMobj(target,self,power,"BFG");
+            owner.DamageMobj(target,self,power * 60,"BFG");
             owner.TakeInventory("BFGZap",1);
         }
     }

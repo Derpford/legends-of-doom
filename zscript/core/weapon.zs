@@ -10,32 +10,40 @@ class LegendWeapon : Weapon {
         LegendWeapon.Damage 0, 1.0;
     }
 
-    int GetDamage() {
+    double GetPower(bool raw = false) {
+        let plr = LegendPlayer(owner);
+        if (!plr) { return 0.0; } // Something went wrong.
+        return plr.GetPower(raw);
+    }
+
+    int GetDamage(double power) {
         // Since we might get a fractional damage value, use the fractional part as a chance of rounding up.
-        int fpow;
         let plr = LegendPlayer(owner);
         if(!plr) { return 0; } // Something went wrong.
-        double power = plr.GetPower();
-        int bpow = floor(power);
 
+        int bpow = floor(power);
         double c = (power - bpow)*100; // Percentage chance of getting the higher value
 
+        int fdmg = floor(BaseDmg + (power * PowScale));
         if (plr.LuckRoll(c)) {
-            return ceil(BaseDmg + (power*PowScale));
-        } else {
-            return floor(BaseDmg + (power*PowScale));
+            fdmg = ceil(BaseDmg + (power * PowScale));
         }
+        return fdmg;
     }
 
     action void Shoot(Name type, double ang = 0, double xy = 0, int height = 0, int flags = 0, double pitch = 0) {
         Actor it = A_FireProjectile(type,ang,false,xy,height,flags,pitch);
         if(it) {
+            double pow = invoker.GetPower();
+            int dmg = invoker.GetDamage(pow);
             if (it is "LegendShot") {
                 let it = LegendShot(it);
-                it.power = invoker.GetDamage();
+                it.power = pow;
+                it.dmg = dmg;
             } else if (it is "LegendFastShot") {
                 let it = LegendFastShot(it);
-                it.power = invoker.GetDamage();
+                it.power = pow;
+                it.dmg = dmg;
             }
         }   
     }
@@ -59,13 +67,14 @@ class LegendShot : Actor {
     // A projectile fired by a LegendWeapon.
     mixin SplashDamage;
 
-    int power;
+    double power;
+    int dmg;
 
     default {
         PROJECTILE;
         +FORCERADIUSDMG;
         Speed 40;
-        DamageFunction (power);
+        DamageFunction (dmg);
     }
 
 }
@@ -74,13 +83,14 @@ class LegendFastShot : Actor {
     // FastProjectile for LegendWeapons.
     mixin SplashDamage;
 
-    int power;
+    int dmg;
+    double power;
 
     default {
         PROJECTILE;
         +FORCERADIUSDMG;
         Speed 40;
-        DamageFunction (power);
+        DamageFunction (dmg);
     }
 }
 

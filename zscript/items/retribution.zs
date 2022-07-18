@@ -19,7 +19,7 @@ class Retribution : LegendItem {
                 it.tracer = tgt;
                 it.VelFromAngle(it.speed,it.angle);
                 it.angle = owner.angle + frandom(-15,15);
-                it.power = GetStacks() * GetOwnerPower();
+                it.power = GetStacks() * GetOwnerPower() * 5;
             }
             randomAdjust += 1;
         }
