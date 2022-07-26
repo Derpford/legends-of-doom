@@ -15,7 +15,7 @@ class LifeChannelAmulet : LegendItem {
     }
 
     override double GetPower() {
-        return 10. + (10. * GetStacks());
+        return 2.5 + (7.5 * GetStacks());
     }
 
     states {
