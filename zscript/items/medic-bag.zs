@@ -63,3 +63,32 @@ class MedicOrb : HPBonus {
             Loop;
     }
 }
+
+class FirstAidKit : LegendItem {
+    // Rapid trauma response.
+    default {
+        LegendItem.Icon "AIDKA0";
+        Tag "First Aid";
+        LegendItem.Desc "Receive healing 6 seconds after you stop taking damage.";
+        LegendItem.Remark "It contains...mushrooms?";
+        LegendItem.Rarity "COMMON HEALING";
+        LegendItem.Timer 6.0;
+    }
+
+    override void OnTimer() {
+        int baseheal = floor(2.5 * GetStacks());
+        int percentheal = floor(owner.GetMaxHealth() * 0.1);
+        let plr = LegendPlayer(owner);
+        plr.GiveHealth(percentheal + baseheal);
+    }
+
+    override void OnRetaliate(int dmg, Name type, Actor src, Actor inf, Actor tgt) {
+        SetTimer();
+    }
+
+    states {
+        Spawn:
+            AIDK A -1;
+            Stop;
+    }
+}
