@@ -50,6 +50,10 @@ class ItemSpawnHandler : StaticEventHandler {
             }
         }
 
+        // If there's only one tier, pick that.
+        if (tiers.Size() == 1) {
+            return tiers[0];
+        }
         // Now do a weighted random roll on weights...
         int idx = WeightedRandom(weights);
         // And that's the tier we return.
@@ -65,7 +69,7 @@ class ItemSpawnHandler : StaticEventHandler {
                 spawns.push(it.key());
             }
         }
-        console.printf("Selected tier %s, %d items available",tier,spawns.size());
+
         if(spawns.size() > 0) {
             return spawns[random(0,spawns.size()-1)];
         } else {
