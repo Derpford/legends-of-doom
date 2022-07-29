@@ -2,5 +2,10 @@
     "COMMON": "70",
     "RARE": "20",
     "EPIC": "5",
-    "CURSED": "5"
+    "CURSED": "5",
+
+    "HEALING" : "0",
+    "UTILITY" : "0",
+    "ATTACK" : "0",
+    "DEFENSE" : "0"
 }
