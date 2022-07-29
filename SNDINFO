@@ -1,1 +1,9 @@
 weapons/bfgr MSPick
+
+items/barbeep dsitemup
+$attenuation "items/barbeep" 0.2
+$volume "items/barbeep" 1.3
+$limit "items/barbeep" 0
+
+items/serum dsitemup
+$pitchset "items/serum" 0.8
