@@ -130,12 +130,14 @@ mixin class LumpParser {
             it.replace("\n","");
             it.replace("\r",""); // WINDOOOOOWS
             class<LegendItem> cit = it;
-            console.printf("Checking "..it);
             if(cit) {
                 let cit = GetDefaultByType(cit);
-                console.printf("Class registered: %s (%s)",cit.GetClassName(),cit.rarity);
-                let r = cit.GetRarity();
-                list.insert(cit.GetClassName(),r);
+                Array<String> r;
+                cit.GetTiers(r);
+                for (int i = 0; i < r.Size(); i++) {
+                    list.insert(cit.GetClassName(),r[i]);
+                    console.printf("Item registered: %s (%s)",cit.GetClassName(),r[i]);
+                }
                 // items.Push(cit);
             }
         }
