@@ -1,4 +1,4 @@
-class LegendPlayer : DoomPlayer {
+class LegendPlayer : DoomPlayer abstract {
     // The core class for a Legend. 
     // This class has all the basic stats that Legends should have.
     double Power; 

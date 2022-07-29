@@ -1,4 +1,4 @@
-class LegendItem : Inventory {
+class LegendItem : Inventory abstract {
     // A class that contains a bunch of handy functions and overrides for handling procs.
     double timer;
     double timelimit;
