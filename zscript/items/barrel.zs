@@ -7,6 +7,7 @@ class BarrelOfFun : LegendItem {
         LegendItem.Desc "Chance of spawning a time-bomb barrel on hit.";
         LegendItem.Remark "*not actually fun";
         LegendItem.RandomDecay 0.01; // Barrels should be infrequent.
+        LegendItem.Rarity "COMMON ATTACK";
     }
 
     override void OnHit(int dmg, Name type, Actor src, Actor inf, Actor tgt) {
@@ -48,7 +49,7 @@ class TimeBarrel : LegendShot {
             BAR1 AAABBB 1 {
                 timer -= 1;
                 if (timer % 10 == 0) {
-                    A_StartSound("misc/i_pkup",attenuation:0.3,pitch:(70./(70 + timer)));
+                    A_StartSound("items/barbeep",attenuation:0.3,pitch:(70./(70 + timer)));
                 }
 
                 if (timer <= 0) {
@@ -77,6 +78,7 @@ class OilBarrel : LegendItem {
         Tag "Oil Barrel";
         LegendItem.Desc "On kill, ignite everything nearby.";
         LegendItem.Remark "Captain Planet villain.";
+        LegendItem.Rarity "COMMON ATTACK";
     }
 
     override void OnKill(Actor src, Actor tgt) {

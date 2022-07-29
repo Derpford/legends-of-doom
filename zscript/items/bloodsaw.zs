@@ -5,6 +5,7 @@ class BloodSaw : LegendItem {
         Tag "Bloodsaw";
         LegendItem.Desc "Chance to inflict bleed on hit.";
         LegendItem.Remark "Is that tomato sauce?";
+        LegendItem.Rarity "COMMON ATTACK";
     }
 
     override void OnHit(int dmg, Name type, Actor src, Actor inf, Actor tgt) {

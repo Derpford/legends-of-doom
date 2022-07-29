@@ -7,7 +7,7 @@ class HardHelmet : LegendItem {
         Tag "Hard Helmet";
         LegendItem.Desc "Being healthy grants Toughness.";
         LegendItem.Remark "OSHA-compliant.";
-        LegendItem.Rarity "EPIC";
+        LegendItem.Rarity "EPIC DEFENSE";
     }
 
     override double GetToughness () {

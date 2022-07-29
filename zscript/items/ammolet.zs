@@ -5,6 +5,7 @@ class Ammolet : LegendItem {
         Tag "Ammolet";
         LegendItem.Desc "Picking up health occasionally spawns ammo.";
         LegendItem.Remark "Gungeon Souvenir";
+        LegendItem.Rarity "COMMON UTILITY";
     }
 
     override void PickupHealth(Inventory it) {

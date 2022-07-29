@@ -6,6 +6,7 @@ class ArmorCladFaith : LegendItem {
         LegendItem.Desc "Picking up armor occasionally grants Ult Ammo.";
         LegendItem.Remark "I'm a fool, I know nothing";
         LegendItem.Icon "ARMIA0";
+        LegendItem.Rarity "COMMON UTILITY DEFENSE";
     }
 
     override void PickupArmor (Inventory item) {

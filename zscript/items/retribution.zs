@@ -6,7 +6,7 @@ class Retribution : LegendItem {
         LegendItem.Icon "HAMIA0";
         LegendItem.Desc "On-hit, chance to smite a foe.";
         LegendItem.Remark "Go Medieval On Thy Foes";
-        LegendItem.Rarity "RARE";
+        LegendItem.Rarity "RARE ATTACK";
         LegendItem.RandomDecay 0.1;
         +FLOATBOB;
     }

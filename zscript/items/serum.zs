@@ -9,7 +9,7 @@ class BloodySerum : LegendItem {
         Tag "Bloody Serum";
         LegendItem.Desc "Gain max health on kill.";
         LegendItem.Remark "You feel rabid.";
-        LegendItem.Rarity "RARE";
+        LegendItem.Rarity "RARE HEALING";
     }
 
     clearscope int MaxStacks() {
@@ -26,7 +26,7 @@ class BloodySerum : LegendItem {
             } else {
                 owner.GiveBody(1);
             }
-            owner.A_StartSound("misc/i_pkup",2,pitch:0.8);
+            owner.A_StartSound("items/serum",2,pitch:0.8);
         }
     }
 

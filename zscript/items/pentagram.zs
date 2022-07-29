@@ -7,7 +7,7 @@ class SealedPentagram : LegendItem {
         LegendItem.Desc "Every 5s, your next attack roots whatever it hits.";
         LegendItem.Remark "Witchin'.";
         LegendItem.Timer 5.;
-        LegendItem.Rarity "RARE";
+        LegendItem.Rarity "RARE DEFENSE UTILITY";
     }
 
     override void OnHit(int dmg, Name type, Actor src, Actor inf, Actor tgt) {

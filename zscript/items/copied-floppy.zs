@@ -4,6 +4,7 @@ class CopiedFloppy : LegendItem {
         Tag "Copied Floppy";
         LegendItem.Desc "Gain bonus XP on kill.";
         LegendItem.Remark "Yar har!";
+        LegendItem.Rarity "COMMON UTILITY";
     }
 
     override void OnKill (Actor src, Actor tgt) {
@@ -27,6 +28,7 @@ class TreasuredFloppy : LegendItem {
         Tag "Treasured Floppy";
         LegendItem.Desc "Chance of dropping ammo on kill.";
         LegendItem.Remark "I loved this one!";
+        LegendItem.Rarity "COMMON UTILITY";
     }
 
     override void OnKill (Actor src, Actor tgt) {

@@ -5,7 +5,7 @@ class BehemothShell : LegendItem {
         Tag "Behemoth Shell";
         LegendItem.Desc "All of your attacks explode!";
         LegendItem.Remark "Legally Distinct Brillaince";
-        LegendItem.Rarity "EPIC";
+        LegendItem.Rarity "EPIC ATTACK";
         DamageFactor "Explosion", 0.5;
     }
 
