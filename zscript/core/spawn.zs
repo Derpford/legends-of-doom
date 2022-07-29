@@ -9,6 +9,7 @@ class ItemSpawnHandler : StaticEventHandler {
 
     Dictionary itemList; // Holds all items and their rarities.
     Dictionary tierList; // Holds all rarity tiers.
+    Dictionary crateList; // Holds all item crates.
     Dictionary sparkList; // Holds one spark per rarity tier.
 
     int WeightedRandom(Array<Double> weights) {
@@ -30,13 +31,23 @@ class ItemSpawnHandler : StaticEventHandler {
         return -1;
     }
 
-    String SelectRarity() {
+    String SelectRarity(String whitelist = "") {
+        // Start by splitting the whitelist, unless it's an empty string.
+        Array<String> splitWhitelist;
+        bool skipWhitelist = false;
+        if (whitelist == "") {
+            skipWhitelist = true;
+        } else {
+            whitelist.split(splitWhitelist, " ",TOK_SKIPEMPTY);
+        }
         Array<String> tiers;
         Array<Double> weights;
         DictionaryIterator it = DictionaryIterator.Create(tierList);
         while (it.next()) {
-            tiers.push(it.key());
-            weights.push(it.value().toDouble());
+            if (skipWhitelist || splitWhitelist.find(it.key()) != splitWhitelist.size()) {
+                tiers.push(it.key());
+                weights.push(it.value().toDouble());
+            }
         }
 
         // Now do a weighted random roll on weights...
@@ -62,6 +73,18 @@ class ItemSpawnHandler : StaticEventHandler {
         }
     }
 
+    String SelectCrate() {
+        Array<String> tiers;
+        Array<Double> weights;
+        DictionaryIterator it = DictionaryIterator.Create(cratelist);
+        while (it.next()) {
+            tiers.push(it.key());
+            weights.push(it.value().toDouble());
+        }
+        int idx = WeightedRandom(weights);
+        return tiers[idx];
+    }
+
     override void OnRegister() {
         // Ammunition!
         Class<Actor> ga = "GreenAmmo";
@@ -76,10 +99,35 @@ class ItemSpawnHandler : StaticEventHandler {
         itemList = Dictionary.Create();
         tierList = Dictionary.Create();
         sparkList = Dictionary.Create();
+        crateList = Dictionary.Create();
 
         LumpToDict("TIERS",tierList);
         LumpToDict("ISPARKS",sparkList);
-        LumpToItems("ITEMS",itemList);
+        // LumpToItems("ITEMS",itemList);
+
+        // Grab all LegendItem and Crate classes that are non-abstract.
+        for (int i = 0; i < AllClasses.Size(); i++) {
+            if (AllClasses[i].IsAbstract()) { continue; }
+
+            if (AllClasses[i] is "LegendItem") {
+                Class<Actor> it = AllClasses[i].GetClassName();
+                let cit = LegendItem(GetDefaultByType(it));
+                Array<String> r;
+                cit.GetTiers(r);
+                for (int j = 0; j < r.Size(); j++) {
+                    itemList.insert(cit.GetClassName(),r[j]);
+                    console.printf("Item registered: %s (%s)",cit.GetClassName(),r[j]);
+                }
+            }
+
+            if (AllClasses[i] is "ItemCrate") {
+                Class<Actor> it = AllClasses[i].GetClassName();
+                let cit = ItemCrate(GetDefaultByType(it));
+                String w = String.Format("%f",cit.weight);
+                crateList.insert(cit.GetClassName(),w);
+                console.printf("Crate registered: %s (%s)",cit.GetClassName(),w);
+            }
+        }
     }
 
     override void CheckReplacement (ReplaceEvent e) {
@@ -95,28 +143,23 @@ class ItemSpawnHandler : StaticEventHandler {
                 // Tell it to spawn an ammo item.
                 it.spawntype = "AmmoDrop";
             } else {
-                // Items spawn 70% common, 20% rare, 5% epic, 5% cursed.
-                // TODO: Better weighting system.
-                // static const Int odds[] = {0,0,0,0,0,0,0,0,0,0,
-                //                 0,0,0,0,1,1,1,1,2,3};
-                String rarity;
-                rarity = SelectRarity();
-                it.spawntype = SelectItem(rarity);
-                it.sparkType = sparkList.at(rarity);
-                it.rarity = rarity;
+                it.spawntype = SelectCrate();
             }
         }
 
         if (e.Thing is "LegendItem") {
             // Spawn an item spark.
             let lit = LegendItem(e.Thing);
-            let rarity = lit.GetRarity();
+            Array<String> tiers;
+            lit.GetTiers(tiers);
+            let rarity = tiers[0];
             let sparkType = sparkList.at(rarity);
             let spark = ItemSparkSpawner(lit.spawn("ItemSparkSpawner",lit.pos));
             spark.master = lit;
             spark.sparkType = sparkType;
         }
     }
+
 }
 
 class DummyItem : Actor {
