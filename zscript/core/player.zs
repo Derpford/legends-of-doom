@@ -21,7 +21,6 @@ class LegendPlayer : DoomPlayer abstract {
     Property Toughness : Toughness, ToughnessGrow;
     Property Luck : Luck, LuckGrow;
     Property BonusHealth : BonusHealth, BonusHealthGrow;
-    Property Level : Level;
 
     // In addition, we use BonusHealth for health increases.
     double BonusHealthGrow;
@@ -41,12 +40,11 @@ class LegendPlayer : DoomPlayer abstract {
 
 
     default {
-        LegendPlayer.Power 25., 5.;
+        LegendPlayer.Power 5., 1.;
         LegendPlayer.Precision 0., 0.5;
         LegendPlayer.Toughness 0., 1.;
         LegendPlayer.Luck 0., 0.;
         LegendPlayer.BonusHealth 0, 0.5; // The only property that *doesn't* take a double for its first param!
-        LegendPlayer.Level 1; // Should always start at level 1!
         Player.MaxHealth 100; // Make sure this is set.
     }
 

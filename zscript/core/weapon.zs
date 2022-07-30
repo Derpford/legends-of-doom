@@ -31,6 +31,14 @@ class LegendWeapon : Weapon {
         return fdmg;
     }
 
+    action void TakeAmmo(bool alt = false) {
+        if(!alt) {
+            A_TakeInventory(invoker.ammotype1,invoker.ammouse1);
+        } else {
+            A_TakeInventory(invoker.ammotype2,invoker.ammouse2);
+        }
+    }
+
     action void Shoot(Name type, double ang = 0, double xy = 0, int height = 0, int flags = 0, double pitch = 0) {
         Actor it = A_FireProjectile(type,ang,false,xy,height,flags,pitch);
         if(it) {

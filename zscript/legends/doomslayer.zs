@@ -1,6 +1,6 @@
 class Doomslayer : LegendPlayer {
     // They are rage, brutal, without mercy. But you...you will be worse.
-    // High initial Power and good Precision scaling, but no Luck or Toughness by default.
+    // His weapons scale well with Power, and he has good Precision scaling on level, but no Luck or Toughness by default.
     // The Great Communicator causes enemies to drop random ammo.
     // The Chaingun is a solid weapon that makes up for low damage with a chance of inflicting Pain.
     // The Super Shotgun does huge damage at close range, including Vorpal damage in a small AoE centered in front of the user.
@@ -9,7 +9,7 @@ class Doomslayer : LegendPlayer {
 
     default {
         LegendPlayer.Power 5, 0.4;
-        LegendPlayer.Precision -1.5, 1.5;
+        LegendPlayer.Precision 0, 1.5;
         LegendPlayer.Toughness 0.,0.;
         LegendPlayer.Luck 0.,0.;
         LegendPlayer.BonusHealth 0,0.5;
@@ -111,7 +111,7 @@ class SlayerChaingun : LegendWeapon {
     action void ChainBullet(double spread) {
         double realspread = 3 - spread;
         for (int i = 0; i < invoker.count; i++) {
-            A_TakeInventory("GreenAmmo",1);
+            TakeAmmo();
             invoker.stacks += 1;
             if(invoker.stacks >= 5) {
                 PainBullet(realspread);
@@ -260,7 +260,7 @@ class SlayerShotgun : LegendWeapon {
         Fire:
             SHT2 A 1 {
                 A_StartSound("weapons/sshotf");
-                A_TakeInventory("RedAmmo",2);
+                TakeAmmo();
                 for(int i = -5; i < 5; i++) {
                     Shoot("BulletShot",ang: i, pitch:frandom(-1,0));
                     Shoot("BulletShot",ang: i, pitch:frandom(0,1));
@@ -330,7 +330,7 @@ class SlayerPlasma : LegendWeapon {
         Fire:
             PLSG A 3 {
                 A_StartSound("weapons/plasmaf");
-                A_TakeInventory("BlueAmmo",3);
+                TakeAmmo();
                 invoker.ammo += 1;
                 if(invoker.ammo >= 15) {
                     Reload();
@@ -402,7 +402,7 @@ class SlayerLauncher : LegendWeapon {
                     invoker.ammo = 0;
                 }
                 A_StartSound("weapons/rocklf");
-                A_TakeInventory("YellowAmmo",5);
+                TakeAmmo();
                 Shoot("RocketShot");
                 A_GunFlash();
             }
@@ -466,7 +466,7 @@ class SlayerBFG : LegendWeapon {
             BFGG A 10 A_StartSound("weapons/bfgf");
             BFGG B 10 A_GunFlash();
             BFGG B 10 Shoot("BFGShot");
-            BFGG B 10 A_TakeInventory("PinkAmmo",100);
+            BFGG B 10 TakeAmmo();
             BFGG A 0 A_SelectWeapon(null,SWF_SELECTPRIORITY); // Switch immediately away from the BFG. We used all our ammo!
             Goto Deselect;
 

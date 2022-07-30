@@ -136,7 +136,7 @@ class LegendHud : BaseStatusBar {
 			statYPos -= 9;
 			// Level.
 			DrawImage("SLVL",(statXPos,statYPos),statbarflags);
-			DrawString(mConFont,String.Format("%d",lvl),(statTextXPos,statYPos-8),stattxtflags,Font.CR_WHITE);
+			DrawString(mConFont,String.Format("%d",lvl+1),(statTextXPos,statYPos-8),stattxtflags,Font.CR_WHITE);
 
 			// If there's an item in the recentItems array, display it.
 			if (itm) {
