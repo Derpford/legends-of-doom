@@ -21,16 +21,20 @@ class ItemCrate : Actor {
         ItemCrate.Weight 100; // For the sake of convenience when defining new crate types.
     }
 
-    void SpawnItem () {
+    bool SpawnItem () {
         SpawnHandler = ItemSpawnHandler(StaticEventHandler.Find("ItemSpawnHandler"));
         if (SpawnHandler) {
             let t = SpawnHandler.SelectRarity(tierlist);
             let i = SpawnHandler.SelectItem(t);
-            let it = Spawn(i, pos);
-            if (it) {
-                it.vel = (frandom(-1,1),frandom(-1,1),8);
+            if (i) {
+                let it = Spawn(i, pos);
+                if (it) {
+                    it.vel = (frandom(-1,1),frandom(-1,1),8);
+                    return true;
+                }
             }
         }
+        return false;
     }
 
     states {
@@ -38,8 +42,17 @@ class ItemCrate : Actor {
             IBOX A -1;
             Stop;
         Death:
-            BEXP BC 3 Bright; // TODO: Spawn item
-            TNT1 A 0 SpawnItem();
+            BEXP BC 3 Bright;
+        SpawnItem:
+            TNT1 A 0;
+            TNT1 A 1 {
+                if (SpawnItem()) {
+                    return ResolveState("GoAway");
+                } else {
+                    return ResolveState("SpawnItem");
+                }
+            }
+        GoAway:
             TNT1 A -1;
             Stop;
     }
