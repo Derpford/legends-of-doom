@@ -1,14 +1,27 @@
 class LevelToken : Inventory {
     // Tracks monster levels.
+    int level;
+    MonsterLevelThinker brain;
     default {
         Inventory.Amount 1;
-        Inventory.MaxAmount 999;
+        Inventory.MaxAmount 1;
+    }
+
+    override void PostBeginPlay () {
+        super.PostBeginPlay();
+        brain = MonsterLevelThinker.get();
+    }
+
+    override void Tick() {
+        // Sync our level to the MonsterLevelThinker's level.
+        super.Tick();
+        level = brain.MonsterLevel;
     }
 
     override void ModifyDamage (int dmg, Name type, out int new, bool passive, Actor inflictor, Actor src, int flags) {
         // Each level adds 10% to the damage being dealt.
         if(!passive) {
-            double multi = 1.0 + (owner.CountInv("LevelToken")*0.1);
+            double multi = 1.0 + (level*0.1);
             new = floor(dmg * multi);
         }
     }
@@ -16,78 +29,51 @@ class LevelToken : Inventory {
 
 class LevelHealthItem : Inventory {
     // Handles giving monsters health when they get a LevelToken.
+    int level;
+    MonsterLevelThinker brain;
 
     default {
         Inventory.Amount 1;
         Inventory.MaxAmount 1;
     }
 
-    override bool HandlePickup (Inventory item) {
-        if (item is "LevelToken") {
+    override void PostBeginPlay() {
+        super.PostBeginPlay();
+        brain = MonsterLevelThinker.get();
+    }
+
+    override void Tick() {
+        while (level < brain.MonsterLevel) {
             owner.GiveBody(owner.GetSpawnHealth() * 0.1);
-        }
-        return false;
-    }
-}
-
-class MonsterStaticHandler : StaticEventHandler {
-    // Stores monster level during level transitions.
-
-    int MonsterLevel;
-
-    override void NetworkProcess(ConsoleEvent e) {
-        // Receive the data!
-        if (e.Name == "SaveMonsterLevel") {
-            MonsterLevel = e.Args[0];
+            level += 1;
         }
     }
 
-    override void WorldLoaded (WorldEvent e) {
-        // Send a net event with the data!
-        EventHandler.SendNetworkEvent("LoadMonsterLevel",MonsterLevel);
-    }
+    // override bool HandlePickup (Inventory item) {
+    //     if (item is "LevelToken") {
+    //         owner.GiveBody(owner.GetSpawnHealth() * 0.1);
+    //     }
+    //     return false;
+    // }
 }
 
 class MonsterLevelHandler : EventHandler {
-    // Increases monster level by 1 on certain events.
-
-    int MonsterLevel;
+    // Gives monsters a LevelHealthItem and a LevelToken. Also ticks the monster level.
     int ticktimer;
     int seconds;
     int minutes;
+    MonsterLevelThinker brain;
 
-    override void NewGame() {
-        MonsterLevel = 0;
-        // console.printf("Resetting Monster Level!");
-    }
-
-    override void NetworkProcess(ConsoleEvent e) {
-        // Receive the data!
-        if (e.Name == "LoadMonsterLevel" && e.Args[0] != 0) {
-            MonsterLevel = e.Args[0];
-        }
-    }
-
-    override void WorldUnloaded(WorldEvent e) {
-        // Send a net event with the data!
-        SendNetworkEvent("SaveMonsterLevel",MonsterLevel);
-    }
-
-    override void WorldThingSpawned(WorldEvent e) {
-
-        if (e.Thing.bISMONSTER) {
-            e.Thing.GiveInventory("LevelHealthItem",1);
-            // console.printf("Spawning "..e.Thing.GetClassName().." with level "..MonsterLevel+1);
-        }
+    override void OnRegister() {
+        brain = MonsterLevelThinker.get();
     }
 
     override void WorldTick() {
-        // Increase monster level every 5 minutes of game time.
+        // Increase monster level every 3 minutes of game time.
         ticktimer += 1;
         if (ticktimer >= 35 ) {
             ticktimer = 0;
             seconds += 1;
-            // console.printf("MonsterLevel is "..MonsterLevel);
         }
         if (seconds >= 60) {
             seconds = 0;
@@ -95,19 +81,41 @@ class MonsterLevelHandler : EventHandler {
         }
         if (minutes >= 3) {
             minutes = 0;
-            MonsterLevel += 1;
-            console.printf("Monster Level increased to "..MonsterLevel+1);
+            brain.MonsterLevel += 1;
+            console.printf("Monster Level increased to "..brain.MonsterLevel+1);
+        }
+    }
+
+    override void WorldThingSpawned(WorldEvent e) {
+        if (e.Thing.bISMONSTER) {
+            e.Thing.GiveInventory("LevelHealthItem",1);
+            e.Thing.GiveInventory("LevelToken",1);
+            // console.printf("Spawning "..e.Thing.GetClassName().." with level "..MonsterLevel+1);
+        }
+    }
+}
+
+class MonsterLevelThinker : Thinker {
+    // Tracks monster level. Increases monster level by 1 on certain events.
+
+    int MonsterLevel;
+    int ticktimer;
+    int seconds;
+    int minutes;
+
+    MonsterLevelThinker init() {
+        ChangeStatNum(STAT_STATIC);
+        console.printf("Initialized monster leveling system");
+        return self;
+    }
+
+    static MonsterLevelThinker get() {
+        ThinkerIterator it = ThinkerIterator.create("MonsterLevelThinker",STAT_STATIC);
+        let p = MonsterLevelThinker(it.next());
+        if (p == null) {
+            p = new("MonsterLevelThinker").init();
         }
 
-        // Iterate over all monsters, and update their levels.
-        ThinkerIterator monsters = ThinkerIterator.Create("Actor",Thinker.STAT_DEFAULT);
-        Actor mo;
-        while(mo = Actor(monsters.next())) {
-            if (mo.bISMONSTER && mo.CountInv("LevelToken") < MonsterLevel) {
-                int diff = MonsterLevel - mo.CountInv("LevelToken");
-                mo.GiveInventory("LevelToken",diff);
-                // console.printf("Leveled "..mo.GetClassName().." to "..MonsterLevel+1);
-            }
-        }
+        return p;
     }
 }

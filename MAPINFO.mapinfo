@@ -1,7 +1,7 @@
 GameInfo {
     PlayerClasses = "Doomslayer"
     StatusBarClass = "LegendHud"
-    AddEventHandlers = "XPDropHandler", "VorpalHandler", "SmiteHandler", "MonsterLevelHandler", "MonsterStaticHandler", "ItemPassiveHandler", "ItemSpawnHandler"
+    AddEventHandlers = "XPDropHandler", "VorpalHandler", "SmiteHandler", "MonsterLevelHandler", "ItemPassiveHandler", "ItemSpawnHandler"
 }
 
 DoomEdNums {
