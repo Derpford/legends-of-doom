@@ -44,7 +44,7 @@ class LegendHud : BaseStatusBar {
 			int arm = GetAmount("BasicArmor");
 			int lvl = plr.level;
 			double xp = plr.xp;
-			double xpmax = plr.level * 100.;
+			double xpmax = (plr.level+1) * 100.;
 			double xpperc = 100. * (xp / xpmax);
             double power = plr.UI_GetPower(true);
             double precision = plr.GetPrecision();

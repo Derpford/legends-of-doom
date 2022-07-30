@@ -1,13 +1,13 @@
 extend class LegendPlayer {
     bool CanLevel() {
-        return xp > (100.0 * level);
+        return xp > (100.0 * (1 + level) );
     }
 
     bool TryLevel() {
         if (CanLevel()) {
-            xp -= (100.0 * level);
+            xp -= (100.0 * (1 + level));
             level += 1;
-            console.printf("Level is now "..level);
+            console.printf("Level is now "..level+1);
             A_StartSound("misc/p_pkup");
             return true;
         } else {
