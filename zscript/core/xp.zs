@@ -1,11 +1,15 @@
 extend class LegendPlayer {
-    bool CanLevel() {
-        return xp > (100.0 * (1 + level) );
+    clearscope int MaxXP() {
+        return 200.0 * (1 + level);
+    }
+
+    clearscope bool CanLevel() {
+        return xp > MaxXP();
     }
 
     bool TryLevel() {
         if (CanLevel()) {
-            xp -= (100.0 * (1 + level));
+            xp -= MaxXP();
             level += 1;
             console.printf("Level is now "..level+1);
             A_StartSound("misc/p_pkup");
