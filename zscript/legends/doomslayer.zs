@@ -31,9 +31,9 @@ class SlayerSaw : LegendWeapon {
     // Chainsaw! The great communicator!
     // Damaging an enemy with this weapon gives them Efficiency.
     // Enemies who die while holding Efficiency drop some ammo.
-    // Also, it hits for pow*0.15 every 4 ticks. It's like a slightly more powerful Chaingun, sort of!
+    // Also, it hits for pow*1.5 every 4 ticks. It's like a slightly more powerful Chaingun, sort of!
     default {
-        LegendWeapon.Damage 0., 0.15;
+        LegendWeapon.Damage 0., 1.5;
         Weapon.SlotNumber 1;
         Weapon.UpSound "weapons/sawup";
     }
@@ -311,10 +311,10 @@ class SlayerPlasma : LegendWeapon {
     int ammo;
 
     default {
-        LegendWeapon.Damage 0., 8;
+        LegendWeapon.Damage 0., 4;
         Weapon.SlotNumber 4;
         Weapon.AmmoType "BlueAmmo";
-        Weapon.AmmoUse 4;
+        Weapon.AmmoUse 3;
     }
 
     states {
@@ -330,7 +330,7 @@ class SlayerPlasma : LegendWeapon {
         Fire:
             PLSG A 3 {
                 A_StartSound("weapons/plasmaf");
-                A_TakeInventory("BlueAmmo",4);
+                A_TakeInventory("BlueAmmo",3);
                 invoker.ammo += 1;
                 if(invoker.ammo >= 15) {
                     Reload();
