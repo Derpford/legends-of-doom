@@ -68,6 +68,19 @@ class MonsterLevelHandler : EventHandler {
         brain = MonsterLevelThinker.get();
     }
 
+    int MonsterMaxHealth(Actor it) {
+        // Get the max health of a monster.
+        LevelToken lt = LevelToken(it.FindInventory("LevelToken"));
+        if (lt) {
+            int lv = lt.level;
+            double bhealth = it.GetSpawnHealth();
+            double maxhealth = bhealth + (bhealth * 0.1 * lv);
+            return floor(maxhealth);
+        } else {
+            return it.GetMaxHealth();
+        }
+    }
+
     override void WorldTick() {
         // Increase monster level every 3 minutes of game time.
         ticktimer += 1;

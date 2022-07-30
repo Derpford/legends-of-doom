@@ -20,9 +20,8 @@ class VorpalModifier : Inventory {
             } else {
                 // We have to calculate max HP from the target's level tokens.
                 // Otherwise I'd have to build a custom monster set!
-                double bhealth = owner.GetSpawnHealth();
-                double level = owner.CountInv("LevelToken");
-                double maxhealth = bhealth + (0.1*bhealth*level);
+                let h = MonsterLevelHandler(EventHandler.Find("MonsterLevelHandler"));
+                int maxhealth = h.MonsterMaxHealth(owner);
                 amt = floor(maxhealth * 0.1);
             }
         }
