@@ -111,6 +111,13 @@ class LegendHud : BaseStatusBar {
             int statXPos = 16;
             int statTextXPos = statXPos+8;
             int statYPos = -56;
+			// Monster level.
+			let monsterhandler = MonsterLevelHandler(EventHandler.Find("MonsterLevelHandler"));
+			if (monsterhandler.brain) {
+				int mlvl = monsterhandler.brain.monsterlevel;
+				DrawString(mConFont,String.Format("Monster LVL: %d",mlvl+1),(statTextXPos,statYPos-8),stattxtflags,Font.CR_WHITE);
+			}
+			statYPos -= 9;
 			// Luck.
 			DrawImage("SLUK",(statXPos,statYPos),statbarflags);
             DrawString(mConFont,String.Format("%.2f",luck),(statTextXPos,statYPos-8),stattxtflags,Font.CR_GREEN);
