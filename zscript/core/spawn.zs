@@ -105,11 +105,11 @@ class ItemSpawnHandler : StaticEventHandler {
         sparkList = Dictionary.Create();
         crateList = Dictionary.Create();
 
-        LumpToDict("TIERS",tierList);
-        LumpToDict("ISPARKS",sparkList);
+        // LumpToDict("TIERS",tierList);
+        // LumpToDict("ISPARKS",sparkList);
         // LumpToItems("ITEMS",itemList);
 
-        // Grab all LegendItem and Crate classes that are non-abstract.
+        // Grab all LegendItem, RarityTier, and Crate classes that are non-abstract.
         for (int i = 0; i < AllClasses.Size(); i++) {
             if (AllClasses[i].IsAbstract()) { continue; }
 
@@ -130,6 +130,21 @@ class ItemSpawnHandler : StaticEventHandler {
                 String w = String.Format("%f",cit.weight);
                 crateList.insert(cit.GetClassName(),w);
                 console.printf("Crate registered: %s (%s)",cit.GetClassName(),w);
+            }
+
+            if (AllClasses[i] is "RarityTier") {
+                let it = AllClasses[i].GetClassName();
+                Console.printf(""..it);
+                if (it) {
+                    let cit = RarityTier(new(it)).get();
+                    String w = String.Format("%f",cit.weight);
+                    String spark = "";
+                    if (cit.hasSparkle) {
+                        spark = cit.sparkle;
+                        sparkList.insert(cit.tiername, spark);
+                    }
+                    tierList.insert(cit.tiername,w);
+                }
             }
         }
     }
