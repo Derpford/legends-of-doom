@@ -44,34 +44,26 @@ class SmiteModifier : Inventory {
 
     override void ModifyDamage (int dmg, Name type, out int new, bool passive, Actor inflictor, Actor src, int flags) {
         if (passive && type == "Smite") {
-            int ownhp;
-            int otherhp;
-            // Get our own HP.
-            if (owner is "LegendPlayer") {
-                ownhp = owner.GetMaxHealth(true);
-            } else {
-                double bhealth = owner.GetSpawnHealth();
-                double level = owner.CountInv("LevelToken");
-                double maxhealth = bhealth + (0.1*bhealth*level);
-                ownhp = floor(maxhealth);
-            }
+            double hp;
+            double maxhp;
             // Get the attacker's HP.
-            if (src) {
-                if (src is "LegendPlayer") {
-                    otherhp = src.GetMaxHealth(true);
+            if (owner) {
+                hp = owner.health;
+
+                if (owner is "LegendPlayer") {
+                    maxhp = src.GetMaxHealth(true);
                 } else {
-                    double bhealth = owner.GetSpawnHealth();
-                    double level = owner.CountInv("LevelToken");
-                    double maxhealth = bhealth + (0.1*bhealth*level);
-                    otherhp = floor(maxhealth);
+                    let h = MonsterLevelHandler(EventHandler.Find("MonsterLevelHandler"));
+                    maxhp = h.MonsterMaxHealth(owner);
                 }
             } else {
-                otherhp = ownhp; // If there's no source, assume self-damage.
+                hp = 1;
+                maxhp = 1; // Default to assuming full health.
             }
 
-            double multi = 1 + (1 - (ownhp/otherhp));
+            double multi = 1. + (1. - (hp/maxhp));
             multi = clamp(multi,0.5,2); // at most a factor of 2 in either direction
-            console.printf("Smite multiplier: "..multi);
+            console.printf("Smite multiplier: %.2f/%.2f = %.2f",hp,maxhp,multi);
             new = floor(dmg * multi);
             console.printf("Smite damage: %d",new);
         }
