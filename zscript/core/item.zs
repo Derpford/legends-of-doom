@@ -230,7 +230,7 @@ class LegendItem : Inventory abstract {
     // ...and armor...
 
     virtual void BreakArmor () {} 
-    // Called when an enemy breaks our armor (reduces Armor to 0).
+    // Called when an enemy does damage to a player with no armor.
 
     virtual double DamageMulti (int dmg, Name type, Actor inf, Actor src, int flags) { return 1.0; }
     // A multiplier to apply to outgoing damage.
@@ -276,12 +276,8 @@ class LegendItem : Inventory abstract {
 
     override void AbsorbDamage (int dmg, Name type, out int newdamage) {
         let arm = BasicArmor(owner.FindInventory("BasicArmor"));
-        if (arm) {
-            let save = arm.SavePercent;
-            int saved = int(dmg * save);
-            if (arm.Amount - saved <= 0) {
-                BreakArmor();
-            }
+        if (arm && arm.Amount < 1) {
+            BreakArmor();
         }
     }
 

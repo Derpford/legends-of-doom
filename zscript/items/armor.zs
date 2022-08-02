@@ -65,7 +65,7 @@ class PanicBootton : LegendItem {
     int power;
     default {
         Tag "Panic Bootton";
-        LegendItem.Desc "Gain a burst of Luck when your armor breaks.";
+        LegendItem.Desc "Gain a burst of Luck when you take unarmored damage.";
         LegendItem.Remark "Property Of Wizzard";
         LegendItem.Icon "BOOTA0";
         LegendItem.Timer 1.;
