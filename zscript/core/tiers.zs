@@ -14,7 +14,7 @@ class RarityTier : Thinker abstract {
     }
 
     abstract void setup(); 
-        // Set the defaults here!
+    // Set the defaults here!
 
     RarityTier get() {
         ThinkerIterator it = ThinkerIterator.create(GetClassName(),STAT_STATIC);

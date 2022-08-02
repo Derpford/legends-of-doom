@@ -19,7 +19,7 @@ class Retribution : LegendItem {
                 it.tracer = tgt;
                 it.VelFromAngle(it.speed,it.angle);
                 it.angle = owner.angle + frandom(-15,15);
-                it.power = GetStacks() * GetOwnerPower() * 5;
+                it.dmg = GetStacks() * GetOwnerPower() * 5;
             }
             randomAdjust += 1;
         }
@@ -48,10 +48,11 @@ class RetributionHammer : LegendShot {
     states {
         Spawn:
             HAMM ABCD 4 Bright { 
-                A_SeekerMissile(70,90,SMF_PRECISE|SMF_LOOK);
-                if (tracer == target) {
-                    tracer == null;
-                }
+                // A_SeekerMissile(70,90,SMF_PRECISE|SMF_LOOK);
+                Seek();
+                // if (tracer == target) {
+                //     tracer == null;
+                // }
             }
             Loop;
         Death:

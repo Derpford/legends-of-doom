@@ -92,7 +92,7 @@ class RuneOfJudgement : LegendItem {
             js.tracer = src;
             js.angle = Normalize180(owner.angle) + (90 * frandom(-1,1));
             js.pitch = frandom(-45,45);
-            js.power = dmg * (0.5 + (0.5 * GetStacks()));
+            js.dmg = dmg * (0.5 + (0.5 * GetStacks()));
             SetTimer();
         }
     }
@@ -125,11 +125,12 @@ class JudgementSnake : LegendShot {
         Spawn:
             FATB AB 2 Bright {
                 Spawn("JudgementTail",invoker.pos);
-                A_SeekerMissile(10,15,SMF_PRECISE|SMF_LOOK,128,5);
-                if(!tracer) {
-                    angle += 30; // Spin in place if there's no target.
-                    VelFromAngle(speed,angle);
-                }
+                Seek();
+                // A_SeekerMissile(10,15,SMF_PRECISE|SMF_LOOK,128,5);
+                // if(!tracer) {
+                //     angle += 30; // Spin in place if there's no target.
+                //     VelFromAngle(speed,angle);
+                // }
             }
             Loop;
         Death:

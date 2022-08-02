@@ -71,6 +71,41 @@ mixin class NoClipProj {
             }
         } 
     }
+
+    void Seek () {
+        // If there's a tracer, chase it.
+        // Otherwise, find the nearest monster and make that our tracer.
+        // If the tracer is our owner, remove the tracer.
+        if (tracer == target) {
+            tracer == null;
+        }
+        if (tracer && tracer.health > 0) {
+            Vector3 to = Vec3To(tracer).Unit();
+            Vector3 v = vel.Unit();
+            double multi = 1 + clamp(GetAge() / 35., 0, 1);
+            vel = ((multi * to) + v).unit() * speed;
+            A_Face(tracer);
+        } else {
+            ThinkerIterator it = ThinkerIterator.Create("Actor");
+            Actor mo;
+            Actor t;
+            double dist = -1;
+            while (mo = Actor(it.next())) {
+                if (mo.bSHOOTABLE && mo != target) {
+                    double len = Vec3To(mo).length();
+                    if (dist == -1 || len < dist) {
+                        t = mo;
+                        dist = len;
+                    }
+                }
+            }
+
+            if (t) {
+                tracer = t;
+            }
+
+        }
+    }
 }
 
 mixin class LumpParser {
