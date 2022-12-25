@@ -508,7 +508,7 @@ class BFGShot : LegendShot {
                 it.Reinit();
                 Actor mo;
                 while (mo = Actor(it.next())) {
-                    if (mo.bISMONSTER && !(mo == target) && Vec3To(mo).length() < 512) {
+                    if (mo.bISMONSTER && !(mo == target) && IsVisible(mo, true) && Vec3To(mo).length() < 512) {
                         let itm = mo.GiveInventoryType("BFGZap");
                         if (itm) {
                             itm.master = self;
