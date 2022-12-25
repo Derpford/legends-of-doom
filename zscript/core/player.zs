@@ -1,4 +1,5 @@
 class LegendPlayer : DoomPlayer abstract {
+    mixin Lerps;
     // The core class for a Legend. 
     // This class has all the basic stats that Legends should have.
     double Power; 
@@ -145,7 +146,7 @@ class LegendPlayer : DoomPlayer abstract {
         }
         // Capped to 50!
         double baseLuck = self.Luck + (self.LuckGrow * self.Level);
-        double RealLuck = (atan((bonus+baseLuck)/50.) / 180.) * 2 * 50;
+        double RealLuck = SmoothCap(baseLuck+bonus, 50);
         return RealLuck; //clamp(-50, 50,RealLuck);
     }
 
