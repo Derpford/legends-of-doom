@@ -13,7 +13,7 @@ class MedicBag : LegendItem {
         if (it) {
             it.vel = (frandom(-2,2),frandom(-2,2),frandom(4,8));
             let it = MedicOrb(it);
-            it.heals = 5 * GetStacks();
+            it.heals = -3 * GetStacks();
         }
     }
 

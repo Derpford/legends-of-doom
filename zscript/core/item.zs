@@ -488,10 +488,21 @@ class HPBonus : Inventory replaces HealthBonus {
         Inventory.PickupMessage "Health Bonus!";
     }
 
+    int GetTrueHeal(Actor plr) {
+        if (plr && heals < 0) {
+            return plr.GetMaxHealth(true) * (heals / -100.);
+            // Replicate Health item behavior.
+        } else {
+            return heals;
+        }
+    }
+
     override bool TryPickup (in out actor other) {
         let plr = LegendPlayer(other);
         if(plr) {
-            plr.GiveHealth(heals,overheal);
+            int heal = GetTrueHeal(plr);
+            console.printf("Healed for %d",heal);
+            plr.GiveHealth(heal,overheal);
             plr.GiveInventory("DummyHPBonus",1);
             GoAwayAndDie();
             return true;
