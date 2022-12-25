@@ -47,6 +47,7 @@ mixin class SplashDamage {
         let hits = BlockThingsIterator.Create(self,radius*2);
         while (hits.next()) {
             if (!selfdmg && hits.Thing == target) { continue; }
+            if (!isVisible(hits.Thing,true)) { continue; }
             double len = max(0,Vec3To(hits.Thing).length()-hits.Thing.radius);
             double multi = 1. - (len/radius);
             if (len <= radius) { // BlockThingsIterator is imprecise!
