@@ -37,7 +37,7 @@ class LegendItem : Inventory abstract {
         LegendItem.Timer 0; // Timer must be set to be used correctly!
         LegendItem.StartStacks 1;
         LegendItem.Alarm "dsempty", 1.0;
-        LegendItem.Rarity "Common"; // Should be a space-separated list. (I'm not gonna deal with whitespace in tier names.
+        LegendItem.Rarity "COMMON"; // Should be a space-separated list. (I'm not gonna deal with whitespace in tier names.
     }
 
     String GetRarity() {
