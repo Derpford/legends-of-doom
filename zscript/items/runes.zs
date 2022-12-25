@@ -41,13 +41,13 @@ class RuneOfEyes : LegendItem {
         LegendItem.Icon "SKYYA0";
         LegendItem.Timer 2.5;
         Tag "Rune of Eyes";
-        LegendItem.Desc "Precision hits grant a bit of luck.";
+        LegendItem.Desc "Precision hits grant luck for a short time.";
         LegendItem.Remark "I am the God-Particle!";
         LegendItem.Rarity "RARE ATTACK DEFENSE";
     }
 
     override void OnPrecisionHit() {
-        power += 0.5;
+        power = 5 * GetStacks();
     }
 
     override void DoEffect() {
@@ -55,7 +55,7 @@ class RuneOfEyes : LegendItem {
         if (power > 0) {
             if(TimeUp()) {
                 SetTimer();
-                power = max(0, power - (0.5 * GetStacks()));
+                power = max(0, power - (2.5 * GetStacks()));
             } 
         } else {
                 SetTimer();
