@@ -181,14 +181,14 @@ mixin class LumpParser {
 
 mixin class Lerps {
     // Various interpolation things.
-    double SmoothCap(double base, double cap) {
+    clearscope double SmoothCap(double base, double cap) {
         // Diminishing returns on base, such that base never reaches cap.
         // In other words, as base approaches infinity,
         // the return value approaches cap.
         return (atan(base / cap) / 180.) * 2 * cap;
     }
 
-    double DimResist(double amt, double half) {
+    clearscope double DimResist(double amt, double half) {
         // Returns a multiplier such that:
         // when amt = half, multiplier = 0.5.
         // when amt = 0, multiplier = 1
@@ -203,7 +203,7 @@ mixin class Lerps {
         }
     }
 
-    double DimPower(double amt, double half) {
+    clearscope double DimPower(double amt, double half) {
         // As above, but when amt = 0, mult = 1,
         // and when amt = half, mult = 2.
         // Note that at amt = -half, this returns 0!
