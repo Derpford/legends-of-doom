@@ -52,8 +52,8 @@ mixin class SplashDamage {
             if (len <= radius) { // BlockThingsIterator is imprecise!
                 int deltadmg = damage - mindamage;
                 int finaldmg = mindamage + (deltadmg * multi);
-                hits.Thing.DamageMobj(self,target,finaldmg,type,DMG_EXPLOSION);
                 hits.Thing.vel.z += finaldmg / hits.Thing.mass;
+                hits.Thing.DamageMobj(self,target,finaldmg,type,DMG_EXPLOSION);
             }
         }
     }
