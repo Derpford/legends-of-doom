@@ -10,10 +10,10 @@ class BehemothShell : LegendItem {
     }
 
     override void OnHit(int dmg, Name type, Actor src, Actor inf, Actor tgt) {
-        // attacks also explode for 100% original damage in a 128-unit radius
+        // attacks also explode for 60% original damage in a 128-unit radius
         if (type != "Behemoth") {
             let it = BehemothBlast(tgt.spawn("BehemothBlast",inf.pos));
-            it.power = dmg;
+            it.power = dmg * 0.6;
             it.stacks = GetStacks();
             it.target = src;
         }
@@ -27,7 +27,7 @@ class BehemothShell : LegendItem {
 }
 
 class BehemothBlast : Actor {
-    int power;
+    double power;
     int stacks;
     Mixin SplashDamage;
 
