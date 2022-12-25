@@ -79,7 +79,7 @@ class PanicBootton : LegendItem {
     }
 
     override void BreakArmor() {
-        power = 10 + (5 * GetStacks());
+        power = 10 + (10 * GetStacks());
         SetTimer();
     }
 
