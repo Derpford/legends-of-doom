@@ -18,6 +18,11 @@ class Sidhe : LegendPlayer {
         LegendPlayer.Toughness 0.,0.3; // Gradually gains Toughness...
         LegendPlayer.Luck 2.,0.; // And has a tiny bit of luck.
         LegendPlayer.BonusHealth 0,0.4; // Scales health slightly slower than Doomslayer.
+
+        Player.DisplayName "Sidhe";
+
+        Player.StartItem "GreenAmmo", 200;
+        Player.StartItem "SidheWand";
     }
 }
 
@@ -32,8 +37,10 @@ class SidheWand : LegendWeapon {
         Weapon.AmmoUse2 25;
     }
 
-    void FireWand() {
+    action void FireWand() {
         // TODO: Fire projectile
+        TakeAmmo();
+        Shoot("AmethystBolt");
     }
 
     states {
@@ -49,8 +56,47 @@ class SidheWand : LegendWeapon {
             Loop;
         
         Fire:
+            AWND B 0 A_WeaponOffset(0,36,WOF_INTERPOLATE);
             AWND B 3 Bright FireWand();
-            AWND CD 4 Bright;
+            AWND C 4 Bright A_WeaponOffset(0,33,WOF_INTERPOLATE);
+            AWND D 4 Bright A_WeaponOffset(0,32,WOF_INTERPOLATE);
             Goto Ready;
+    }
+}
+
+class AmethystBolt : LegendShot {
+    // A bolt of force and heat.
+    default {
+        Radius 6;
+        Height 2;
+        Speed 60;
+        +BRIGHT;
+    }
+
+    states {
+        Spawn:
+            CHFR ABCB 3 A_SpawnItemEX("AmethystTrail");
+            Loop;
+        Death:
+            CHFR ABCDEFGHIJKLMNOP 2;
+            TNT1 A 0;
+            Stop;
+    }
+}
+
+class AmethystTrail : Actor {
+    default {
+        +NOINTERACTION;
+        // +NOGRAVITY;
+        +BRIGHT;
+        RenderStyle "Translucent";
+        Alpha 0.4;
+    }
+
+    states {
+        Spawn:
+            CHFR CBA 3;
+            TNT1 A 0;
+            Stop;
     }
 }
