@@ -58,10 +58,11 @@ class GreenAmmo : Ammo replaces Clip {
         +FLOATBOB;
         +BRIGHT;
         Inventory.PickupMessage "Green ammo!";
-        Inventory.Amount 15;
-        Inventory.MaxAmount 300;
-        Ammo.BackpackAmount 30;
-        Ammo.BackpackMaxAmount 600;
+        // factor of 3.3
+        Inventory.Amount 50; // used to be 15
+        Inventory.MaxAmount 1000; // used to be 300
+        Ammo.BackpackAmount 100;
+        Ammo.BackpackMaxAmount 2000;
     }
 
     states {
@@ -89,10 +90,11 @@ class RedAmmo : Ammo replaces Shell {
         +FLOATBOB;
         +BRIGHT;
         Inventory.PickupMessage "Red ammo!";
-        Inventory.Amount 4;
-        Inventory.MaxAmount 80;
-        Ammo.BackpackAmount 8;
-        Ammo.BackpackMaxAmount 160;
+        // factor of 12.5
+        Inventory.Amount 50; // used to be 4
+        Inventory.MaxAmount 1000; // used to be 80
+        Ammo.BackpackAmount 100;
+        Ammo.BackpackMaxAmount 1000;
     }
 
     states {
@@ -120,10 +122,11 @@ class YellowAmmo : Ammo replaces RocketAmmo {
         +FLOATBOB;
         +BRIGHT;
         Inventory.PickupMessage "Yellow ammo!";
-        Inventory.Amount 5;
-        Inventory.MaxAmount 100;
-        Ammo.BackpackAmount 10;
-        Ammo.BackpackMaxAmount 200;
+        // factor of 10
+        Inventory.Amount 50; // used to be 5
+        Inventory.MaxAmount 1000; // used to be 100
+        Ammo.BackpackAmount 100;
+        Ammo.BackpackMaxAmount 2000;
     }
 
     states {
@@ -151,10 +154,11 @@ class BlueAmmo : Ammo replaces Cell {
         +FLOATBOB;
         +BRIGHT;
         Inventory.PickupMessage "Blue ammo!";
-        Inventory.Amount 20;
-        Inventory.MaxAmount 400;
-        Ammo.BackpackAmount 40;
-        Ammo.BackpackMaxAmount 800;
+        // factor of 2.5
+        Inventory.Amount 50; // used to be 20
+        Inventory.MaxAmount 1000; // used to be 400
+        Ammo.BackpackAmount 100;
+        Ammo.BackpackMaxAmount 2000;
     }
 
     states {

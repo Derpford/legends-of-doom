@@ -89,7 +89,10 @@ class LegendHud : BaseStatusBar {
 					let a1real = plr.FindInventory(a1.GetClassName());// a1 is a ClassPointer<Ammo>, a1real is a Pointer<Inventory>
 					//DrawImage("CLIPA0",(ammoXpos,-2),rbarflags,scale:(2,2));
 					DrawInventoryIcon(a1real,(ammoXPos,-2),rbarflags,scale:(2,2));
-					DrawString(mStatFont,FormatNumber(GetAmount(a1.GetClassName())).."/"..a1real.maxamount, (ammoTextXPos,-24),rtxtflags,Font.CR_RED);
+					double amt = GetAmount(a1.GetClassName());
+					double used = wpn.ammouse1;
+					int shots = floor(amt / used);
+					DrawString(mStatFont,FormatNumber(shots), (ammoTextXPos,-24),rtxtflags,Font.CR_RED);
 				}
 			}
 

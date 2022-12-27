@@ -14,8 +14,8 @@ class Doomslayer : LegendPlayer {
         LegendPlayer.Luck 0.,0.;
         LegendPlayer.BonusHealth 0,0.5;
 
-        Player.StartItem "GreenAmmo",60;
-        Player.StartItem "RedAmmo",10;
+        Player.StartItem "GreenAmmo", 300;
+        Player.StartItem "RedAmmo",150;
         Player.StartItem "SlayerChaingun";
         Player.StartItem "SlayerBFG";
         Player.StartItem "SlayerSaw";
@@ -94,7 +94,7 @@ class SlayerChaingun : LegendWeapon {
         LegendWeapon.Damage 5, 1;
         Weapon.SlotNumber 2;
         Weapon.AmmoType "GreenAmmo";
-        Weapon.AmmoUse 1;
+        Weapon.AmmoUse 3;
     }
 
     action void PainBullet(double spread) {
@@ -244,7 +244,7 @@ class SlayerShotgun : LegendWeapon {
         LegendWeapon.Damage 0., 1.1;
         Weapon.SlotNumber 3;
         Weapon.AmmoType "RedAmmo";
-        Weapon.AmmoUse 2;
+        Weapon.AmmoUse 25;
     }
 
     states {
@@ -311,10 +311,10 @@ class SlayerPlasma : LegendWeapon {
     int ammo;
 
     default {
-        LegendWeapon.Damage 0., 4;
+        LegendWeapon.Damage 0., 5;
         Weapon.SlotNumber 4;
         Weapon.AmmoType "BlueAmmo";
-        Weapon.AmmoUse 3;
+        Weapon.AmmoUse 8;
     }
 
     states {
@@ -379,7 +379,7 @@ class SlayerLauncher : LegendWeapon {
         LegendWeapon.Damage 0., 10.;
         Weapon.SlotNumber 5;
         Weapon.AmmoType "YellowAmmo";
-        Weapon.AmmoUse 5;
+        Weapon.AmmoUse 50;
         +Weapon.NOAUTOFIRE;
         +Weapon.EXPLOSIVE;
     }
