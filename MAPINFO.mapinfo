@@ -1,5 +1,5 @@
 GameInfo {
-    PlayerClasses = "Doomslayer"
+    PlayerClasses = "Doomslayer", "Sidhe"
     StatusBarClass = "LegendHud"
     AddEventHandlers = "XPDropHandler", "VorpalHandler", "SmiteHandler", "MonsterLevelHandler", "ItemPassiveHandler", "ItemSpawnHandler"
 }
