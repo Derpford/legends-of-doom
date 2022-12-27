@@ -10,10 +10,12 @@ class LegendWeapon : Weapon {
         LegendWeapon.Damage 0, 1.0;
     }
 
-    double GetPower(bool raw = false) {
+    double, double GetPower(bool raw = false) {
         let plr = LegendPlayer(owner);
         if (!plr) { return 0.0; } // Something went wrong.
-        return plr.GetPower(raw);
+        double pow; double multi;
+        [pow,multi] = plr.GetPower(raw);
+        return pow, multi;
     }
 
     int GetDamage(double power) {
@@ -42,16 +44,19 @@ class LegendWeapon : Weapon {
     action void Shoot(Name type, double ang = 0, double xy = 0, int height = 0, int flags = 0, double pitch = 0) {
         Actor it = A_FireProjectile(type,ang,false,xy,height,flags,pitch);
         if(it) {
-            double pow = invoker.GetPower();
+            double pow; double multi;
+            [pow, multi] = invoker.GetPower();
             int dmg = invoker.GetDamage(pow);
             if (it is "LegendShot") {
                 let it = LegendShot(it);
                 it.power = pow;
                 it.dmg = dmg;
+                it.precision = multi;
             } else if (it is "LegendFastShot") {
                 let it = LegendFastShot(it);
                 it.power = pow;
                 it.dmg = dmg;
+                it.precision = multi;
             }
         }   
     }
@@ -77,12 +82,21 @@ class LegendShot : Actor {
 
     double power;
     int dmg;
+    double precision; // What's the precision modifier?
 
     default {
         PROJECTILE;
         +FORCERADIUSDMG;
         Speed 40;
         DamageFunction (dmg);
+    }
+
+    override int DoSpecialDamage(Actor tgt, int dmg, name mod) {
+        // If this was precision damage, spawn a special particle effect.
+        if (precision > 1) {
+            A_SpawnItemEX("PrecisionFlash");
+        }
+        return super.DoSpecialDamage(tgt,dmg,mod);
     }
 
 }
@@ -93,12 +107,35 @@ class LegendFastShot : Actor {
 
     int dmg;
     double power;
+    double precision; // What's the precision modifier?
 
     default {
         PROJECTILE;
         +FORCERADIUSDMG;
         Speed 40;
         DamageFunction (dmg);
+    }
+
+    override int DoSpecialDamage(Actor tgt, int dmg, name mod) {
+        // If this was precision damage, spawn a special particle effect.
+        if (precision > 1) {
+            A_SpawnItemEX("PrecisionFlash");
+        }
+        return super.DoSpecialDamage(tgt,dmg,mod);
+    }
+}
+
+class PrecisionFlash : Actor {
+    default {
+        +BRIGHT;
+        +NOINTERACTION;
+    }
+
+    states {
+        Spawn:
+            APLS AB 5;
+            TNT1 A 0;
+            Stop;
     }
 }
 

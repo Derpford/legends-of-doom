@@ -200,8 +200,9 @@ class LegendPlayer : DoomPlayer abstract {
         return pow * multi;
     }
 
-    double GetPower(bool raw = false) {
+    double, double GetPower(bool raw = false) {
         // Grabs the current Power value. If `raw`, skip the precision doubling check.
+        // Also returns the multiplier, in case you need that.
         double lucky = GetPrecision();
         double multi = RollDown(lucky);
         if (CountInv("PowerStrength") > 0) { multi += 1; } // Grabbing a Zerk increases your multiplier for the rest of the level.
@@ -222,7 +223,7 @@ class LegendPlayer : DoomPlayer abstract {
 
         // Return the raw value if asked.
         if (raw) { return pow; }
-        return pow * multi;
+        return pow * multi, multi;
     }
 
     override int GetMaxHealth (bool withUpgrades) {
