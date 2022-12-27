@@ -91,10 +91,10 @@ class SlayerChaingun : LegendWeapon {
     int count; // How many bullets do we fire this tick?
 
     default {
-        LegendWeapon.Damage 5, 1;
+        LegendWeapon.Damage 5, 0.6;
         Weapon.SlotNumber 2;
         Weapon.AmmoType "GreenAmmo";
-        Weapon.AmmoUse 3;
+        Weapon.AmmoUse 2;
     }
 
     action void PainBullet(double spread) {
@@ -136,13 +136,13 @@ class SlayerChaingun : LegendWeapon {
                 case 0:
                     // Something broke!
                 case 1:
-                    if (invoker.ticproc >= 30) {
+                    if (invoker.ticproc >= 24) {
                         invoker.count = 2;
                         invoker.ticproc = 0;
                     }
                     break;
                 case 2:
-                    if (invoker.ticproc >= 10) {
+                    if (invoker.ticproc >= 6) {
                         invoker.atics -= 1;
                         invoker.ticproc = 0;
                     }
@@ -372,14 +372,14 @@ class PlasmaShot : LegendShot {
 }
 
 class SlayerLauncher : LegendWeapon {
-    // Fires rockets that impact for pow*10 damage and explode for up to pow*50 damage.
+    // Fires rockets that impact for pow*10 damage and explode for up to pow*25 damage.
     int ammo;
     
     default {
         LegendWeapon.Damage 0., 10.;
         Weapon.SlotNumber 5;
         Weapon.AmmoType "YellowAmmo";
-        Weapon.AmmoUse 50;
+        Weapon.AmmoUse 20;
         +Weapon.NOAUTOFIRE;
         +Weapon.EXPLOSIVE;
     }
@@ -432,7 +432,7 @@ class RocketShot : LegendShot {
             Loop;
         Death:
             MISL BC 4;
-            MISL D 4 A_SplashDamage(power*50,128);
+            MISL D 4 A_SplashDamage(power*25,128);
             MISL E 4;
             TNT1 A 0;
             Stop;
