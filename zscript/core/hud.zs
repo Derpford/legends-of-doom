@@ -84,7 +84,8 @@ class LegendHud : BaseStatusBar {
 			int ammoTextXPos = ammoXPos-32;
 			if (wpn) {
 				let a1 = wpn.AmmoType1;
-				if(a1)
+				let a2 = wpn.AmmoType2;
+				if(a1 && wpn.ammouse1 > 0)
 				{
 					let a1real = plr.FindInventory(a1.GetClassName());// a1 is a ClassPointer<Ammo>, a1real is a Pointer<Inventory>
 					//DrawImage("CLIPA0",(ammoXpos,-2),rbarflags,scale:(2,2));
@@ -93,6 +94,15 @@ class LegendHud : BaseStatusBar {
 					double used = wpn.ammouse1;
 					int shots = floor(amt / used);
 					DrawString(mStatFont,FormatNumber(shots), (ammoTextXPos,-24),rtxtflags,Font.CR_RED);
+				}
+
+				if (a2 && a2 != a1 && wpn.ammouse2 > 0) {
+					let a2real = plr.FindInventory(a2.GetClassName());
+					DrawInventoryIcon(a2real,(ammoXPos+16,-8),rbarflags,scale:(2,2));
+					double amt = GetAmount(a2.GetClassName());
+					double used = wpn.ammouse2;
+					int shots = floor(amt / used);
+					DrawString(mStatFont,FormatNumber(shots), (ammoTextXPos+16,-32),rtxtflags,Font.CR_RED);
 				}
 			}
 
