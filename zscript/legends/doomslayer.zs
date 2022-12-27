@@ -14,6 +14,8 @@ class Doomslayer : LegendPlayer {
         LegendPlayer.Luck 0.,0.;
         LegendPlayer.BonusHealth 0,0.5;
 
+        Player.DisplayName "Doomslayer";
+
         Player.StartItem "GreenAmmo", 300;
         Player.StartItem "RedAmmo",150;
         Player.StartItem "SlayerChaingun";
