@@ -17,7 +17,7 @@ class ItemCrate : Actor {
         +SHOOTABLE; // Not a monster!
         +NOBLOOD;
         +BRIGHT;
-        ItemCrate.Tiers ""; // Empty list means any items.
+        ItemCrate.Tiers "COMMON RARE EPIC"; 
         ItemCrate.Weight 100; // For the sake of convenience when defining new crate types.
     }
 
@@ -44,7 +44,7 @@ class ItemCrate : Actor {
         Death:
             BEXP BC 3 Bright;
         SpawnItem:
-            TNT1 A 0;
+            TNT1 A 1;
             TNT1 A 1 {
                 if (SpawnItem()) {
                     return ResolveState("GoAway");

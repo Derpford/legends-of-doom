@@ -43,21 +43,28 @@ class ItemSpawnHandler : StaticEventHandler {
         Array<String> tiers;
         Array<Double> weights;
         DictionaryIterator it = DictionaryIterator.Create(tierList);
-        while (it.next()) {
+        int breaker = 0;
+        while (it.next() && breaker < 32) {
             if (skipWhitelist || splitWhitelist.find(it.key()) != splitWhitelist.size()) {
+                // console.printf("Tier added : %s",it.key());
                 tiers.push(it.key());
                 weights.push(it.value().toDouble());
             }
+            breaker += 1;
         }
 
+        String res;
         // If there's only one tier, pick that.
         if (tiers.Size() == 1) {
-            return tiers[0];
+            res = tiers[0];
+        } else {
+            // Now do a weighted random roll on weights...
+            int idx = WeightedRandom(weights);
+            res = tiers[idx];
         }
-        // Now do a weighted random roll on weights...
-        int idx = WeightedRandom(weights);
         // And that's the tier we return.
-        return tiers[idx];
+        // console.printf("Selected %s",res);
+        return res;
     }
 
     String SelectItem(String tier) {
@@ -65,7 +72,11 @@ class ItemSpawnHandler : StaticEventHandler {
         Array<String> spawns;
         DictionaryIterator it = DictionaryIterator.Create(itemList);
         while (it.next()) {
-            if(it.value() == tier) {
+            // console.printf("Checking %s (%s)",it.key(),it.value());
+            Array<String> ts;
+            it.value().split(ts," ",TOK_SKIPEMPTY);
+            if(ts.find(tier) != ts.size()) {
+                // console.printf("Added %s to spawn list",it.key());
                 spawns.push(it.key());
             }
         }
@@ -116,12 +127,10 @@ class ItemSpawnHandler : StaticEventHandler {
             if (AllClasses[i] is "LegendItem") {
                 Class<Actor> it = AllClasses[i].GetClassName();
                 let cit = LegendItem(GetDefaultByType(it));
-                Array<String> r;
-                cit.GetTiers(r);
-                for (int j = 0; j < r.Size(); j++) {
-                    itemList.insert(cit.GetClassName(),r[j]);
-                    console.printf("Item registered: %s (%s)",cit.GetClassName(),r[j]);
-                }
+                // Array<String> r;
+                // cit.GetTiers(r);
+                itemList.insert(cit.GetClassName(),cit.GetRarity());
+                console.printf("Item registered: %s (%s)",cit.GetClassName(),cit.GetRarity());
             }
 
             if (AllClasses[i] is "ItemCrate") {

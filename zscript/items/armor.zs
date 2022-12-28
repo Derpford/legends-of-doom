@@ -34,7 +34,7 @@ class BlackPowderPlate : LegendItem {
         LegendItem.Desc "Ammo and Armor Bonuses can spawn each other.";
         LegendItem.Remark "Shaped like infinity";
         LegendItem.Icon "ARMIB0";
-        LegendItem.Rarity "EPIC";
+        LegendItem.Rarity "EPIC DEFENSE UTILITY";
     }
 
     override void PickupAmmo (Inventory item) {
@@ -69,6 +69,7 @@ class PanicBootton : LegendItem {
         LegendItem.Remark "Property Of Wizzard";
         LegendItem.Icon "BOOTA0";
         LegendItem.Timer 1.;
+        LegendItem.Rarity "COMMON UTILITY";
     }
 
     override void OnTimer() {
