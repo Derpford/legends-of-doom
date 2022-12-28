@@ -10,3 +10,24 @@ weapon/awandx AWNDHIT
 
 items/serum dsitemup
 $pitchset "items/serum" 0.8
+
+// from ww-htic-longsword
+$random weapons/swordhit { sword1 sword2 sword3 }
+sword1 dsswdht1
+sword2 dsswdht2
+sword3 dsswdht3
+$random weapons/swordwall { swordwall1 swordwall2 swordwall3 swordwall4 }
+swordwall1 dsswdwal
+swordwall2 dsswdwl2
+swordwall3 dsswdwl3
+swordwall4 dsswdwl4
+$random weapons/swordswing { swordswing1 swordswing2 swordswing3 }
+swordswing1 dsswdswg
+swordswing2 dsswdsw2
+swordswing3 dsswdsw3
+weapons/sworddraw dsswdup
+$random weapons/flameswordhit { fsword1 fsword2 fsword3 }
+fsword1 dsfwdht1
+fsword2 dsfwdht2
+fsword3 dsfwdht3
+weapons/flameswordswing dsfwdswg

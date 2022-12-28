@@ -1,4 +1,6 @@
 This credits file is probably incomplete! A lot of these sprites were lying around on my hard drive in a disorganized pile.
 
 The amethyst wand sprites are from Kagur. https://forum.zdoom.org/viewtopic.php?p=1058070
-The CHFR sprites are from the Cheshire Caco sprite edited by zrrion the insect
+The CHFR sprites are from the Cheshire Caco monster sprites, edited by zrrion the insect
+
+Flamberge sprites and some sounds from WildWeasel's Firebrand longsword: https://forum.zdoom.org/viewtopic.php?t=30236
