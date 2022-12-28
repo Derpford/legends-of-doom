@@ -7,7 +7,7 @@ class SurplusCaliber : LegendItem {
         LegendItem.Icon "CRATA0";
         LegendItem.Timer 1.;
         Tag "Surplus Caliber";
-        LegendItem.Desc "On Reload, gain a power boost.";
+        LegendItem.Desc "When your weapon Cycles, gain a power boost.";
         LegendItem.Remark "*slaps roof of gun*";
         LegendItem.Rarity "RARE ATTACK";
     }
@@ -17,7 +17,7 @@ class SurplusCaliber : LegendItem {
         if(power > 0) {
             if(TimeUp()) {
                 SetTimer();
-                power = max(0,power - (.20 + GetStacks()));
+                power = max(0,power - .50);
             }
         } else {
             SetTimer();
@@ -26,7 +26,7 @@ class SurplusCaliber : LegendItem {
     }
 
     override void OnReload() {
-        power = 3. + (2. * GetStacks()); // Flat value instead of infinite stacking
+        power = min(power+1,GetStacks()*5);
     }
 
     override double GetPower() {
