@@ -144,7 +144,7 @@ class ItemMenu : LegendZFGenericMenu {
 
             double btnsize = 64.; // Change padding here
             double padding = 1.;
-            let xslots = floor(bgsize.x/btnsize+padding); // How many items wide is this list?
+            let xslots = floor(bgsize.x/(btnsize+padding)); // How many items wide is this list?
             int xsp = i % xslots; 
             let lposx = listpos.x + (xsp * (btnsize+padding));
             int ysp = i / xslots;
