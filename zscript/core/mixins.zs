@@ -3,7 +3,7 @@ mixin class PinkGiver {
     override bool TryPickup(in out actor other) {
         bool success = super.TryPickup(other);
         if (success) {
-            other.GiveInventory("PinkAmmo",1);
+            other.GiveInventory("PinkAmmo",10);
         }
         return success;
     }

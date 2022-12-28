@@ -34,7 +34,7 @@ class SidheWand : LegendWeapon {
         Weapon.AmmoUse1 5;
         +Weapon.AMMO_OPTIONAL;
         Weapon.AmmoType2 "PinkAmmo";
-        Weapon.AmmoUse2 25;
+        Weapon.AmmoUse2 125;
     }
 
     action void FireWand() {

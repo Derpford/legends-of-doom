@@ -187,9 +187,9 @@ class PinkAmmo : Ammo {
         +BRIGHT;
         Inventory.PickupMessage "Ultra Ammo!";
         Inventory.Amount 1;
-        Inventory.MaxAmount 100;
-        Ammo.BackpackAmount 0;
-        Ammo.BackpackMaxAmount 100; // Does not get bigger with backpack.
+        Inventory.MaxAmount 1000;
+        Ammo.BackpackAmount 50;
+        Ammo.BackpackMaxAmount 1000; // Does not get bigger with backpack.
     }
 
     states {

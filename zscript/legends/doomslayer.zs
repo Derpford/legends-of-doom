@@ -249,6 +249,17 @@ class SlayerShotgun : LegendWeapon {
         Weapon.AmmoUse 25;
     }
 
+    action void FireShotgun() {
+        A_StartSound("weapons/sshotf");
+        TakeAmmo();
+        for(int i = -5; i < 5; i++) {
+            Shoot("BulletShot",ang: i, pitch:frandom(-1,0));
+            Shoot("BulletShot",ang: i, pitch:frandom(0,1));
+        }
+        Shoot("VorpalSplash");
+        A_GunFlash();
+    }
+
     states {
         Select:
             SHT2 A 1 A_Raise(35);
@@ -260,16 +271,7 @@ class SlayerShotgun : LegendWeapon {
             SHT2 A 1 A_WeaponReady();
             Loop;
         Fire:
-            SHT2 A 1 {
-                A_StartSound("weapons/sshotf");
-                TakeAmmo();
-                for(int i = -5; i < 5; i++) {
-                    Shoot("BulletShot",ang: i, pitch:frandom(-1,0));
-                    Shoot("BulletShot",ang: i, pitch:frandom(0,1));
-                }
-                Shoot("VorpalSplash");
-                A_GunFlash();
-            }
+            SHT2 A 1 FireShotgun();
             SHT2 A 7;
             SHT2 B 6;
             SHT2 C 6 A_CheckReload();
@@ -449,7 +451,7 @@ class SlayerBFG : LegendWeapon {
         LegendWeapon.Damage 0, 10;
         Weapon.SlotNumber 6; // should also be usable via the Zoom key as a shortcut
         Weapon.AmmoType "PinkAmmo";
-        Weapon.AmmoUse 100;
+        Weapon.AmmoUse 1000;
     }
 
     states {
