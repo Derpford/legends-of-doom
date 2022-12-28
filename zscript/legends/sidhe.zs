@@ -4,13 +4,13 @@ class Sidhe : LegendPlayer {
     // What the Sidhe lack in brute Power, they more than make up for with high Precision scaling and weapons that benefit greatly from it.
     // Each of the Sidhe's weapons also benefits from an alternate firing mode that consumes Pink Ammo for a more powerful version of its primary fire.
     // The Amethyst Wand is a variant of the Topaz Wand, rapidly firing projectiles with primary fire. It can fire without ammo, too.
-    // Its altfire shoots a piercing beam of force that gains additional damage from Precision hits, but costs 25 pink ammo.
+    // Its altfire shoots a piercing beam of force that gains additional damage from Precision hits, but costs 125 pink ammo.
     // The Flamberge is a wide-angle flame launcher that ignites enemies on Precision Hit.
-    // Its altfire is a flamethrower, guaranteeing an ignite at the cost of 2 pink ammo per shot.
+    // Its altfire is a flamethrower, guaranteeing an ignite at the cost of 10 pink ammo per shot.
     // The Dragon Gauntlet fires green bolts in a spread pattern, great for dealing with crowds.
-    // Its altfire throws fewer bolts, but they fly straighter and explode on impact. Precision hits explode in a wider area. 10 pink ammo per shot.
+    // Its altfire throws fewer bolts, but they fly straighter and explode on impact. Precision hits explode in a wider area. 25 pink ammo per shot.
     // The Skullmelter throws red-and-blue shards of pain given form in four-shot bursts. It makes a good long-distance weapon, and can also be swap-canceled.
-    // Its altfire rapid-fires the painshards at the cost of 5 pink ammo per shot. With a full bar, this nukes single targets.
+    // Its altfire rapid-fires the painshards at the cost of 50 pink ammo per shot. With a full bar, this nukes single targets.
 
     default {
         LegendPlayer.Power 2, 0.2; // Much lower power scaling than the Doomslayer.
@@ -24,6 +24,7 @@ class Sidhe : LegendPlayer {
         Player.StartItem "GreenAmmo", 200;
         Player.StartItem "SidheWand";
         Player.StartItem "SidheFlamberge";
+        Player.StartItem "SidheGauntlet";
     }
 }
 
@@ -256,6 +257,135 @@ class FlambergeFlames : LegendShot {
             MANF ABABABAB 4;
         Death:
             MISL BCD 5;
+            Stop;
+    }
+}
+
+class SidheGauntlet : LegendWeapon {
+    int cycle;
+
+    default {
+        LegendWeapon.Damage 0.,2;
+        Weapon.SlotNumber 4;
+        Weapon.AmmoType1 "BlueAmmo";
+        Weapon.AmmoUse1 10;
+        Weapon.AmmoType2 "PinkAmmo";
+        Weapon.AmmoUse2 25;
+    }
+
+    action void CycleGauntlet() {
+        invoker.cycle += 1;
+        if (invoker.cycle > 2) {
+            Reload();
+            invoker.cycle = 0;
+        }
+    }
+    action void FireSpread() {
+        // Figure out a good firing sound for this?
+        A_StartSound("weapon/dragonf");
+        TakeAmmo();
+        for (int i = -2; i < 3; i++) {
+            Shoot("DragonShot", ang: i * 9);
+        }
+    }
+
+    action void FireNades() {
+        A_StartSound("weapon/dragonf2");
+        TakeAmmo(true);
+        for (int i = -1; i < 2; i++) {
+            Shoot("DragonNade", ang: i * 12,pitch:-10);
+        }
+    }
+
+    action state ClawIdle() {
+        if (frandom(0,1) < 0.01) {
+            return ResolveState("Idle");
+        } else {
+            return ResolveState(null);
+        }
+    }
+
+    states {
+        Select:
+            CLAW A 1 A_Raise(35);
+            Loop;
+        DeSelect:
+            CLAW A 1 A_Lower(35);
+            Loop;
+
+        Ready:
+            CLAW A 1 A_WeaponReady();
+            CLAW A 0 ClawIdle();
+            Loop;
+        
+        Idle:
+            CLAW EEEFFFGGGHHHIII 1 Bright A_WeaponReady();
+            CLAW HHHGGGFFFEEE 1 Bright A_WeaponReady();
+            Goto Ready;
+        
+        Fire:
+            CLAW D 0 A_WeaponOffset(0,36,WOF_INTERPOLATE);
+            CLAW D 2 Bright FireSpread();
+            CLAW B 4 Bright A_WeaponOffset(0,34,WOF_INTERPOLATE);
+            CLAW C 3 Bright A_WeaponOffset(0,33,WOF_INTERPOLATE);
+            CLAW C 0 CycleGauntlet();
+            Goto Ready;
+
+        AltFire:
+            CLAW BC 4 Bright A_WeaponOffset(frandom(-5,5),35,WOF_INTERPOLATE);
+            CLAW D 3 Bright FireNades();
+            CLAW A 5 A_WeaponOffset(0,32,WOF_INTERPOLATE);
+            Goto Ready;
+    }
+}
+
+class DragonShot : LegendShot {
+    // Deliberately did NOT call them DragonBalls.
+    default {
+        RenderStyle "Add";
+        +BRIGHT;
+        DeathSound "weapon/awandx";
+    }
+
+    states {
+        Spawn:
+            PLS1 AB 3;
+            Loop;
+        
+        Death:
+            PLS1 CDEFG 4;
+            Stop;
+    }
+}
+
+class DragonNade : LegendShot {
+    default {
+        RenderStyle "Add";
+        Scale 2;
+        +BRIGHT;
+        -NOGRAVITY;
+        +DONTFALL;
+        DeathSound "weapon/dragonx";
+    }
+
+    action void DragonExplode() {
+        double rad = 128;
+        if (invoker.precision > 1) {
+            double mult = 1 + (0.5 * (invoker.precision - 1)); // i.e., at 2 the multiplier is 1.5
+            rad *= mult;
+        }
+
+        A_SplashDamage(invoker.power * 20,rad);
+    }
+
+    states {
+        Spawn:
+            PLS1 AB 5;
+            Loop;
+        Death:
+            PLS1 C 6 { invoker.bNOGRAVITY = true; }
+            PLS1 D 6 DragonExplode();
+            PLS1 EFG 5;
             Stop;
     }
 }

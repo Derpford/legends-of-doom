@@ -8,6 +8,14 @@ $limit "items/barbeep" 0
 weapon/awandf AWNDFIRE
 weapon/awandx AWNDHIT
 weapon/flambef FLAMTHRO
+weapon/dragonf ZAPHIT
+weapon/dragonf2 FBALLFIR
+$random weapon/dragonx { dragonx1 dragonx2 dragonx3 dragonx4 dragonx5 }
+dragonx1 FBALL1
+dragonx2 FBALL2
+dragonx3 FBALL3
+dragonx4 FBALL4
+dragonx5 FBALL5
 
 items/serum dsitemup
 $pitchset "items/serum" 0.8
