@@ -40,8 +40,14 @@ class SidheWand : LegendWeapon {
     action void FireWand() {
         // TODO: Fire projectile
         A_StartSound("weapon/awandf");
+        if (CountInv(invoker.ammotype1) > invoker.ammouse1) {
         TakeAmmo();
         Shoot("AmethystBolt");
+            Shoot("AmethystBolt",xy:-8,height:-4);
+            Shoot("AmethystBolt",xy:8,height:-4);
+        } else {
+            Shoot("AmethystBolt");
+        }
     }
 
     action void FireBolt() {
@@ -71,8 +77,8 @@ class SidheWand : LegendWeapon {
         
         Fire:
             AWND B 0 A_WeaponOffset(0,36,WOF_INTERPOLATE);
-            AWND B 3 Bright FireWand();
-            AWND C 4 Bright A_WeaponOffset(0,33,WOF_INTERPOLATE);
+            AWND B 4 Bright FireWand();
+            AWND C 5 Bright A_WeaponOffset(0,33,WOF_INTERPOLATE);
             AWND D 4 Bright A_WeaponOffset(0,32,WOF_INTERPOLATE);
             AWND D 0 Reload();
             Goto Ready;
