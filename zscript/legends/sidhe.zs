@@ -23,12 +23,13 @@ class Sidhe : LegendPlayer {
 
         Player.StartItem "GreenAmmo", 200;
         Player.StartItem "SidheWand";
+        Player.StartItem "SidheFlamberge";
     }
 }
 
 class SidheWand : LegendWeapon {
     default {
-        LegendWeapon.Damage 0.,3.; // Less damage at level 1 than the chaingun, but hoo boy, when it hits...
+        LegendWeapon.Damage -1.,3.; // Less DPS at level 1 than the chaingun, but hoo boy, when it hits...
         Weapon.SlotNumber 2;
         Weapon.AmmoType1 "GreenAmmo";
         Weapon.AmmoUse1 5;
@@ -41,8 +42,8 @@ class SidheWand : LegendWeapon {
         // TODO: Fire projectile
         A_StartSound("weapon/awandf");
         if (CountInv(invoker.ammotype1) > invoker.ammouse1) {
-        TakeAmmo();
-        Shoot("AmethystBolt");
+            TakeAmmo();
+            Shoot("AmethystBolt");
             Shoot("AmethystBolt",xy:-8,height:-4);
             Shoot("AmethystBolt",xy:8,height:-4);
         } else {
@@ -127,6 +128,134 @@ class AmethystTrail : Actor {
         Spawn:
             CHFR CBA 3;
             TNT1 A 0;
+            Stop;
+    }
+}
+
+class SidheFlamberge : LegendWeapon {
+    default {
+        LegendWeapon.Damage 0.,4;
+        Weapon.SlotNumber 3;
+        Weapon.AmmoType1 "RedAmmo";
+        Weapon.AmmoUse1 10;
+        Weapon.AmmoType2 "PinkAmmo";
+        Weapon.AmmoUse2 10;
+    }
+
+    action void FireBalls() {
+        TakeAmmo();
+        for (int i = -2; i < 2; i++) {
+            Shoot("FlambergeBall",ang: (i * 8)+4);
+        }
+        A_StartSound("weapons/flameswordswing");
+    }
+
+    action void FireThrower() {
+        TakeAmmo(true);
+        A_StartSound("weapon/flambef",1,flags:CHANF_LOOPING);
+        Shoot("FlambergeFlames",ang:frandom(-5,5),pitch:frandom(0,-5));
+    }
+
+    states {
+        Select:
+            SRDF AAA 1 A_Raise(35);
+            SRDI BBBCCC 1 A_Raise(35);
+            Loop;
+        DeSelect:
+            SRDG AAA 1 A_Lower(35);
+            SRDI BBBCCC 1 A_Lower(35);
+            Loop;
+
+        Ready:
+            SRDF AAA 1 A_WeaponReady();
+            SRDI BBBCCC 1 A_WeaponReady();
+            Loop;
+        
+        Fire:
+            SRDF BC 2;
+        Swing:
+            SRDF FGHIJ 1;
+            SRDF K 1 FireBalls();
+            SRDF LM 1;
+            TNT1 A 4;
+            TNT1 A 4 A_Refire("Backswing");
+            SRDF CB 1;
+            Goto Ready; 
+        
+        Backswing:
+            SRDF NOPQR 1;
+            SRDF S 1 FireBalls();
+            SRDF TUV 1;
+            TNT1 A 4 Reload();
+            TNT1 A 4 A_Refire("Swing");
+            SRDF CB 1;
+            Goto Ready;
+
+        Altfire:
+            SRDF BC 2;
+            SRDF NOPQR 1;
+            SRDF S 0 A_StartSound("weapon/awandx",2);
+        AltHold:
+            SRDF S 1 FireThrower();
+            SRDG S 1 {
+                let btn = GetPlayerInput(INPUT_BUTTONS);
+                if (btn & BT_ALTATTACK && CountInv(invoker.ammotype2) >= invoker.ammouse2) {
+                    return ResolveState("AltHold");
+                } else {
+                    return ResolveState(null);
+                }
+            }
+        AltEnd:
+            SRDF R 1 A_StopSound(1);
+            SRDF QPON 1;
+            TNT1 A 6;
+            SRDF CB 2;
+            Goto Ready;
+    }
+}
+
+class FlambergeBall : LegendShot {
+    default {
+        RenderStyle "Add";
+        Scale 0.5;
+        Speed 50;
+        +BRIGHT;
+    }
+
+    override int DoSpecialDamage(Actor tgt, int dmg, Name mod) {
+        if (precision > 1.) {
+            tgt.GiveInventory("Burn",floor(precision/2));
+        }
+        return super.DoSpecialDamage(tgt,dmg,mod);
+    }
+
+    states {
+        Spawn:
+            MANF AB 3;
+            Loop;
+        Death:
+            MISL BCD 4;
+            Stop;
+    }
+}
+
+class FlambergeFlames : LegendShot {
+    default {
+        RenderStyle "Add";
+        Speed 30;
+        +BRIGHT;
+    }
+
+    override int DoSpecialDamage(Actor tgt, int dmg, Name mod) {
+        tgt.GiveInventory("Burn",floor(precision));
+        return super.DoSpecialDamage(tgt,dmg,mod);
+    }
+
+    states {
+        Spawn:
+            MANF ABABABAB 4;
+        Death:
+            MISL BCD 5;
             Stop;
     }
 }
