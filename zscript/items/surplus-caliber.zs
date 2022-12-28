@@ -26,7 +26,7 @@ class SurplusCaliber : LegendItem {
     }
 
     override void OnReload() {
-        power += 1. + (2. * GetStacks());
+        power = 3. + (2. * GetStacks()); // Flat value instead of infinite stacking
     }
 
     override double GetPower() {
