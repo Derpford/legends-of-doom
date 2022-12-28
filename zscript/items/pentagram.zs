@@ -11,7 +11,7 @@ class SealedPentagram : LegendItem {
     }
 
     override void OnHit(int dmg, Name type, Actor src, Actor inf, Actor tgt) {
-        if (TimeUp()) {
+        if (TimeUp() && tgt != owner) {
             // Flag our timer for triggering next tic.
             used = true;
             int amt = 9 + GetStacks();
