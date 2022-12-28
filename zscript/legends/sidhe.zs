@@ -13,7 +13,7 @@ class Sidhe : LegendPlayer {
     // Its altfire rapid-fires the painshards at the cost of 5 pink ammo per shot. With a full bar, this nukes single targets.
 
     default {
-        LegendPlayer.Power 1, 0.2; // Much lower power scaling than the Doomslayer.
+        LegendPlayer.Power 2, 0.2; // Much lower power scaling than the Doomslayer.
         LegendPlayer.Precision 5, 1.8; // Starts with more Precision and scales faster too.
         LegendPlayer.Toughness 0.,0.3; // Gradually gains Toughness...
         LegendPlayer.Luck 2.,0.; // And has a tiny bit of luck.
@@ -28,7 +28,7 @@ class Sidhe : LegendPlayer {
 
 class SidheWand : LegendWeapon {
     default {
-        LegendWeapon.Damage 0.,4.; // Less damage at level 1 than the chaingun, but hoo boy, when it hits...
+        LegendWeapon.Damage 0.,3.; // Less damage at level 1 than the chaingun, but hoo boy, when it hits...
         Weapon.SlotNumber 2;
         Weapon.AmmoType1 "GreenAmmo";
         Weapon.AmmoUse1 5;
@@ -39,8 +39,22 @@ class SidheWand : LegendWeapon {
 
     action void FireWand() {
         // TODO: Fire projectile
+        A_StartSound("weapon/awandf");
         TakeAmmo();
         Shoot("AmethystBolt");
+    }
+
+    action void FireBolt() {
+        TakeAmmo(true);
+        double pow; double mult;
+        [pow, mult] = invoker.GetPower();
+        if (mult > 1.) {
+            // Precision hits gain a 1.5x power boost.
+            pow *= 1.5;
+        }
+
+        int dmg = invoker.GetDamage(pow);
+        A_RailAttack(dmg * 10,0,false,"9356a3","413c5a",RGF_FULLBRIGHT,8);
     }
 
     states {
@@ -60,6 +74,15 @@ class SidheWand : LegendWeapon {
             AWND B 3 Bright FireWand();
             AWND C 4 Bright A_WeaponOffset(0,33,WOF_INTERPOLATE);
             AWND D 4 Bright A_WeaponOffset(0,32,WOF_INTERPOLATE);
+            AWND D 0 Reload();
+            Goto Ready;
+        
+        AltFire:
+            AWND C 0 A_WeaponOffset(0,40,WOF_INTERPOLATE);
+            AWND C 4 Bright FireBolt();
+            AWND B 5 Bright A_WeaponOffset(0,34,WOF_INTERPOLATE);
+            AWND D 6 Bright A_WeaponOffset(0,32,WOF_INTERPOLATE);
+            AWND EF 6 Bright;
             Goto Ready;
     }
 }
@@ -71,6 +94,7 @@ class AmethystBolt : LegendShot {
         Height 2;
         Speed 60;
         +BRIGHT;
+        DeathSound "weapon/awandx";
     }
 
     states {
