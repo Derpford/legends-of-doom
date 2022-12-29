@@ -25,6 +25,7 @@ class Sidhe : LegendPlayer {
         Player.StartItem "SidheWand";
         Player.StartItem "SidheFlamberge";
         Player.StartItem "SidheGauntlet";
+        Player.StartItem "SidheHellmouth";
     }
 }
 
@@ -389,4 +390,138 @@ class DragonNade : LegendShot {
             PLS1 EFG 5;
             Stop;
     }
+}
+
+class SidheHellmouth : LegendWeapon {
+
+    default {
+        LegendWeapon.Damage 0.,12;
+        Weapon.SlotNumber 5;
+        Weapon.AmmoType1 "YellowAmmo";
+        Weapon.AmmoUse1 25;
+        Weapon.AmmoType2 "PinkAmmo";
+        Weapon.AmmoUse2 25;
+    }
+
+    action void FirePain() {
+        // Ouch.
+        A_StartSound("weapon/dragonf2");
+        Shoot("FirebluShard",xy: -8);
+        Shoot("FirebluShard",xy: 8);
+        TakeAmmo();
+    }
+
+    action void FireMorePain() {
+        // OUCH.
+        A_StartSound("weapon/dragonf2");
+        Shoot("FirebluShard",ang:frandom(-2,2),xy: -8);
+        Shoot("FirebluShard",ang:frandom(-2,2),xy: 8);
+        TakeAmmo(true);
+    }
+
+    states {
+        Select:
+            DSKL A 1 A_Raise(35);
+            Loop;
+        DeSelect:
+            DSKL A 1 A_Lower(35);
+            Loop;
+
+        Ready:
+            DSKL A 1 A_WeaponReady();
+            Loop;
+        
+        Fire:
+            DSKL B 3 Bright A_WeaponOffset(frandom(-12,12),40,WOF_INTERPOLATE);
+            DSKL B 0 FirePain();
+            DSKL A 1 A_WeaponOffset(0,36,WOF_INTERPOLATE);
+            DSKL C 3 Bright A_WeaponOffset(frandom(-12,12),40,WOF_INTERPOLATE);
+            DSKL C 0 FirePain();
+            DSKL A 1 A_WeaponOffset(0,32,WOF_INTERPOLATE);
+            DSKL DEF 4 Bright;
+            DSKL IHG 4 Bright;
+            Goto Ready;
+        
+        AltFire:
+            DSKL G 0 A_StartSound("weapon/dragonx");
+            DSKL GHI 4 Bright;
+            DSKL FED 4 Bright;
+        AltHold:
+            DSKL B 2 Bright A_WeaponOffset(frandom(-16,16),36,WOF_INTERPOLATE);
+            DSKL B 0 FireMorePain();
+            DSKL A 1 A_WeaponOffset(0,32,WOF_INTERPOLATE);
+            DSKL C 2 Bright A_WeaponOffset(frandom(-16,16),36,WOF_INTERPOLATE);
+            DSKL C 0 FireMorePain();
+            DSKL A 1 A_WeaponOffset(0,32,WOF_INTERPOLATE);
+            DSKL A 0 A_Refire();
+            Goto Ready;
+    }
+}
+
+class FirebluShard : LegendShot {
+    default {
+        RenderStyle "Add";
+        +BRIGHT;
+        +HITTRACER;
+        DeathSound "weapon/awandx";
+    }
+
+    action void SpawnShrapnel() {
+        if (!tracer) { return; }
+        for (int i = 0; i < 9; i++) {
+            vector3 spos = invoker.tracer.Vec3Angle(invoker.tracer.radius * 1.8,i * 45,invoker.tracer.height / 2.);
+            let it = FirebluShrapnel(invoker.tracer.Spawn("FirebluShrapnel",spos));
+            if (it) {
+                it.target = invoker.target;
+                it.power = invoker.power;
+                it.dmg = invoker.dmg / 2;
+                it.precision = invoker.precision;
+                it.VelFromAngle(it.speed,i * 45);
+            }
+        }
+    }
+
+    states {
+        Spawn:
+            PLSS AB 4;
+            PLS2 AB 4;
+            Loop;
+        Death:
+            PLSE A 2 SpawnShrapnel();
+            BAL1 C 2;
+            PLSE B 2;
+            BAL1 D 2;
+            PLSE C 2;
+            BAL1 E 2;
+            PLSE DE 2;
+            Stop;
+    }
+}
+
+class FirebluShrapnel : LegendShot {
+    default {
+        RenderStyle "Add";
+        +BRIGHT;
+        DeathSound "weapon/awandx";
+        ReactionTime 3;
+        Speed 10;
+    }
+
+    states {
+        Spawn:
+            PLSS A 0 A_CountDown();
+            PLSS AB 4;
+            PLS2 AB 4;
+            Loop;
+        Death:
+            PLSE A 2;
+            BAL1 C 2;
+            PLSE B 2;
+            BAL1 D 2;
+            PLSE C 2;
+            BAL1 E 2;
+            PLSE DE 2;
+            Stop;
+    }
+
 }
