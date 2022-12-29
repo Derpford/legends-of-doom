@@ -135,7 +135,7 @@ class AmethystTrail : Actor {
 
 class SidheFlamberge : LegendWeapon {
     default {
-        LegendWeapon.Damage 0.,4;
+        LegendWeapon.Damage 0.,5;
         Weapon.SlotNumber 3;
         Weapon.AmmoType1 "RedAmmo";
         Weapon.AmmoUse1 10;
@@ -245,6 +245,7 @@ class FlambergeFlames : LegendShot {
         RenderStyle "Add";
         Speed 30;
         +BRIGHT;
+        +RIPPER;
     }
 
     override int DoSpecialDamage(Actor tgt, int dmg, Name mod) {
@@ -285,7 +286,7 @@ class SidheGauntlet : LegendWeapon {
         A_StartSound("weapon/dragonf");
         TakeAmmo();
         for (int i = -2; i < 3; i++) {
-            Shoot("DragonShot", ang: i * 9);
+            Shoot("DragonShot", ang: i * 2, xy: i * 4);
         }
     }
 
