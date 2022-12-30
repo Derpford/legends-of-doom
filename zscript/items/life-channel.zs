@@ -4,7 +4,7 @@ class LifeChannelAmulet : LegendItem {
         LegendItem.Icon "AMLTC0";
         LegendItem.Timer 15.;
         Tag "Life-Channel Amulet";
-        LegendItem.Desc "Gain Power, but occasionally suffer Bleeding.";
+        LegendItem.Desc "Gain 40% more Power, but occasionally suffer Bleeding.";
         LegendItem.Remark "Lightning bolt!";
         LegendItem.Rarity "CURSED";
     }
@@ -15,7 +15,8 @@ class LifeChannelAmulet : LegendItem {
     }
 
     override double GetPower() {
-        return 2.5 + (7.5 * GetStacks());
+        double p = GetOwnerBase("Power");
+        return p * (0.4 * GetStacks());
     }
 
     states {
