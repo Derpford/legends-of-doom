@@ -11,7 +11,7 @@ class ItemCrate : Actor {
     ItemSpawnHandler SpawnHandler;
 
     default {
-        Health 100;
+        Health 50;
         Height 36;
         +DONTTHRUST;
         +SHOOTABLE; // Not a monster!
