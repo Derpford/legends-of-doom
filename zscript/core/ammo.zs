@@ -25,6 +25,7 @@ class AmmoDrop : Inventory {
         }
         it.A_SetSpecial(Special,Args[0],Args[1],Args[2],Args[3],Args[4]);
         it.ChangeTID(TID);
+        it.bDROPPED = false; // Prevents infinite loops when replacing dropped ammo from monsters.
         GoAwayAndDie();
     }
 }
@@ -42,10 +43,16 @@ class AmmoBig : Inventory {
     }
     
     override bool TryPickup(in out actor other) {
-        A_SpawnItemEX(ammotype,zvel:4);
+        // A_SpawnItemEX(ammotype,zvel:4);
+        let it = Spawn(ammotype,pos);
+        it.vel.z = 4;
+        it.bDROPPED = false;
         double ang = random(0,18) * 5;
         for (int i = 0; i < 4; i++) {
-            A_SpawnItemEX(ammotype,xvel:2,zvel:4,angle:ang + (i * 90));
+            let it = Spawn(ammotype,pos);
+            it.bDROPPED = false;
+            it.Vel3DFromAngle(3,ang + (i * 90),-60);
+            // A_SpawnItemEX(ammotype,xvel:2,zvel:4,angle:ang + (i * 90));
         }
         GoAwayAndDie();
         return true;
@@ -54,6 +61,7 @@ class AmmoBig : Inventory {
 
 class GreenAmmo : Ammo replaces Clip {
     mixin PinkGiver;
+    mixin AmmoRandom;
     default {
         +FLOATBOB;
         +BRIGHT;
@@ -86,6 +94,7 @@ class GreenAmmoBig : AmmoBig replaces ClipBox {
 
 class RedAmmo : Ammo replaces Shell {
     mixin PinkGiver;
+    mixin AmmoRandom;
     default {
         +FLOATBOB;
         +BRIGHT;
@@ -118,6 +127,7 @@ class RedAmmoBig : AmmoBig replaces ShellBox {
 
 class YellowAmmo : Ammo replaces RocketAmmo {
     mixin PinkGiver;
+    mixin AmmoRandom;
     default {
         +FLOATBOB;
         +BRIGHT;
@@ -150,6 +160,7 @@ class YellowAmmoBig : AmmoBig replaces RocketBox {
 
 class BlueAmmo : Ammo replaces Cell {
     mixin PinkGiver;
+    mixin AmmoRandom;
     default {
         +FLOATBOB;
         +BRIGHT;

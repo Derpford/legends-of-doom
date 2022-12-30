@@ -9,6 +9,21 @@ mixin class PinkGiver {
     }
 }
 
+mixin class AmmoRandom {
+    // If +DROPPED, turns into an AmmoDrop.
+    override void PostBeginPlay() {
+        if (bDROPPED) {
+            if (!owner) {
+                let it = Spawn("AmmoDrop",pos);
+                if (it) {
+                    GoAwayAndDie();
+                }
+            }
+        }
+        super.PostBeginPlay();
+    }
+}
+
 mixin class PlayerVac {
     // This item gets sucked toward the player.
     // Should only go on items with ALWAYSPICKUP!
