@@ -123,7 +123,7 @@ class LegendItem : Inventory abstract {
         } else {
             int lvl = owner.CountInv("LevelToken");
             double pow = 5.;
-            if (raw) {
+            if (!raw) {
                 pow += 0.5 * lvl;
             }
             return pow;
