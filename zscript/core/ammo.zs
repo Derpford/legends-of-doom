@@ -59,6 +59,36 @@ class AmmoBig : Inventory {
     }
 }
 
+class AmmoTiny : Inventory {
+    // A small "ammo bonus".
+    default {
+        +FLOATBOB;
+        +BRIGHT;
+        Scale 0.7;
+        Inventory.PickupMessage "Ammo bonus!";
+    }
+
+    override bool TryPickup(in out actor other) {
+        other.GiveInventory("GreenAmmo",10);
+        other.GiveInventory("RedAmmo",10);
+        other.GiveInventory("YellowAmmo",10);
+        other.GiveInventory("BlueAmmo",10);
+        other.GiveInventory("PinkAmmo",10);
+        GoAwayAndDie();
+        Return true;
+    }
+
+    states {
+        Spawn:
+            AMMY A 7;
+            AMMG A 7;
+            AMMB A 7;
+            AMMP A 7;
+            AMMR A 7;
+            Loop;
+    }
+}
+
 class GreenAmmo : Ammo replaces Clip {
     mixin PinkGiver;
     mixin AmmoRandom;
