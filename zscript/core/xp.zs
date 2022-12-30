@@ -1,6 +1,6 @@
 extend class LegendPlayer {
     clearscope int MaxXP() {
-        return 100.0 * ((100 + (level * level)) / 100);
+        return 100.0 * ((10 + (level * level)) / 10);
     }
 
     clearscope bool CanLevel() {
