@@ -130,6 +130,31 @@ class LegendPlayer : DoomPlayer abstract {
         return roll < chance;
     }
 
+    clearscope double GetBaseStat(String stat) {
+        // Stats before items.
+        double base; double scaling;
+        if (stat == "Luck") {
+            base = self.Luck;
+            scaling = self.LuckGrow;
+        }
+
+        if (stat == "Precision") {
+            base = self.Precision;
+            scaling = self.PrecisionGrow;
+        }
+        
+        if (stat == "Power") {
+            base = self.Power;
+            scaling = self.PowerGrow;
+        }
+
+        if (stat == "Toughness") {
+            base = self.Toughness;
+            scaling = self.ToughnessGrow;
+        }
+        return base + (scaling * level);
+    }
+
     clearscope double GetLuck() {
         // Get the current Luck value, based on:
         // The base Luck value,
@@ -145,7 +170,7 @@ class LegendPlayer : DoomPlayer abstract {
             it = it.inv;
         }
         // Capped to 50!
-        double baseLuck = self.Luck + (self.LuckGrow * self.Level);
+        double baseLuck = GetBaseStat("Luck");
         double RealLuck = SmoothCap(baseLuck+bonus, 50);
         return RealLuck; //clamp(-50, 50,RealLuck);
     }
@@ -161,7 +186,7 @@ class LegendPlayer : DoomPlayer abstract {
             }
             it = it.inv;
         }
-        return bonus + self.Precision + (self.PrecisionGrow * self.Level);
+        return bonus + GetBaseStat("Precision");
     }
 
     clearscope double GetToughness() {
@@ -175,9 +200,7 @@ class LegendPlayer : DoomPlayer abstract {
             }
             it = it.inv;
         }
-        double ret = bonus + self.Toughness + (self.ToughnessGrow * self.Level);
-        // console.printf("Calculated toughness: "..ret);
-        return ret;
+        return bonus + GetBaseStat("Toughness");
     }
 
     clearscope double UI_GetPower(bool raw = true) {
@@ -195,7 +218,7 @@ class LegendPlayer : DoomPlayer abstract {
             }
             it = it.inv;
         }
-        double pow = bonus + self.Power + (self.PowerGrow * self.Level);
+        double pow = bonus + GetBaseStat("Power");
         if (raw) { return pow; }
         return pow * multi;
     }
@@ -219,7 +242,7 @@ class LegendPlayer : DoomPlayer abstract {
             }
             it = it.inv;
         }
-        double pow = bonus + self.Power + (self.PowerGrow * self.Level);
+        double pow = bonus + GetBaseStat("Power");
 
         // Return the raw value if asked.
         if (raw) { return pow; }
