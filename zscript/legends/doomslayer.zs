@@ -12,7 +12,7 @@ class Doomslayer : LegendPlayer {
         LegendPlayer.Precision 0, 1.5;
         LegendPlayer.Toughness 0.,0.;
         LegendPlayer.Luck 0.,0.;
-        LegendPlayer.BonusHealth 0,0.5;
+        LegendPlayer.BonusHealth 0,2.5;
 
         Player.DisplayName "Doomslayer";
 

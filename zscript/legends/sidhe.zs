@@ -17,7 +17,7 @@ class Sidhe : LegendPlayer {
         LegendPlayer.Precision 5, 1.8; // Starts with more Precision and scales faster too.
         LegendPlayer.Toughness 0.,0.3; // Gradually gains Toughness...
         LegendPlayer.Luck 2.,0.; // And has a tiny bit of luck.
-        LegendPlayer.BonusHealth 0,0.4; // Scales health slightly slower than Doomslayer.
+        LegendPlayer.BonusHealth 0,1.5; // Scales health slightly slower than Doomslayer.
 
         Player.DisplayName "Sidhe";
 
