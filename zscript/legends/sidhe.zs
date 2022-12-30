@@ -21,7 +21,8 @@ class Sidhe : LegendPlayer {
 
         Player.DisplayName "Sidhe";
 
-        Player.StartItem "GreenAmmo", 200;
+        Player.StartItem "BlueAmmo", 200;
+        Player.StartItem "RedAmmo", 200;
         Player.StartItem "SidheWand";
         Player.StartItem "SidheFlamberge";
         Player.StartItem "SidheGauntlet";
@@ -33,7 +34,7 @@ class SidheWand : LegendWeapon {
     default {
         LegendWeapon.Damage -1.,3.; // Less DPS at level 1 than the chaingun, but hoo boy, when it hits...
         Weapon.SlotNumber 2;
-        Weapon.AmmoType1 "GreenAmmo";
+        Weapon.AmmoType1 "BlueAmmo";
         Weapon.AmmoUse1 5;
         +Weapon.AMMO_OPTIONAL;
         Weapon.AmmoType2 "PinkAmmo";
@@ -79,16 +80,16 @@ class SidheWand : LegendWeapon {
             Loop;
         
         Fire:
-            AWND B 0 A_WeaponOffset(0,36,WOF_INTERPOLATE);
-            AWND B 4 Bright FireWand();
-            AWND C 5 Bright A_WeaponOffset(0,33,WOF_INTERPOLATE);
-            AWND D 4 Bright A_WeaponOffset(0,32,WOF_INTERPOLATE);
+            AWND B 3 A_WeaponOffset(0,36,WOF_INTERPOLATE);
+            AWND B 0 Bright FireWand();
+            AWND C 4 Bright A_WeaponOffset(0,33,WOF_INTERPOLATE);
+            AWND D 3 Bright A_WeaponOffset(0,32,WOF_INTERPOLATE);
             AWND D 0 Reload();
             Goto Ready;
         
         AltFire:
-            AWND C 0 A_WeaponOffset(0,40,WOF_INTERPOLATE);
-            AWND C 4 Bright FireBolt();
+            AWND C 4 A_WeaponOffset(0,40,WOF_INTERPOLATE);
+            AWND C 0 Bright FireBolt();
             AWND B 5 Bright A_WeaponOffset(0,34,WOF_INTERPOLATE);
             AWND D 6 Bright A_WeaponOffset(0,32,WOF_INTERPOLATE);
             AWND EF 6 Bright;
@@ -269,7 +270,7 @@ class SidheGauntlet : LegendWeapon {
     default {
         LegendWeapon.Damage 0.,2;
         Weapon.SlotNumber 4;
-        Weapon.AmmoType1 "BlueAmmo";
+        Weapon.AmmoType1 "GreenAmmo";
         Weapon.AmmoUse1 10;
         Weapon.AmmoType2 "PinkAmmo";
         Weapon.AmmoUse2 25;
@@ -294,13 +295,11 @@ class SidheGauntlet : LegendWeapon {
     action void FireNades() {
         A_StartSound("weapon/dragonf2");
         TakeAmmo(true);
-        for (int i = -1; i < 2; i++) {
-            Shoot("DragonNade", ang: i * 12,pitch:-10);
-        }
+            Shoot("DragonNade", ang: frandom(-6,6));
     }
 
     action state ClawIdle() {
-        if (frandom(0,1) < 0.01) {
+        if (frandom(0,1) < 0.005) {
             return ResolveState("Idle");
         } else {
             return ResolveState(null);
@@ -326,17 +325,17 @@ class SidheGauntlet : LegendWeapon {
             Goto Ready;
         
         Fire:
-            CLAW D 0 A_WeaponOffset(0,36,WOF_INTERPOLATE);
-            CLAW D 2 Bright FireSpread();
-            CLAW B 4 Bright A_WeaponOffset(0,34,WOF_INTERPOLATE);
-            CLAW C 3 Bright A_WeaponOffset(0,33,WOF_INTERPOLATE);
+            CLAW D 2 A_WeaponOffset(0,36,WOF_INTERPOLATE);
+            CLAW D 0 Bright FireSpread();
+            CLAW B 3 Bright A_WeaponOffset(0,34,WOF_INTERPOLATE);
+            CLAW C 2 Bright A_WeaponOffset(0,33,WOF_INTERPOLATE);
             CLAW C 0 CycleGauntlet();
             Goto Ready;
 
         AltFire:
-            CLAW BC 4 Bright A_WeaponOffset(frandom(-5,5),35,WOF_INTERPOLATE);
-            CLAW D 3 Bright FireNades();
-            CLAW A 5 A_WeaponOffset(0,32,WOF_INTERPOLATE);
+            CLAW BC 3 Bright A_WeaponOffset(frandom(-5,5),35,WOF_INTERPOLATE);
+            CLAW D 2 Bright FireNades();
+            CLAW A 1 A_WeaponOffset(0,32,WOF_INTERPOLATE);
             Goto Ready;
     }
 }
@@ -365,8 +364,6 @@ class DragonNade : LegendShot {
         RenderStyle "Add";
         Scale 2;
         +BRIGHT;
-        -NOGRAVITY;
-        +DONTFALL;
         DeathSound "weapon/dragonx";
     }
 
@@ -377,7 +374,7 @@ class DragonNade : LegendShot {
             rad *= mult;
         }
 
-        A_SplashDamage(invoker.power * 20,rad);
+        A_SplashDamage(invoker.power * 20,rad,selfdmg: false);
     }
 
     states {
