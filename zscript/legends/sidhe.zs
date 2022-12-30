@@ -21,7 +21,7 @@ class Sidhe : LegendPlayer {
 
         Player.DisplayName "Sidhe";
 
-        Player.StartItem "BlueAmmo", 200;
+        Player.StartItem "BlueAmmo", 300;
         Player.StartItem "RedAmmo", 200;
         Player.StartItem "SidheWand";
         Player.StartItem "SidheFlamberge";
@@ -31,8 +31,9 @@ class Sidhe : LegendPlayer {
 }
 
 class SidheWand : LegendWeapon {
+    double spread;
     default {
-        LegendWeapon.Damage -1.,3.; // Less DPS at level 1 than the chaingun, but hoo boy, when it hits...
+        LegendWeapon.Damage -1.,4.; // Less DPS at level 1 than the chaingun, but hoo boy, when it hits...
         Weapon.SlotNumber 2;
         Weapon.AmmoType1 "BlueAmmo";
         Weapon.AmmoUse1 5;
@@ -41,17 +42,28 @@ class SidheWand : LegendWeapon {
         Weapon.AmmoUse2 125;
     }
 
-    action void FireWand() {
+    action void FireWand(double spread = 1.0) {
         // TODO: Fire projectile
         A_StartSound("weapon/awandf");
         if (CountInv(invoker.ammotype1) > invoker.ammouse1) {
             TakeAmmo();
-            Shoot("AmethystBolt");
-            Shoot("AmethystBolt",xy:-8,height:-4);
-            Shoot("AmethystBolt",xy:8,height:-4);
+            double xs = 4 * (spread * 0.5);
+            double ys = 4;
+            Shoot("AmethystBolt",height: ys);
+            Shoot("AmethystBolt",ang: spread, xy:-xs);
+            Shoot("AmethystBolt",ang: -spread, xy:xs);
         } else {
             Shoot("AmethystBolt");
         }
+    }
+
+    action double WandSpread() {
+        invoker.spread += 15;
+        return sin(invoker.spread) * 2.5;
+    }
+
+    action void ResetSpread() {
+        invoker.spread = 0;
     }
 
     action void FireBolt() {
@@ -80,11 +92,22 @@ class SidheWand : LegendWeapon {
             Loop;
         
         Fire:
-            AWND B 3 A_WeaponOffset(0,36,WOF_INTERPOLATE);
+            AWND B 3 Bright A_WeaponOffset(0,36,WOF_INTERPOLATE);
             AWND B 0 Bright FireWand();
             AWND C 4 Bright A_WeaponOffset(0,33,WOF_INTERPOLATE);
             AWND D 3 Bright A_WeaponOffset(0,32,WOF_INTERPOLATE);
+            AWND D 0 A_Refire();
             AWND D 0 Reload();
+            Goto Ready;
+        
+        Hold:
+            AWND B 0 Reload();
+            AWND B 2 Bright A_WeaponOffset(0,36,WOF_INTERPOLATE);
+            AWND B 0 FireWand(WandSpread());
+            AWND C 2 Bright A_WeaponOffset(0,33,WOF_INTERPOLATE);
+            AWND D 2 Bright A_WeaponOffset(0,32,WOF_INTERPOLATE);
+            AWND D 0 A_Refire();
+            AWND D 0 ResetSpread();
             Goto Ready;
         
         AltFire:
@@ -112,7 +135,7 @@ class AmethystBolt : LegendShot {
             CHFR ABCB 3 A_SpawnItemEX("AmethystTrail");
             Loop;
         Death:
-            CHFR ABCDEFGHIJKLMNOP 2;
+            CHFR ABCDEFGHIJKLMNOP Random(1,2);
             TNT1 A 0;
             Stop;
     }
@@ -268,12 +291,12 @@ class SidheGauntlet : LegendWeapon {
     int cycle;
 
     default {
-        LegendWeapon.Damage 0.,2;
+        LegendWeapon.Damage 0.,4;
         Weapon.SlotNumber 4;
         Weapon.AmmoType1 "GreenAmmo";
-        Weapon.AmmoUse1 10;
+        Weapon.AmmoUse1 8;
         Weapon.AmmoType2 "PinkAmmo";
-        Weapon.AmmoUse2 25;
+        Weapon.AmmoUse2 20;
     }
 
     action void CycleGauntlet() {
@@ -287,8 +310,9 @@ class SidheGauntlet : LegendWeapon {
         // Figure out a good firing sound for this?
         A_StartSound("weapon/dragonf");
         TakeAmmo();
-        for (int i = -2; i < 3; i++) {
-            Shoot("DragonShot", ang: i * 2, xy: i * 4);
+        int dir = random(-2,2);
+        for (int i = -1; i < 2; i++) {
+            Shoot("DragonShot", xy: i * 1.5 * dir, height: i * 6);
         }
     }
 
@@ -392,7 +416,7 @@ class DragonNade : LegendShot {
 class SidheHellmouth : LegendWeapon {
 
     default {
-        LegendWeapon.Damage 0.,12;
+        LegendWeapon.Damage 0.,9;
         Weapon.SlotNumber 5;
         Weapon.AmmoType1 "YellowAmmo";
         Weapon.AmmoUse1 25;
