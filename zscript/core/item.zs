@@ -80,7 +80,7 @@ class LegendItem : Inventory abstract {
             let plr = LegendPlayer(owner);
             return plr.GetLuck();
         } else {
-            return 0.;
+            return GetOwnerBase("Luck");
         }
     }
 
@@ -115,6 +115,19 @@ class LegendItem : Inventory abstract {
         return ret;
     }
 
+    clearscope double GetOwnerBase(String stat) {
+        if (owner is "LegendPlayer") {
+            let plr = LegendPlayer(owner);
+            return plr.GetBaseStat(stat);
+        } else {
+            if (stat == "Power") {
+                return 5.;
+            } else {
+                return 0.; // Monsters are not lucky, tough, or precise.
+            }
+        }
+    }
+
     double GetOwnerPower(bool raw = false) {
         // Returns parent's power, or 5 plus 0.5 per level for monsters.
         if (owner is "LegendPlayer") {
@@ -122,7 +135,7 @@ class LegendItem : Inventory abstract {
             return plr.GetPower();
         } else {
             int lvl = owner.CountInv("LevelToken");
-            double pow = 5.;
+            double pow = GetOwnerBase("Power");
             if (!raw) {
                 pow += 0.5 * lvl;
             }
@@ -136,7 +149,7 @@ class LegendItem : Inventory abstract {
             let plr = LegendPlayer(owner);
             return plr.GetPrecision();
         } else {
-            return 0.;
+            return GetOwnerBase("Precision");
         }
     }
 
@@ -146,7 +159,7 @@ class LegendItem : Inventory abstract {
             let plr = LegendPlayer(owner);
             return plr.GetToughness();
         } else {
-            return 0.;
+            return GetOwnerBase("Toughness");
         }
     }
 
