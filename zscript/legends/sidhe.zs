@@ -13,7 +13,7 @@ class Sidhe : LegendPlayer {
     // Its altfire rapid-fires the painshards at the cost of 50 pink ammo per shot. With a full bar, this nukes single targets.
 
     default {
-        LegendPlayer.Power 2, 0.2; // Much lower power scaling than the Doomslayer.
+        LegendPlayer.Power 3, 0.2; // Much lower power scaling than the Doomslayer.
         LegendPlayer.Precision 5, 1.8; // Starts with more Precision and scales faster too.
         LegendPlayer.Toughness 0.,0.3; // Gradually gains Toughness...
         LegendPlayer.Luck 2.,0.; // And has a tiny bit of luck.
