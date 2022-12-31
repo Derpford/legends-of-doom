@@ -81,3 +81,37 @@ class TopazLucky : LegendItem {
     }
     
 }
+
+class FirebluCursed : LegendItem {
+    default {
+        LegendItem.Icon "KGZFB0";
+        Tag "FIREBLU Gem";
+        LegendItem.Desc "Buff all your stats, but take more damage.";
+        LegendItem.Remark "Demon Core";
+        LegendItem.Rarity "CURSED";
+    }
+
+    override double GetLuck() {
+        return 2.5 * GetStacks();
+    }
+
+    override double GetPower() {
+        return 2.5 * GetStacks();
+    }
+
+    override double GetPrecision() {
+        return 12 * GetStacks();
+    }
+
+    override double GetToughness() {
+        return 12 * GetStacks();
+    }
+
+    override double DamageMulti (int dmg, Name type, Actor inf, Actor src, int flags) { return 1.0 + (GetStacks() * 0.1); }
+
+    states {
+        Spawn:
+            KGZF AB 5;
+            Loop;
+    }
+}
