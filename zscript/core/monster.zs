@@ -83,12 +83,12 @@ class MonsterLevelHandler : EventHandler {
     }
 
     override void WorldTick() {
-        // Each second, monsters gain 1 XP, plus 0.1 per level. This is capped at 5 XP (level 400).
+        // Each second, monsters gain 1 XP, plus 0.05 per level. This is capped at 2.5 XP (level 400).
         // At 150 XP (2.5 minutes the first time), they gain 1 level.
         ticktimer += 1;
         if (ticktimer >= 35 ) {
             ticktimer = 0;
-            brain.monsterxp += 1 + min(5,0.1 * brain.MonsterLevel);
+            brain.monsterxp += 1 + min(2.5,0.05 * brain.MonsterLevel);
         }
         if (brain.monsterxp >= 150) {
             brain.monsterxp -= 150;
