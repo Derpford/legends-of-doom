@@ -88,10 +88,10 @@ class MonsterLevelHandler : EventHandler {
         ticktimer += 1;
         if (ticktimer >= 35 ) {
             ticktimer = 0;
-            monsterxp += 1 + min(5,0.1 * brain.MonsterLevel);
+            brain.monsterxp += 1 + min(5,0.1 * brain.MonsterLevel);
         }
-        if (monsterxp >= 150) {
-            monsterxp -= 150;
+        if (brain.monsterxp >= 150) {
+            brain.monsterxp -= 150;
             brain.MonsterLevel += 1;
             console.printf("Monster Level increased to "..brain.MonsterLevel+1);
         }
@@ -110,6 +110,7 @@ class MonsterLevelThinker : Thinker {
     // Tracks monster level. Increases monster level by 1 on certain events.
 
     int MonsterLevel;
+    double monsterxp;
     int ticktimer;
     int seconds;
     int minutes;
