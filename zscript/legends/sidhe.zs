@@ -293,8 +293,8 @@ class FlambergeMid : FlambergeFlames {
     override int DoSpecialDamage(Actor tgt, int dmg, Name mod) {
         if (precision > 1.) {
             tgt.GiveInventory("Burn",floor(precision / 2.));
-            return super.DoSpecialDamage(tgt,dmg,mod);
         }
+        return super.DoSpecialDamage(tgt,dmg,mod);
     }
 }
 
