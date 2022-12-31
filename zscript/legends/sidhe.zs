@@ -42,12 +42,12 @@ class SidheWand : LegendWeapon {
         Weapon.AmmoUse2 125;
     }
 
-    action void FireWand(double spread = 1.0) {
+    action void FireWand(double spread = 0.0) {
         // TODO: Fire projectile
         A_StartSound("weapon/awandf");
         if (CountInv(invoker.ammotype1) > invoker.ammouse1) {
             TakeAmmo();
-            double xs = 4 * (spread * 0.5);
+            double xs = 4 + (2 * spread);
             double ys = 4;
             Shoot("AmethystBolt",height: ys);
             Shoot("AmethystBolt",ang: spread, xy:-xs);
