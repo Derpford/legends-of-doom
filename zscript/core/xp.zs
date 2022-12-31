@@ -8,9 +8,14 @@ extend class LegendPlayer {
     }
 
     bool TryLevel() {
-        if (CanLevel()) {
+        bool hasLeveled;
+        while (CanLevel()) {
+            hasLeveled = true;
             xp -= MaxXP();
             level += 1;
+        }
+
+        if (hasLeveled) {
             A_StartSound("misc/p_pkup");
             return true;
         } else {
