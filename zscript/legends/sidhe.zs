@@ -324,7 +324,7 @@ class FlambergeMid : LegendShot {
 }
 
 class SidheGauntlet : LegendWeapon {
-    int cycle;
+    int cycount;
 
     default {
         LegendWeapon.Damage 0.,4;
@@ -336,10 +336,10 @@ class SidheGauntlet : LegendWeapon {
     }
 
     action void CycleGauntlet() {
-        invoker.cycle += 1;
-        if (invoker.cycle > 2) {
+        invoker.cycount += 1;
+        if (invoker.cycount > 2) {
             Cycle();
-            invoker.cycle = 0;
+            invoker.cycount = 0;
         }
     }
     action void FireSpread() {
