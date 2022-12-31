@@ -11,7 +11,6 @@ extend class LegendPlayer {
         if (CanLevel()) {
             xp -= MaxXP();
             level += 1;
-            console.printf("Level is now "..level+1);
             A_StartSound("misc/p_pkup");
             return true;
         } else {

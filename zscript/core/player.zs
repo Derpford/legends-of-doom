@@ -67,7 +67,9 @@ class LegendPlayer : DoomPlayer abstract {
 
     override void Tick() {
         super.Tick();
-        TryLevel();
+        if (TryLevel()) {
+            console.printf("Level is now "..level+1);
+        }
         
         int mhp = GetMaxHealth(true);
 
