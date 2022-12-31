@@ -245,6 +245,8 @@ class SidheFlamberge : LegendWeapon {
 class FlambergeBall : LegendShot {
     default {
         RenderStyle "Add";
+        Radius 16;
+        Height 12;
         Scale 0.5;
         Speed 50;
         +BRIGHT;
@@ -270,6 +272,8 @@ class FlambergeBall : LegendShot {
 class FlambergeFlames : LegendShot {
     default {
         RenderStyle "Add";
+        Radius 24;
+        Height 24;
         Speed 30;
         +BRIGHT;
         +RIPPER;
@@ -292,6 +296,8 @@ class FlambergeFlames : LegendShot {
 class FlambergeMid : LegendShot {
     default {
         RenderStyle "Add";
+        Radius 24;
+        Height 24;
         Speed 35;
         +BRIGHT;
         +RIPPER;
@@ -394,6 +400,8 @@ class DragonShot : LegendShot {
     // Deliberately did NOT call them DragonBalls.
     default {
         RenderStyle "Add";
+        Radius 10;
+        Height 12;
         +BRIGHT;
         DeathSound "weapon/awandx";
     }
@@ -413,8 +421,10 @@ class DragonNade : LegendShot {
     default {
         RenderStyle "Add";
         Scale 2;
+        Radius 16;
+        Height 16;
         +BRIGHT;
-        DeathSound "weapon/dragonx";
+        // DeathSound "weapon/dragonx";
     }
 
     action void DragonExplode() {
@@ -423,8 +433,10 @@ class DragonNade : LegendShot {
             double mult = 1 + (0.5 * (invoker.precision - 1)); // i.e., at 2 the multiplier is 1.5
             rad *= mult;
         }
-
-        A_SplashDamage(invoker.power * 20,rad,selfdmg: false);
+        A_StartSound("weapons/flameswordswing");
+        Spawn("DragonSpark",Vec3Angle(rad,GetAge()*10));
+        Spawn("DragonSpark",Vec3Angle(rad,180+GetAge()*10));
+        A_SplashDamage(invoker.power * 5,rad,selfdmg: false);
     }
 
     states {
@@ -432,9 +444,22 @@ class DragonNade : LegendShot {
             PLS1 AB 5;
             Loop;
         Death:
-            PLS1 C 6 { invoker.bNOGRAVITY = true; }
-            PLS1 D 6 DragonExplode();
-            PLS1 EFG 5;
+            PLS1 ABABABABAB 3 DragonExplode();
+            PLS1 C 0 A_StartSound("weapon/dragonx");
+            PLS1 CDEFG 4;
+            Stop;
+    }
+}
+
+class DragonSpark : Actor {
+    default {
+        +NOINTERACTION;
+        +BRIGHT;
+    }
+
+    states {
+        Spawn:
+            APLS AB 3;
             Stop;
     }
 }
