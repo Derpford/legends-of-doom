@@ -262,6 +262,9 @@ class LegendPlayer : DoomPlayer abstract {
     override int TakeSpecialDamage (Actor inf, Actor src, int dmg, Name type) {
         // RollDown our Toughness and use that as a divisor.
         double div = RollDown(GetToughness());
+        if (CountInv("ProtectionSphere") > 0) {
+            div += 1; // Protection Sphere adds 1 to the multiplier for the rest of the level.
+        }
         if (div > 1) { A_StartSound("switches/normbutn",8,pitch:1.2); } // Placeholder sound for "Toughness procced"
         double new = double(dmg) / div;
         // console.printf("Toughness: "..dmg.." to "..new);

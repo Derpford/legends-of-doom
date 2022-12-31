@@ -106,6 +106,7 @@ class Supersoul : HPBonus replaces Soulsphere {
         HPBonus.Heal 100;
         HPBonus.DontSuck true;
         Inventory.PickupMessage "Super Soul!";
+        +INVENTORY.BIGPOWERUP;
     }
 
     states {
@@ -120,6 +121,7 @@ class MegaSoul : SuperSoul replaces MegaSphere {
         HPBonus.Heal 200;
         HPBonus.DontSuck true;
         Inventory.PickupMessage "Mega Soul!";
+        +INVENTORY.BIGPOWERUP;
     }
 
     override bool TryPickup (in out actor other) {
@@ -130,5 +132,22 @@ class MegaSoul : SuperSoul replaces MegaSphere {
     states {
         spawn:
             MEGA ABCD 6 bright;
+    }
+}
+
+class ProtectionSphere : Inventory replaces Blursphere {
+    // Shields you for the rest of the level, adding 1 to your Toughness divisor.
+    // It's like having 100 extra toughness!
+    default {
+        Inventory.Amount 1;
+        Inventory.PickupSound "misc/p_pkup";
+        Inventory.PickupMessage "Protection Sphere!";
+        +INVENTORY.BIGPOWERUP;
+    }
+
+    states {
+        Spawn:
+            PINS ABCD 6 Bright;
+            Loop;
     }
 }
