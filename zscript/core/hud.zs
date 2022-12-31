@@ -7,9 +7,9 @@ class LegendHud : BaseStatusBar {
 		Super.Init();
 		SetSize(0,320,240);
 
-		mConFont = HUDFont.Create("CONFONT");
-		mDetailFont = HUDFont.Create("SMALLFONT");
-		mStatFont = HUDFont.Create("DBIGFONT");
+		mConFont = HUDFont.Create("CONFONT",0,false,1,1);
+		mDetailFont = HUDFont.Create("SMALLFONT",0,false,1,1);
+		mStatFont = HUDFont.Create("DBIGFONT",0,false,1,1);
 	}	
 
 	override void Draw(int state, double ticfrac)
@@ -36,6 +36,9 @@ class LegendHud : BaseStatusBar {
         // Statbar goes in upper left.
         int statbarflags = DI_SCREEN_LEFT_BOTTOM|DI_ITEM_LEFT_BOTTOM;
         int stattxtflags = DI_SCREEN_LEFT_BOTTOM|DI_TEXT_ALIGN_LEFT;
+		// Monster XP goes in upper right.
+        int monbarflags = DI_SCREEN_RIGHT_TOP|DI_ITEM_RIGHT_TOP;
+		int montxtflags = DI_SCREEN_RIGHT_TOP|DI_TEXT_ALIGN_RIGHT;
 
 		if(plr)
 		{
@@ -117,20 +120,27 @@ class LegendHud : BaseStatusBar {
 				}
 			}
 
+			// Monster level.
+			int monlvlpos = -24;
+			int monXPos = -68;
+            int monYPos = 24;
+			let monsterhandler = MonsterLevelHandler(EventHandler.Find("MonsterLevelHandler"));
+			if (monsterhandler.brain) {
+				int mlvl = monsterhandler.brain.monsterlevel;
+				double mxp = monsterhandler.brain.monsterxp;
+				DrawString(mConFont,String.Format("Monster Level:"),(monXPos,monYPos),montxtflags,Font.CR_RED);
+				DrawString(mStatFont,String.Format("%03d",mlvl+1),(monlvlpos,monYPos),montxtflags,Font.CR_RED,scale:(1.5,1.5));
+				DrawBar("MBARB0","MBARA0",mxp,150,(monXPos,monYPos+10),2,0,monbarflags);
+				// DrawString(mConFont,String.Format("(%0.1f%%)",100 * (mxp / 150.)),(monXPos,monYPos+9),montxtflags,Font.CR_RED);
+			}
+
 			// The XP bar.
 			DrawBar("XBARB0","XBARA0",xp,xpmax,(0,-08),2,SHADER_REVERSE,cbarflags);
 
             // Finally, the stats.
             int statXPos = 16;
             int statTextXPos = statXPos+8;
-            int statYPos = -56;
-			// Monster level.
-			let monsterhandler = MonsterLevelHandler(EventHandler.Find("MonsterLevelHandler"));
-			if (monsterhandler.brain) {
-				int mlvl = monsterhandler.brain.monsterlevel;
-				DrawString(mConFont,String.Format("Monster LVL: %d",mlvl+1),(statTextXPos,statYPos-8),stattxtflags,Font.CR_WHITE);
-			}
-			statYPos -= 9;
+			int statYPos = -56;
 			// Luck.
 			DrawImage("SLUK",(statXPos,statYPos),statbarflags);
             DrawString(mConFont,String.Format("%.2f",luck),(statTextXPos,statYPos-8),stattxtflags,Font.CR_GREEN);
