@@ -289,12 +289,27 @@ class FlambergeFlames : LegendShot {
     }
 }
 
-class FlambergeMid : FlambergeFlames {
+class FlambergeMid : LegendShot {
+    default {
+        RenderStyle "Add";
+        Speed 35;
+        +BRIGHT;
+        +RIPPER;
+    }
+
     override int DoSpecialDamage(Actor tgt, int dmg, Name mod) {
         if (precision > 1.) {
             tgt.GiveInventory("Burn",floor(precision / 2.));
         }
         return super.DoSpecialDamage(tgt,dmg,mod);
+    }
+
+    states {
+        Spawn:
+            MANF ABABABAB 3;
+        Death:
+            MISL BCD 5;
+            Stop;
     }
 }
 
