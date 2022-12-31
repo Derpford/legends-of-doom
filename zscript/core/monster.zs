@@ -62,6 +62,7 @@ class MonsterLevelHandler : EventHandler {
     int ticktimer;
     int seconds;
     int minutes;
+    double monsterxp;
     MonsterLevelThinker brain;
 
     override void OnRegister() {
@@ -82,18 +83,15 @@ class MonsterLevelHandler : EventHandler {
     }
 
     override void WorldTick() {
-        // Increase monster level every 3 minutes of game time.
+        // Each second, monsters gain 1 XP, plus 0.1 per level. This is capped at 5 XP (level 400).
+        // At 150 XP (2.5 minutes the first time), they gain 1 level.
         ticktimer += 1;
         if (ticktimer >= 35 ) {
             ticktimer = 0;
-            seconds += 1;
+            monsterxp += 1 + min(5,0.1 * brain.MonsterLevel);
         }
-        if (seconds >= 60) {
-            seconds = 0;
-            minutes += 1;
-        }
-        if (minutes >= 3) {
-            minutes = 0;
+        if (monsterxp >= 150) {
+            monsterxp -= 150;
             brain.MonsterLevel += 1;
             console.printf("Monster Level increased to "..brain.MonsterLevel+1);
         }
