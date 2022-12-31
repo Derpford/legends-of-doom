@@ -160,12 +160,13 @@ class AmethystTrail : Actor {
 
 class SidheFlamberge : LegendWeapon {
     default {
-        LegendWeapon.Damage 0.,5;
+        LegendWeapon.Damage 0.,4;
         Weapon.SlotNumber 3;
         Weapon.AmmoType1 "RedAmmo";
         Weapon.AmmoUse1 10;
         Weapon.AmmoType2 "PinkAmmo";
         Weapon.AmmoUse2 10;
+        +BRIGHT;
     }
 
     action void FireBalls() {
@@ -173,6 +174,7 @@ class SidheFlamberge : LegendWeapon {
         for (int i = -2; i < 2; i++) {
             Shoot("FlambergeBall",ang: (i * 8)+4);
         }
+        Shoot("FlambergeMid"); // Center shot has limited lifetime, but it rips thru enemies!
         A_StartSound("weapons/flameswordswing");
     }
 
@@ -222,7 +224,7 @@ class SidheFlamberge : LegendWeapon {
             SRDF NOPQR 1;
             SRDF S 0 A_StartSound("weapon/awandx",2);
         AltHold:
-            SRDF S 1 FireThrower();
+            SRDF S 2 FireThrower();
             SRDG S 1 {
                 let btn = GetPlayerInput(INPUT_BUTTONS);
                 if (btn & BT_ALTATTACK && CountInv(invoker.ammotype2) >= invoker.ammouse2) {
@@ -280,10 +282,19 @@ class FlambergeFlames : LegendShot {
 
     states {
         Spawn:
-            MANF ABABABAB 4;
+            MANF ABABABAB 3;
         Death:
             MISL BCD 5;
             Stop;
+    }
+}
+
+class FlambergeMid : FlambergeFlames {
+    override int DoSpecialDamage(Actor tgt, int dmg, Name mod) {
+        if (precision > 1.) {
+            tgt.GiveInventory("Burn",floor(precision / 2.));
+            return super.DoSpecialDamage(tgt,dmg,mod);
+        }
     }
 }
 
