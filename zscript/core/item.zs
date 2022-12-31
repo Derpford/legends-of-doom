@@ -499,6 +499,7 @@ class HPBonus : Inventory replaces HealthBonus {
         HPBonus.Heal 1;
         HPBonus.Overheal true;
         Inventory.PickupMessage "Health Bonus!";
+        +Inventory.ALWAYSPICKUP;
     }
 
     int GetTrueHeal(Actor plr) {
@@ -513,6 +514,10 @@ class HPBonus : Inventory replaces HealthBonus {
     override bool TryPickup (in out actor other) {
         let plr = LegendPlayer(other);
         if(plr) {
+            if (!bALWAYSPICKUP && plr.health >= plr.GetMaxHealth(true)) {
+                // Can't pick up!
+                return false;
+            }
             int heal = GetTrueHeal(plr);
             console.printf("Healed for %d",heal);
             plr.GiveHealth(heal,overheal);
