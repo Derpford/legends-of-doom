@@ -355,7 +355,7 @@ class SidheGauntlet : LegendWeapon {
     action void FireNades() {
         A_StartSound("weapon/dragonf2");
         TakeAmmo(true);
-            Shoot("DragonNade", ang: frandom(-6,6));
+            Shoot("DragonNade");
     }
 
     action state ClawIdle() {
@@ -445,7 +445,7 @@ class DragonNade : LegendShot {
 
     states {
         Spawn:
-            PLS1 AB 5;
+            PLS1 AB 5 DragonExplode();
             Loop;
         Death:
             PLS1 ABABABABAB 3 DragonExplode();
