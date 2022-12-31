@@ -17,8 +17,8 @@ class Jam : StatusEffect {
     // Flinches the target whenever they try to attack.
     bool flinched;
     default {
-        StatusEffect.StackGiven .5;
-        StatusEffect.Timer 1.; // One-second timer.
+        StatusEffect.StackGiven .25;
+        StatusEffect.Timer 0.5; // half-second timer.
     }
 
     override void OnTick() {
