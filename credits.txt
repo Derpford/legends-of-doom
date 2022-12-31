@@ -1,7 +1,27 @@
 This credits file is probably incomplete! A lot of these sprites were lying around on my hard drive in a disorganized pile.
 
+### MISC/ITEMS ###
+
+The ammo and crate sprites are by dawnbreez (that's me!). So are SPRKA0 and SPRKB0.
+
+The XP gems and Lucky Coin sprite are from OpenGameArt and were licensed CC0.
+
+The sprites for the Runes and the Gems, the sprites for Amulets (Life-Channel, Ammolet, & Owlsight), and the sprites for Hammer of Retribution, were all made by NeoWorm: https://forum.zdoom.org/viewtopic.php?t=15908
+
+The sprites for the First Aid Kit and the Medic Bag were made by Cybermeme: https://forum.zdoom.org/viewtopic.php?t=63923
+
+The sprites for Strawberry Jam and Spicy Water are from Ac!d: https://forum.zdoom.org/viewtopic.php?t=69513
+
+Bloodsaw sprites are from Craneo: https://forum.zdoom.org/viewtopic.php?t=65146
+
+Surplus Caliber's sprite is from BloodyAcid's mishmash of edits: https://forum.zdoom.org/viewtopic.php?t=33595
+
+### WEAPONS ###
+
 The amethyst wand sprites and dragon gauntlet sprites are from Kagur. https://forum.zdoom.org/viewtopic.php?p=1058070
+
 The demon skull sprites are from Amuscaria. https://forum.zdoom.org/viewtopic.php?t=20941
+
 The CHFR sprites are from the Cheshire Caco monster sprites, edited by zrrion the insect
 
 Flamberge sprites and some sounds from WildWeasel's Firebrand longsword: https://forum.zdoom.org/viewtopic.php?t=30236
