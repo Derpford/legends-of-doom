@@ -179,7 +179,7 @@ class SlayerChaingun : LegendWeapon {
                 ChainTics();
 
                 if(invoker.ammo >= 10) {
-                    Reload();
+                    Cycle();
                     invoker.ammo = 0;
                 }
 
@@ -278,7 +278,7 @@ class SlayerShotgun : LegendWeapon {
             SHT2 D 6 A_StartSound("weapons/sshoto");
             SHT2 E 6;
             SHT2 F 6 A_StartSound("weapons/sshotl");
-            SHT2 G 5 Reload();
+            SHT2 G 5 Cycle();
             SHT2 H 5 A_StartSound("weapons/sshotc");
             SHT2 A 4 A_Refire();
             Goto Ready;
@@ -337,7 +337,7 @@ class SlayerPlasma : LegendWeapon {
                 TakeAmmo();
                 invoker.ammo += 1;
                 if(invoker.ammo >= 15) {
-                    Reload();
+                    Cycle();
                     invoker.ammo = 0;
                 }
                 Shoot("PlasmaShot");
@@ -402,7 +402,7 @@ class SlayerLauncher : LegendWeapon {
             MISG B 1 {
                 invoker.ammo += 1;
                 if (invoker.ammo >= 3) {
-                    Reload();
+                    Cycle();
                     invoker.ammo = 0;
                 }
                 A_StartSound("weapons/rocklf");

@@ -25,7 +25,7 @@ class SurplusCaliber : LegendItem {
         super.DoEffect();
     }
 
-    override void OnReload() {
+    override void OnCycle() {
         power = min(power+1,GetStacks()*5);
     }
 

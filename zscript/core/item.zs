@@ -224,8 +224,8 @@ class LegendItem : Inventory abstract {
     virtual void OnSmash (Actor src, Actor tgt) {} 
     // Called when src killed tgt, but tgt.bISMONSTER is false.
 
-    virtual void OnReload () {} 
-    // Called whenever our weapon calls ReloadProc.
+    virtual void OnCycle () {} 
+    // Called whenever our weapon calls CycleProc.
 
     virtual void OnPrecisionHit () {} 
     // Called whenever a GetPower call causes a Precision Hit.

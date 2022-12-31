@@ -97,11 +97,11 @@ class SidheWand : LegendWeapon {
             AWND C 4 Bright A_WeaponOffset(0,33,WOF_INTERPOLATE);
             AWND D 3 Bright A_WeaponOffset(0,32,WOF_INTERPOLATE);
             AWND D 0 A_Refire();
-            AWND D 0 Reload();
+            AWND D 0 Cycle();
             Goto Ready;
         
         Hold:
-            AWND B 0 Reload();
+            AWND B 0 Cycle();
             AWND B 2 Bright A_WeaponOffset(0,36,WOF_INTERPOLATE);
             AWND B 0 FireWand(WandSpread());
             AWND C 2 Bright A_WeaponOffset(0,33,WOF_INTERPOLATE);
@@ -218,7 +218,7 @@ class SidheFlamberge : LegendWeapon {
             SRDF NOPQR 1;
             SRDF S 1 FireBalls();
             SRDF TUV 1;
-            TNT1 A 4 Reload();
+            TNT1 A 4 Cycle();
             TNT1 A 4 A_Refire("Swing");
             SRDF CB 1;
             Goto Ready;
@@ -338,7 +338,7 @@ class SidheGauntlet : LegendWeapon {
     action void CycleGauntlet() {
         invoker.cycle += 1;
         if (invoker.cycle > 2) {
-            Reload();
+            Cycle();
             invoker.cycle = 0;
         }
     }

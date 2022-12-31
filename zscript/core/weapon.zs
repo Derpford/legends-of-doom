@@ -64,15 +64,17 @@ class LegendWeapon : Weapon {
         }
     }
 
-    action void Reload() {
-        // Not tied to "reloading". This just procs OnReload().
-        // In hindsight, "Cycle" and "OnCycle" would be less confusing.
+    action void Cycle() {
+        // Procs OnCycle.
+        // This should happen either during the Fire state or during a weapon's reload.
+        // Be mindful of how often each weapon procs this, because it affects their synergies
+        // (i.e., with Surplus Caliber)
         A_StartSound("misc/w_pkup",8,volume:0.7,pitch:1.3);
         Inventory it = invoker.owner.inv;
         while (it) {
             let lit = LegendItem(it);
             if (lit) {
-                lit.OnReload();
+                lit.OnCycle();
             }
             it = it.inv;
         }
