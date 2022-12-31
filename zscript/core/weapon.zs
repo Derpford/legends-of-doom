@@ -41,7 +41,7 @@ class LegendWeapon : Weapon {
         }
     }
 
-    action void Shoot(Name type, double ang = 0, double xy = 0, int height = 0, int flags = 0, double pitch = 0) {
+    action actor Shoot(Name type, double ang = 0, double xy = 0, int height = 0, int flags = 0, double pitch = 0) {
         Actor it = A_FireProjectile(type,ang,false,xy,height,flags,pitch);
         if(it) {
             double pow; double multi;
@@ -58,7 +58,10 @@ class LegendWeapon : Weapon {
                 it.dmg = dmg;
                 it.precision = multi;
             }
-        }   
+            return it;
+        } else {
+            return null;
+        }
     }
 
     action void Reload() {
