@@ -16,6 +16,10 @@ Bloodsaw sprites are from Craneo: https://forum.zdoom.org/viewtopic.php?t=65146
 
 Surplus Caliber's sprite is from BloodyAcid's mishmash of edits: https://forum.zdoom.org/viewtopic.php?t=33595
 
+The Copied, Treasured, and Corrupted Floppy items are from a file that I haven't tracked down the owner of. Please let me know if you have a source.
+
+The Fireblu Gem is from OJSCLatchford: https://forum.zdoom.org/viewtopic.php?t=35861
+
 ### WEAPONS ###
 
 The amethyst wand sprites and dragon gauntlet sprites are from Kagur. https://forum.zdoom.org/viewtopic.php?p=1058070
