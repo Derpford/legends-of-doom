@@ -133,7 +133,7 @@ class RedAmmo : Ammo replaces Shell {
         Inventory.Amount 50; // used to be 4
         Inventory.MaxAmount 1000; // used to be 80
         Ammo.BackpackAmount 100;
-        Ammo.BackpackMaxAmount 1000;
+        Ammo.BackpackMaxAmount 2000;
     }
 
     states {
