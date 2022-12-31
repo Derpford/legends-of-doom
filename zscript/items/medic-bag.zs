@@ -92,3 +92,31 @@ class FirstAidKit : LegendItem {
             Stop;
     }
 }
+
+class OverstuffedMedikit : LegendItem {
+    // I don't think it's supposed to be dripping.
+    default {
+        LegendItem.Icon "HBIGB0";
+        Tag "Overstuffed Medikit";
+        LegendItem.Desc "Gain 25 health.";
+        LegendItem.Remark "Eat your greens, they said...";
+        LegendItem.Rarity "COMMON HEALING";
+    }
+
+    override void OnStack() {
+        if(owner is "LegendPlayer") {
+            let plr = LegendPlayer(owner);
+            plr.stamina += 25;
+            plr.GiveHealth(25);
+        } else {
+            owner.GiveBody(25);
+        }
+    }
+
+    states {
+        Spawn:
+            HBIG ABCB 8;
+            Loop;
+    }
+
+}

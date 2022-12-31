@@ -16,7 +16,9 @@ Bloodsaw sprites are from Craneo: https://forum.zdoom.org/viewtopic.php?t=65146
 
 Surplus Caliber's sprite and the small/large health packs are from BloodyAcid's mishmash of edits: https://forum.zdoom.org/viewtopic.php?t=33595
 
-The Copied, Treasured, and Corrupted Floppy items were made by TommyGalano5.
+The Copied, Treasured, and Corrupted Floppy sprites were made by TommyGalano5.
+
+The Overstuffed Medkit's sprites were made by SgtShivers: https://forum.zdoom.org/viewtopic.php?p=714830
 
 The Fireblu Gem is from OJSCLatchford: https://forum.zdoom.org/viewtopic.php?t=35861
 
