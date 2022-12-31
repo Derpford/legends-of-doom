@@ -344,7 +344,7 @@ class SidheGauntlet : LegendWeapon {
         TakeAmmo();
         int dir = random(-2,2);
         for (int i = -1; i < 2; i++) {
-            Shoot("DragonShot", xy: i * 1.5 * dir, height: i * 6);
+            Shoot("DragonShot", xy: i * 1.5 * dir, height: (i + 1) * 6);
         }
     }
 
