@@ -171,9 +171,13 @@ class SidheFlamberge : LegendWeapon {
 
     action void FireBalls() {
         TakeAmmo();
-        for (int i = -2; i < 2; i++) {
-            Shoot("FlambergeBall",ang: (i * 8)+4);
-        }
+        // left side
+        Shoot("FlambergeBall",ang: -6);
+        Shoot("FlambergeBall",ang: -4.5);
+        // right side
+        Shoot("FlambergeBall",ang: 6);
+        Shoot("FlambergeBall",ang: 4.5);
+        // center
         Shoot("FlambergeMid"); // Center shot has limited lifetime, but it rips thru enemies!
         A_StartSound("weapons/flameswordswing");
     }
@@ -298,7 +302,7 @@ class FlambergeMid : LegendShot {
         RenderStyle "Add";
         Radius 24;
         Height 24;
-        Speed 35;
+        Speed 45;
         +BRIGHT;
         +RIPPER;
     }
