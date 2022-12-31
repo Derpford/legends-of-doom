@@ -251,6 +251,9 @@ class LegendItem : Inventory abstract {
     virtual double HurtMulti (int dmg, Name type, Actor inf, Actor src, int flags) { return 1.0; }
     // A multiplier to apply to incoming damage.
 
+    virtual void OnStack() {}
+    // Called whenever the item is stacked. This includes on first pickup.
+
     override bool HandlePickup(Inventory item) {
         // bool res = item.TryPickup(owner);
         bool res = ((item.bALWAYSPICKUP) ||
@@ -315,6 +318,7 @@ class LegendItem : Inventory abstract {
         if (it) {
             // We might be doing stacks instead.
             it.stacks += 1;
+            it.OnStack();
             selfRemove = true;
             let plr = LegendPlayer(toucher);
             if (plr) {
@@ -328,6 +332,7 @@ class LegendItem : Inventory abstract {
                 plr.recentItems.push(self);
             }
             if (!res) return;
+            OnStack();
         }
 
 		// This is the only situation when a pickup flash should ever play.
