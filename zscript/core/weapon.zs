@@ -100,7 +100,7 @@ class LegendShot : Actor {
     override int DoSpecialDamage(Actor tgt, int dmg, name mod) {
         // If this was precision damage, spawn a special particle effect.
         if (precision > 1) {
-            A_SpawnItemEX("PrecisionFlash");
+            A_SpawnItemEX("PrecisionFlash",xofs: -16);
         }
         return super.DoSpecialDamage(tgt,dmg,mod);
     }
@@ -125,7 +125,7 @@ class LegendFastShot : Actor {
     override int DoSpecialDamage(Actor tgt, int dmg, name mod) {
         // If this was precision damage, spawn a special particle effect.
         if (precision > 1) {
-            A_SpawnItemEX("PrecisionFlash");
+            A_SpawnItemEX("PrecisionFlash",xofs: -16);
         }
         return super.DoSpecialDamage(tgt,dmg,mod);
     }
@@ -143,14 +143,14 @@ class PrecisionFlash : Actor {
             double ang = 360. / numParticles;
             double fang = (ang * i);
             vector2 offs = (cos(fang) ,sin(fang) );
-            invoker.A_SpawnParticle("FF000",SPF_FULLBRIGHT|SPF_RELATIVE,size:8,xoff:-8, yoff:offs.x * 8, zoff:offs.y * 8,velx: -1, vely:offs.x,velz:offs.y);
+            invoker.A_SpawnParticle("FF000",SPF_FULLBRIGHT|SPF_RELATIVE,size:8,xoff:-4, yoff:offs.x * 8, zoff:offs.y * 8,velx: 1, vely:offs.x,velz:offs.y);
         }
     }
 
     states {
         Spawn:
             PLS2 A 0;
-            PLS2 A 0 ParticleRing();
+            PLS2 A 8 ParticleRing();
         Fade:
             PLS2 A 1 A_FadeOut();
             Loop;
