@@ -470,7 +470,7 @@ class SidheHellmouth : LegendWeapon {
         LegendWeapon.Damage 0.,9;
         Weapon.SlotNumber 5;
         Weapon.AmmoType1 "YellowAmmo";
-        Weapon.AmmoUse1 25;
+        Weapon.AmmoUse1 30;
         Weapon.AmmoType2 "PinkAmmo";
         Weapon.AmmoUse2 25;
     }
@@ -504,14 +504,14 @@ class SidheHellmouth : LegendWeapon {
             Loop;
         
         Fire:
-            DSKL B 3 Bright A_WeaponOffset(frandom(-12,12),40,WOF_INTERPOLATE);
+            DSKL B 2 Bright A_WeaponOffset(frandom(-12,12),40,WOF_INTERPOLATE);
             DSKL B 0 FirePain();
             DSKL A 1 A_WeaponOffset(0,36,WOF_INTERPOLATE);
-            DSKL C 3 Bright A_WeaponOffset(frandom(-12,12),40,WOF_INTERPOLATE);
+            DSKL C 2 Bright A_WeaponOffset(frandom(-12,12),40,WOF_INTERPOLATE);
             DSKL C 0 FirePain();
             DSKL A 1 A_WeaponOffset(0,32,WOF_INTERPOLATE);
-            DSKL DEF 4 Bright;
-            DSKL IHG 4 Bright;
+            DSKL DEF 3 Bright;
+            DSKL IHG 3 Bright A_Refire();
             Goto Ready;
         
         AltFire:
@@ -540,6 +540,7 @@ class FirebluShard : LegendShot {
 
     action void SpawnShrapnel() {
         if (!tracer) { return; }
+        double adjust = frandom(-15,15);
         for (int i = 0; i < 9; i++) {
             vector3 spos = invoker.tracer.Vec3Angle(invoker.tracer.radius * 1.8,i * 45,invoker.tracer.height / 2.);
             let it = FirebluShrapnel(invoker.tracer.Spawn("FirebluShrapnel",spos));
@@ -548,24 +549,27 @@ class FirebluShard : LegendShot {
                 it.power = invoker.power;
                 it.dmg = invoker.dmg / 2;
                 it.precision = invoker.precision;
-                it.VelFromAngle(it.speed,i * 45);
+                it.VelFromAngle(it.speed,adjust + (i * 45));
             }
         }
     }
 
     states {
         Spawn:
-            PLSS AB 4;
-            PLS2 AB 4;
+            CHFR E 3;
+            PLS2 A 3;
+            CHFR F 3;
+            PLS2 B 3;
             Loop;
         Death:
-            PLSE A 2 SpawnShrapnel();
+            CHFR I 2 SpawnShrapnel();
             BAL1 C 2;
-            PLSE B 2;
+            CHFR J 2;
             BAL1 D 2;
-            PLSE C 2;
+            CHFR K 2;
             BAL1 E 2;
-            PLSE DE 2;
+            CHFR L 2;
+            CHFR MNOP 1;
             Stop;
     }
 }
