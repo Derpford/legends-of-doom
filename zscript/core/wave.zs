@@ -70,7 +70,7 @@ class WaveSpawnBrain : Actor {
             monsters.push(it.key());
             if (wave % bosswave == 0 && cost > bosscost) {
                 // The boss is always the highest-cost thing we can afford.
-                console.printf("Set boss to "..it.key());
+                // console.printf("Set boss to "..it.key());
                 bosscost = cost;
                 bossType = it.key();
                 bossSpawned = false;
@@ -119,7 +119,7 @@ class WaveSpawnBrain : Actor {
     void ProcessSpawns () {
         // As long as our spawn list isn't empty, we need to find places to spawn them.
         if (spawns.size() > 0) { // This is called every tick anyway.
-            console.printf("Spawns left: "..spawns.size());
+            // console.printf("Spawns left: "..spawns.size());
             mspot = SpawnMonster(spawnSpots.next());
             Class<Actor> mname = spawns[0];
             if (mspot && mname) {
@@ -175,7 +175,7 @@ class WaveSpawnBrain : Actor {
                         }
                     }
                     // Now we can spawn the boss.
-                    console.printf("Attempting to spawn a boss");
+                    // console.printf("Attempting to spawn a boss");
                     boss = mo.spawn(mon.GetClassName(),mo.pos);
                     if (boss) {
                         boss.bBOSS = true;
@@ -229,7 +229,7 @@ class BossSparkler : Inventory {
     override void DoEffect() {
         if (owner && !owner.bCORPSE) {
             if (owner.GetAge() % 10 == 0) {
-                console.printf("Boss is here! "..owner.pos);
+                // console.printf("Boss is here! "..owner.pos);
                 double rad = owner.radius;
                 double h = owner.height;
                 Vector3 offs = (frandom(-rad,rad),frandom(-rad,rad),h);
