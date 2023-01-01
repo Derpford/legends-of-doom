@@ -261,7 +261,7 @@ class LegendItem : Inventory abstract {
                     (owner.CountInv(item.GetClassName()) < item.MaxAmount) || 
                     ((item is "Ammo") && (owner.CountInv("BackpackItem") > 0) && (owner.CountInv(item.GetClassName()) < Ammo(item).BackpackAmount)));
         if (res) {
-            if (item is "DummyHPBonus" || item is "ArmBonus") {
+            if (item is "DummyHPBonus" || item is "ArmBonus" || item is "AmmoTiny") {
                 PickupBonus(item);
             }
 
