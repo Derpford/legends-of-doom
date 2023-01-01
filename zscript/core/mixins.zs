@@ -13,7 +13,9 @@ mixin class AmmoRandom {
     // If +DROPPED, turns into an AmmoDrop.
     override void PostBeginPlay() {
         if (bDROPPED) {
-            if (!owner) {
+            if (!owner && pos != (0,0,0)) { 
+                // gross hack, because we can't rely on the item having an owner right away,
+                // even if it's going directly into a player's inventory
                 let it = Spawn("AmmoDrop",pos);
                 if (it) {
                     GoAwayAndDie();
