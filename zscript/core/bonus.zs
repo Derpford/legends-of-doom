@@ -143,6 +143,7 @@ class ProtectionSphere : Inventory replaces Blursphere {
         Inventory.PickupSound "misc/p_pkup";
         Inventory.PickupMessage "Protection Sphere!";
         +INVENTORY.BIGPOWERUP;
+        Inventory.InterHubAmount 0;
     }
 
     states {
