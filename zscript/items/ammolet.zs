@@ -9,7 +9,23 @@ class Ammolet : LegendItem {
     }
 
     override void PickupHealth(Inventory it) {
-        charge += it.amount * GetStacks();
+        let lit = HPBonus(it);
+        if (lit) {
+            if (lit.heals < 0) {
+                charge += GetStacks() * -lit.heals;
+            } else {
+                let plr = LegendPlayer(owner);
+                if (plr) {
+                    charge += GetStacks() * (lit.heals / plr.GetMaxHealth(true));
+                }
+            }
+        } else {
+            let plr = LegendPlayer(owner);
+            if (plr) {
+                charge += GetStacks() * (it.amount / plr.GetMaxHealth(true));
+            }
+        }
+
         while (charge >= 25) {
             let it = owner.Spawn("AmmoDrop",owner.pos);
             it.vel = (frandom(-3,3),frandom(-3,3),frandom(4,6));
