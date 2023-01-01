@@ -44,9 +44,9 @@ class AmmoBig : Inventory {
     
     override bool TryPickup(in out actor other) {
         // A_SpawnItemEX(ammotype,zvel:4);
-        let it = Spawn(ammotype,pos);
-        it.vel.z = 4;
-        it.bDROPPED = false;
+        // let it = Spawn(ammotype,pos);
+        // it.vel.z = 4;
+        // it.bDROPPED = false;
         double ang = random(0,18) * 5;
         for (int i = 0; i < 4; i++) {
             let it = Spawn(ammotype,pos);
@@ -65,15 +65,16 @@ class AmmoTiny : Inventory {
         +FLOATBOB;
         +BRIGHT;
         Scale 0.7;
+        Inventory.Amount 5;
         Inventory.PickupMessage "Ammo bonus!";
     }
 
     override bool TryPickup(in out actor other) {
-        other.GiveInventory("GreenAmmo",10);
-        other.GiveInventory("RedAmmo",10);
-        other.GiveInventory("YellowAmmo",10);
-        other.GiveInventory("BlueAmmo",10);
-        other.GiveInventory("PinkAmmo",10);
+        other.GiveInventory("GreenAmmo",amount);
+        other.GiveInventory("RedAmmo",amount);
+        other.GiveInventory("YellowAmmo",amount);
+        other.GiveInventory("BlueAmmo",amount);
+        other.GiveInventory("PinkAmmo",amount);
         GoAwayAndDie();
         Return true;
     }
@@ -96,8 +97,7 @@ class GreenAmmo : Ammo replaces Clip {
         +FLOATBOB;
         +BRIGHT;
         Inventory.PickupMessage "Green ammo!";
-        // factor of 3.3
-        Inventory.Amount 50; // used to be 15
+        Inventory.Amount 25; // used to be 15
         Inventory.MaxAmount 1000; // used to be 300
         Ammo.BackpackAmount 100;
         Ammo.BackpackMaxAmount 2000;
@@ -129,8 +129,7 @@ class RedAmmo : Ammo replaces Shell {
         +FLOATBOB;
         +BRIGHT;
         Inventory.PickupMessage "Red ammo!";
-        // factor of 12.5
-        Inventory.Amount 50; // used to be 4
+        Inventory.Amount 25; // used to be 4
         Inventory.MaxAmount 1000; // used to be 80
         Ammo.BackpackAmount 100;
         Ammo.BackpackMaxAmount 2000;
@@ -162,8 +161,7 @@ class YellowAmmo : Ammo replaces RocketAmmo {
         +FLOATBOB;
         +BRIGHT;
         Inventory.PickupMessage "Yellow ammo!";
-        // factor of 10
-        Inventory.Amount 50; // used to be 5
+        Inventory.Amount 25; // used to be 5
         Inventory.MaxAmount 1000; // used to be 100
         Ammo.BackpackAmount 100;
         Ammo.BackpackMaxAmount 2000;
@@ -195,8 +193,7 @@ class BlueAmmo : Ammo replaces Cell {
         +FLOATBOB;
         +BRIGHT;
         Inventory.PickupMessage "Blue ammo!";
-        // factor of 2.5
-        Inventory.Amount 50; // used to be 20
+        Inventory.Amount 25; // used to be 20
         Inventory.MaxAmount 1000; // used to be 400
         Ammo.BackpackAmount 100;
         Ammo.BackpackMaxAmount 2000;
