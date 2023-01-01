@@ -74,7 +74,7 @@ class SpawnItem : Actor {
 class SpawnHealth : SpawnItem {
     // Spawns healing!
     default {
-        SpawnItem.type "Medikit";
+        SpawnItem.type "LargeHealth";
         SpawnItem.isMajor false;
     }
 
@@ -84,6 +84,20 @@ class SpawnHealth : SpawnItem {
             Loop;
     }
 } 
+
+class SpawnStim : SpawnItem {
+    // Smaller healing.
+    default {
+        SpawnItem.type "SmallHealth";
+        SpawnItem.isMajor false;
+    }
+
+    states {
+        Spawn:
+            PLSS AB 6;
+            Loop;
+    }
+}
 
 class SpawnGreenArmor : SpawnItem {
     // Spawns a green armor!

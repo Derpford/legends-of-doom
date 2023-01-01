@@ -12,16 +12,17 @@ DoomEdNums {
 
     6670 = "SpawnItem"
     6671 = "SpawnHealth"
-    6672 = "SpawnGreenArmor"
-    6673 = "SpawnBlueArmor"
-    6674 = "SpawnGreenAmmo"
-    6675 = "SpawnRedAmmo"
-    6676 = "SpawnYellowAmmo"
-    6677 = "SpawnBlueAmmo"
-    6678 = "SpawnHPBonus"
-    6679 = "SpawnArmBonus"
-    6680 = "SpawnSuperSoul"
-    6681 = "SpawnAmmoBonus"
+    6672 = "SpawnStim"
+    6673 = "SpawnGreenArmor"
+    6674 = "SpawnBlueArmor"
+    6675 = "SpawnGreenAmmo"
+    6676 = "SpawnRedAmmo"
+    6677 = "SpawnYellowAmmo"
+    6678 = "SpawnBlueAmmo"
+    6679 = "SpawnHPBonus"
+    6680 = "SpawnArmBonus"
+    6681 = "SpawnSuperSoul"
+    6682 = "SpawnAmmoBonus"
 }
 
 map arena01 "Outpost Baphomet" {
