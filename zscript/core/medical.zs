@@ -1,4 +1,4 @@
-class SmallHealth : HPBonus replaces Stimpack {
+class SmallHealthPack : HPBonus replaces Stimpack {
     // A small health pickup that heals 10% of your max health.
     default {
         HPBonus.heal -10;
@@ -15,7 +15,7 @@ class SmallHealth : HPBonus replaces Stimpack {
     }
 }
 
-class LargeHealth : SmallHealth replaces Medikit {
+class LargeHealthPack : SmallHealthPack replaces Medikit {
     default {
         HPBonus.heal -25;
         Inventory.PickupMessage "Grabbed a large health pack!";

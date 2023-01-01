@@ -74,7 +74,7 @@ class SpawnItem : Actor {
 class SpawnHealth : SpawnItem {
     // Spawns healing!
     default {
-        SpawnItem.type "LargeHealth";
+        SpawnItem.type "LargeHealthPack";
         SpawnItem.isMajor false;
     }
 
@@ -88,7 +88,7 @@ class SpawnHealth : SpawnItem {
 class SpawnStim : SpawnItem {
     // Smaller healing.
     default {
-        SpawnItem.type "SmallHealth";
+        SpawnItem.type "SmallHealthPack";
         SpawnItem.isMajor false;
     }
 
