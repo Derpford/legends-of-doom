@@ -65,7 +65,7 @@ class AmmoTiny : Inventory {
         +FLOATBOB;
         +BRIGHT;
         Scale 0.7;
-        Inventory.Amount 5;
+        Inventory.Amount 10;
         Inventory.PickupMessage "Ammo bonus!";
     }
 
