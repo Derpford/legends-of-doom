@@ -168,7 +168,7 @@ class SpawnArmBonus : SpawnHPBonus {
 
 class SpawnAmmoBonus : SpawnHPBonus {
     default {
-        SpawnItem.type "AmmoDrop";
+        SpawnItem.type "AmmoTiny";
     }
 }
 
