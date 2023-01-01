@@ -1,5 +1,5 @@
 class Ammolet : LegendItem {
-    int charge;
+    double charge;
     default {
         LegendItem.Icon "AMLTD0";
         Tag "Ammolet";
