@@ -59,14 +59,13 @@ class LegendHud : BaseStatusBar {
 			if (itms > 0) { itm = plr.recentItems[0]; }
 
             // Start with health.
-            DrawImage("MEDIA0",(24,-2),lbarflags);
-            DrawString(mStatFont,hp.."/"..maxhp,(32,-28),ltxtflags,Font.CR_BRICK);
-
-            // And the armor!
-            if (arm > 0) {
-                DrawImage("ARM1A0",(24,-34),lbarflags);
-                DrawString(mStatFont,arm.."/200",(32,-42),ltxtflags,Font.CR_CYAN);
-            }
+            DrawImage("HPAKB0",(12,-20),lbarflags);
+			if (arm > 0) { 
+				// Armor goes below the health string.
+				DrawImage("ARM1A0",(80,-8),lbarflags); 
+                DrawString(mStatFont,arm.."/200",(100,-20),ltxtflags,Font.CR_CYAN);
+			}
+            DrawString(mStatFont,hp.."/"..maxhp,(32,-32),ltxtflags,Font.CR_BRICK);
 
             // Next, ammo.
 			Name ammoTypes[5] = {
@@ -83,8 +82,10 @@ class LegendHud : BaseStatusBar {
 				"BBAR",
 				"PBAR"
 			};
-            int ammoXPos = -24;
-			int ammoTextXPos = ammoXPos-32;
+            vector2 ammo1Pos = (-80,-4);
+			vector2 ammo2Pos = (-12,-12);
+			vector2 ammoText1Pos = (ammo1Pos.x-40,ammo1pos.y-16);
+			vector2 ammoText2Pos = (ammo2Pos.x-40,ammo2Pos.y-16);
 			if (wpn) {
 				let a1 = wpn.AmmoType1;
 				let a2 = wpn.AmmoType2;
@@ -92,27 +93,29 @@ class LegendHud : BaseStatusBar {
 				{
 					let a1real = plr.FindInventory(a1.GetClassName());// a1 is a ClassPointer<Ammo>, a1real is a Pointer<Inventory>
 					//DrawImage("CLIPA0",(ammoXpos,-2),rbarflags,scale:(2,2));
-					DrawInventoryIcon(a1real,(ammoXPos,-2),rbarflags,scale:(2,2));
+					DrawInventoryIcon(a1real,ammo1pos,rbarflags,scale:(2,2));
 					double amt = GetAmount(a1.GetClassName());
 					double used = wpn.ammouse1;
 					int shots = floor(amt / used);
-					DrawString(mStatFont,FormatNumber(shots), (ammoTextXPos,-24),rtxtflags,Font.CR_RED);
+					DrawString(mStatFont,FormatNumber(shots), ammoText1Pos,rtxtflags,Font.CR_RED);
 				}
 
 				if (a2 && a2 != a1 && wpn.ammouse2 > 0) {
 					let a2real = plr.FindInventory(a2.GetClassName());
-					DrawInventoryIcon(a2real,(ammoXPos+16,-8),rbarflags,scale:(2,2));
+					DrawInventoryIcon(a2real,ammo2Pos,rbarflags,scale:(2,2));
 					double amt = GetAmount(a2.GetClassName());
 					double used = wpn.ammouse2;
 					int shots = floor(amt / used);
-					DrawString(mStatFont,FormatNumber(shots), (ammoTextXPos+16,-32),rtxtflags,Font.CR_RED);
+					DrawString(mStatFont,FormatNumber(shots), ammoText2Pos,rtxtflags,Font.CR_RED);
 				}
 			}
+
+			int ammoBarXPos = -24;
 
 			for (int i = 0; i < 5; i++) {
 				int amt, cap;
 				[amt, cap] = GetAmount(ammoTypes[i]);
-				Vector2 pos = (8 + ammoXPos - (9 * i),-48);
+				Vector2 pos = (8 + ammoBarXPos - (9 * i),-48);
 				if (amt == cap && (plr.GetAge() % 10 > 5)) { 
 					DrawImage(ammoBars[i].."A0",pos,rbarflags); // Ammo bars flash when full!
 				} else {
@@ -136,6 +139,9 @@ class LegendHud : BaseStatusBar {
 
 			// The XP bar.
 			DrawBar("XBARB0","XBARA0",xp,xpmax,(0,-08),2,SHADER_REVERSE,cbarflags);
+			// Level.
+			DrawImage("SLVL",(72,-8),cbarflags);
+			DrawString(mStatFont,String.Format("%d",lvl+1),(80,-16),ctxtflags,Font.CR_WHITE);
 
             // Finally, the stats.
             int statXPos = 16;
@@ -143,23 +149,19 @@ class LegendHud : BaseStatusBar {
 			int statYPos = -56;
 			// Luck.
 			DrawImage("SLUK",(statXPos,statYPos),statbarflags);
-            DrawString(mConFont,String.Format("%.2f",luck),(statTextXPos,statYPos-8),stattxtflags,Font.CR_GREEN);
-			statYPos -= 9;
+            DrawString(mStatFont,String.Format("%.2f",luck),(statTextXPos,statYPos-8),stattxtflags,Font.CR_GREEN);
+			statYPos -= 18;
 			// Toughness.
 			DrawImage("STUF",(statXPos,statYPos),statbarflags);
-            DrawString(mConFont,String.Format("%.2f",toughness),(statTextXPos,statYPos-8),stattxtflags,Font.CR_BLUE);
-			statYPos -= 9;
+            DrawString(mStatFont,String.Format("%.2f",toughness),(statTextXPos,statYPos-8),stattxtflags,Font.CR_BLUE);
+			statYPos -= 18;
 			// Precision.
 			DrawImage("SPRC",(statXPos,statYPos),statbarflags);
-            DrawString(mConFont,String.Format("%.2f",precision),(statTextXPos,statYPos-8),stattxtflags,Font.CR_PURPLE);
-			statYPos -= 9;
+            DrawString(mStatFont,String.Format("%.2f",precision),(statTextXPos,statYPos-8),stattxtflags,Font.CR_PURPLE);
+			statYPos -= 18;
 			// Power.
 			DrawImage("SPOW",(statXPos,statYPos),statbarflags);
-            DrawString(mConFont,String.Format("%.2f",power),(statTextXPos,statYPos-8),stattxtflags,Font.CR_ORANGE);
-			statYPos -= 9;
-			// Level.
-			DrawImage("SLVL",(statXPos,statYPos),statbarflags);
-			DrawString(mConFont,String.Format("%d",lvl+1),(statTextXPos,statYPos-8),stattxtflags,Font.CR_WHITE);
+            DrawString(mStatFont,String.Format("%.2f",power),(statTextXPos,statYPos-8),stattxtflags,Font.CR_ORANGE);
 
 			// If there's an item in the recentItems array, display it.
 			if (itm) {
