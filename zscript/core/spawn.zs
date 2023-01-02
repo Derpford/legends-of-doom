@@ -162,6 +162,20 @@ class ItemSpawnHandler : StaticEventHandler {
         if (e.Replacee is "Weapon" && !(e.Replacee is "LegendWeapon")) {
             e.Replacement = "DummyItem";
         }
+        
+        // Champions compat.
+        String champbonus = "champion_HealthBonus";
+        class<Actor> cbonusclass = champbonus;
+        if (cbonusclass && e.Replacee is cbonusclass) {
+            e.Replacement = "SmallXPGem";
+        }
+
+        // ColourfulHell compat.
+        String dropbase = "DropBaseItem";
+        class<Actor> dropbaseclass = dropbase;
+        if (dropbaseclass && e.Replacee is dropbaseclass) {
+            e.Replacement = "MidXPGem";
+        }
     }
 
     override void WorldThingSpawned(WorldEvent e) {
