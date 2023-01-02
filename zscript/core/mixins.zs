@@ -34,6 +34,10 @@ mixin class PlayerVac {
     void Suck() {
         if(shouldSuck) {return;}
         if (target && !target.bCORPSE) {
+            if ( !(target is "PlayerPawn") ) {
+                target = null;
+                return;
+            }
             Vector3 tv = vec3To(target);
             if (GetAge() > 48) { bNOGRAVITY = true; }
             bNOCLIP = (tv.length() > target.radius+radius);
