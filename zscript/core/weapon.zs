@@ -42,7 +42,8 @@ class LegendWeapon : Weapon {
     }
 
     action actor Shoot(Name type, double ang = 0, double xy = 0, int height = 0, int flags = 0, double pitch = 0) {
-        Actor it = A_FireProjectile(type,ang,false,xy,height,flags,pitch);
+        Actor it; Actor dummy;
+        [dummy, it] = A_FireProjectile(type,ang,false,xy,height,flags,pitch);
         if(it) {
             double pow; double multi;
             [pow, multi] = invoker.GetPower();
