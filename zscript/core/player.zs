@@ -66,7 +66,13 @@ class LegendPlayer : DoomPlayer abstract {
     }
 
     override void Tick() {
-        super.Tick();
+        if (!player || !player.mo || player.mo != self) {
+            Super.Tick();
+            return;
+        }
+
+        Super.Tick();
+
         if (TryLevel()) {
             console.printf("Level is now "..level+1);
         }
