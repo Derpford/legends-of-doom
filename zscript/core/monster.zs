@@ -64,9 +64,11 @@ class MonsterLevelHandler : EventHandler {
     int minutes;
     double monsterxp;
     MonsterLevelThinker brain;
+    bool braincheck; // Should we check for a MonsterLevelThinker?
 
     override void OnRegister() {
-        brain = MonsterLevelThinker.get();
+        // brain = MonsterLevelThinker.get();
+        braincheck = false;
     }
 
     int MonsterMaxHealth(Actor it) {
@@ -85,6 +87,10 @@ class MonsterLevelHandler : EventHandler {
     override void WorldTick() {
         // Each second, monsters gain 1 XP, plus 0.05 per level. This is capped at 2.5 XP (level 400).
         // At 150 XP (2.5 minutes the first time), they gain 1 level.
+        if (!braincheck) {
+            brain = MonsterLevelThinker.get();
+            braincheck = true;
+        }
         ticktimer += 1;
         if (ticktimer >= 35 ) {
             ticktimer = 0;
@@ -124,8 +130,9 @@ class MonsterLevelThinker : Thinker {
     static MonsterLevelThinker get() {
         ThinkerIterator it = ThinkerIterator.create("MonsterLevelThinker",STAT_STATIC);
         let p = MonsterLevelThinker(it.next());
-        if (p == null) {
-            p = new("MonsterLevelThinker").init();
+        if (!p) {
+            p = new("MonsterLevelThinker");
+            p.init();
         }
 
         return p;
