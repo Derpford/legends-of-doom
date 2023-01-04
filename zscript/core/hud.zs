@@ -2,6 +2,9 @@ class LegendHud : BaseStatusBar {
     HUDFont mConFont;
 	HUDFont mStatFont;
 	HUDFont mDetailFont;
+
+	double invticfrac; // controls animating invbar items
+
 	override void Init()
 	{
 		Super.Init();
@@ -142,6 +145,24 @@ class LegendHud : BaseStatusBar {
 			// Level.
 			DrawImage("SLVL",(72,-8),cbarflags);
 			DrawString(mStatFont,String.Format("%d",lvl+1),(80,-16),ctxtflags,Font.CR_WHITE);
+			// Inventory icon.
+			let w = plr.InvSel;
+			if (w) {
+				vector2 invpos = (-96,-8);
+				if (IsInventoryBarVisible()) {
+					invticfrac = clamp(invticfrac+0.5,0,8);
+				} else {
+					invticfrac = clamp(invticfrac-0.5,0,8);
+				}
+				if (w.PrevInv()) {
+					DrawInventoryIcon(w.PrevInv(),invpos+(-16,0),cbarflags,0.5);
+				}
+				if (w.NextInv()) {
+					DrawInventoryIcon(w.NextInv(),invpos+(16,0),cbarflags,0.5);
+				}
+
+				DrawInventoryIcon(w,invpos+(0,-invticfrac),cbarflags);
+			}
 
             // Finally, the stats.
             int statXPos = 16;
