@@ -150,15 +150,15 @@ class LegendHud : BaseStatusBar {
 			if (w) {
 				vector2 invpos = (-96,-8);
 				if (IsInventoryBarVisible()) {
-					invticfrac = clamp(invticfrac+0.5,0,8);
+					invticfrac = clamp(invticfrac+0.5,0,4);
 				} else {
-					invticfrac = clamp(invticfrac-0.5,0,8);
+					invticfrac = clamp(invticfrac-0.5,0,4);
 				}
 				if (w.PrevInv()) {
-					DrawInventoryIcon(w.PrevInv(),invpos+(-16,0),cbarflags,0.5);
+					DrawInventoryIcon(w.PrevInv(),invpos+(-16,-2),cbarflags,0.5);
 				}
 				if (w.NextInv()) {
-					DrawInventoryIcon(w.NextInv(),invpos+(16,0),cbarflags,0.5);
+					DrawInventoryIcon(w.NextInv(),invpos+(16,-2),cbarflags,0.5);
 				}
 
 				DrawInventoryIcon(w,invpos+(0,-invticfrac),cbarflags);
