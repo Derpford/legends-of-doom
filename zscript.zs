@@ -2,6 +2,7 @@ version "4.6"
 
 // Core.
 #include "zscript/core/ammo.zs"
+#include "zscript/core/armor.zs"
 #include "zscript/core/bonus.zs"
 #include "zscript/core/crate.zs"
 #include "zscript/core/effects.zs"

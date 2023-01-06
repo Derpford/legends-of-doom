@@ -47,7 +47,7 @@ class LegendHud : BaseStatusBar {
 		{
 			int hp = CPlayer.Health;
 			int maxhp = plr.GetMaxHealth(true);
-			int arm = GetAmount("BasicArmor");
+			int arm = plr.CountInv("LegendArmor");
 			int lvl = plr.level;
 			double xp = plr.xp;
 			double xpmax = plr.MaxXP();
@@ -65,8 +65,12 @@ class LegendHud : BaseStatusBar {
             DrawImage("HPAKB0",(12,-20),lbarflags);
 			if (arm > 0) { 
 				// Armor goes below the health string.
-				DrawImage("ARM1A0",(80,-8),lbarflags); 
-                DrawString(mStatFont,arm.."/200",(100,-20),ltxtflags,Font.CR_CYAN);
+				if (arm > maxhp) {
+					DrawImage("ARM2A0",(80,-8),lbarflags); 
+				} else {
+					DrawImage("ARM1A0",(80,-8),lbarflags); 
+				}
+                DrawString(mStatFont,arm.."/"..maxhp,(100,-20),ltxtflags,Font.CR_CYAN);
 			}
             DrawString(mStatFont,hp.."/"..maxhp,(32,-32),ltxtflags,Font.CR_BRICK);
 

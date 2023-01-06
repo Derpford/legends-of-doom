@@ -30,6 +30,7 @@ class LegendPlayer : DoomPlayer abstract {
     double itemTimer; // Counts up. At ~5s, remove the first entry in recentItems.
 
     double healthtimer; // Counts up. At ~.5s, take 1% maxhp.
+    double armortimer; // Same for armor.
 
     int level;
     double xp;
@@ -88,6 +89,7 @@ class LegendPlayer : DoomPlayer abstract {
                 GiveHealth(amt);
             }
         }
+
         // Also, tick overheal down until it's at mhp+100.
         if(health > mhp+100) {
             healthTimer += 1./35.;
@@ -98,6 +100,18 @@ class LegendPlayer : DoomPlayer abstract {
             }
         } else {
             healthTimer = -5.; // Overheal doesn't tick down until at least 5s after overhealing.
+        }
+
+        // Do the same for armor.
+        if(CountInv("LegendArmor") > mhp*2) {
+            armortimer += 1./35.;
+            if (armortimer >= .5) {
+                int amt = ceil(0.01*(CountInv("LegendArmor") - (mhp*2)));
+                TakeInventory("LegendArmor",amt);
+                armortimer = 0;
+            }
+        } else {
+            armortimer = -5.;
         }
 
         // Handle haste.

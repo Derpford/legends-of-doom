@@ -87,7 +87,7 @@ class DummyHPBonus : Inventory {
     }
 }
 
-class ArmBonus: ArmorBonus replaces ArmorBonus {
+class ArmBonus: LegendArmorGiver replaces ArmorBonus {
     // just the old armorbonus, plus succ.
     mixin PlayerVAc;
     override void Tick() {
@@ -96,6 +96,13 @@ class ArmBonus: ArmorBonus replaces ArmorBonus {
     }
     default {
         Inventory.PickupMessage "Armor Bonus!";
+        LegendArmorGiver.Give 0.01;
+    }
+
+    states {
+        Spawn:
+            BON2 ABCDCB 5 Bright;
+            Loop;
     }
 }
 
@@ -125,13 +132,19 @@ class MegaSoul : SuperSoul replaces MegaSphere {
     }
 
     override bool TryPickup (in out actor other) {
-        other.GiveInventory("BlueArmor",1);
+        other.GiveInventory("LegendMegasphereArmor",1);
         return super.TryPickup(other);
     }
 
     states {
         spawn:
             MEGA ABCD 6 bright;
+    }
+}
+
+class LegendMegasphereArmor : LegendArmorGiver {
+    default {
+        LegendArmorGiver.Give 2.0;
     }
 }
 
