@@ -14,7 +14,7 @@ The sprites for Strawberry Jam and Spicy Water are from Ac!d: https://forum.zdoo
 
 Bloodsaw sprites are from Craneo: https://forum.zdoom.org/viewtopic.php?t=65146
 
-Surplus Caliber's sprite and the small/large health packs are from BloodyAcid's mishmash of edits: https://forum.zdoom.org/viewtopic.php?t=33595
+Surplus Caliber's sprite, Z-Sec Goggles' sprite, and the small/large health packs are from BloodyAcid's mishmash of edits: https://forum.zdoom.org/viewtopic.php?t=33595
 
 The Copied, Treasured, and Corrupted Floppy sprites were made by TommyGalano5.
 
@@ -22,7 +22,11 @@ The Overstuffed Medkit's sprites were made by SgtShivers: https://forum.zdoom.or
 
 The Fireblu Gem is from OJSCLatchford: https://forum.zdoom.org/viewtopic.php?t=35861
 
+The Stiletto comes from WildWeasel's Firebrand Longsword: https://forum.zdoom.org/viewtopic.php?t=30236
+
 ### WEAPONS ###
+
+All of the Doomslayer's weapons are vanilla Doom graphics. (If you load this with Freedoom they'll look different!)
 
 The amethyst wand sprites and dragon gauntlet sprites are from Kagur. https://forum.zdoom.org/viewtopic.php?p=1058070
 
