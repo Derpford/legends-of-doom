@@ -46,6 +46,10 @@ class RuneOfEyes : LegendItem {
         LegendItem.Rarity "RARE ATTACK DEFENSE";
     }
 
+    override double GetPrecision() {
+        return 4.0;
+    }
+
     override void OnPrecisionHit() {
         power = 5 * GetStacks();
     }

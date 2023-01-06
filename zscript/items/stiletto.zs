@@ -9,6 +9,10 @@ class Stiletto : LegendItem {
         LegendItem.Timer 3.;
     }
 
+    override double GetPrecision() {
+        return 4.0;
+    }
+
     override void OnPrecisionHit() {
         pow += 1.;
         SetTimer();
