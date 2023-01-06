@@ -39,6 +39,8 @@ class LegendPlayer : DoomPlayer abstract {
     Name bfg; // A weapon you can quickly select using the Zoom key.
     Property BFG : bfg;
 
+    double hasteProgress; // For every 100 of this, advance 1 tick.
+
 
     default {
         LegendPlayer.Power 5., 1.;
@@ -97,6 +99,22 @@ class LegendPlayer : DoomPlayer abstract {
         } else {
             healthTimer = -5.; // Overheal doesn't tick down until at least 5s after overhealing.
         }
+
+        // Handle haste.
+        if (player.readyweapon) {
+            let wpn = player.readyweapon;
+            let st = player.GetPSprite(PSP_WEAPON);
+            if (!wpn.InStateSequence(st.curstate,wpn.ResolveState("Ready"))) {
+                // Not in the Ready state, tick Haste.
+                hasteProgress += GetHaste();
+                while (hasteProgress > 100.) {
+                    // It's safe to subtract a tick.
+                    st.tics = max(1,st.tics - 1);
+                    hasteProgress -= 100.;
+                }
+            }
+        }
+
 
         // If we're currently pressing BT_ZOOM, select the BFG.
         int buttons = GetPlayerInput(INPUT_BUTTONS);
@@ -168,6 +186,21 @@ class LegendPlayer : DoomPlayer abstract {
             scaling = self.ToughnessGrow;
         }
         return base + (scaling * level);
+    }
+
+    clearscope double GetHaste() {
+        // Characters do not naturally gain Haste.
+        Inventory it = inv;
+        double bonus = 0.;
+        while (it) {
+            let lit = LegendItem(it);
+            if (lit) {
+                bonus += lit.GetHaste();
+            }
+            it = it.inv;
+        }
+
+        return bonus;
     }
 
     clearscope double GetLuck() {

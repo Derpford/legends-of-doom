@@ -44,6 +44,7 @@ version "4.6"
 #include "zscript/items/stoneskin.zs"
 #include "zscript/items/strawberry-jam.zs"
 #include "zscript/items/surplus-caliber.zs"
+#include "zscript/items/zsec-goggles.zs"
 
 // Characters.
 #include "zscript/legends/doomslayer.zs"

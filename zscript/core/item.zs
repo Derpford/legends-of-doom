@@ -6,6 +6,7 @@ class LegendItem : Inventory abstract {
     double alarmPitch;
     bool alarmSet; // Should the alarm go off?
     int stacks; // Fixes repeated proccing of items with multiple copies. Also means we don't need to care about MaxAmount.
+
     Property TimerStart : timer;
     Property Timer : timelimit;
     Property StartStacks : stacks;
@@ -396,6 +397,7 @@ class LegendItem : Inventory abstract {
     virtual clearscope double GetPrecision() { return 0; }
     virtual clearscope double GetToughness() { return 0; }
     virtual clearscope double GetLuck() { return 0; }
+    virtual clearscope double GetHaste() { return 0; }
 }
 
 class ItemPassiveHandler : EventHandler {
