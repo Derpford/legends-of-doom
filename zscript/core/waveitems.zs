@@ -169,8 +169,9 @@ class SpawnHPBonus : SpawnItem {
     }
 
     states {
-        PLSS AB 6;
-        Loop;
+        Spawn:
+            PLSS AB 6;
+            Loop;
     }
 }
 
