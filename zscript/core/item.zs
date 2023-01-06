@@ -403,6 +403,21 @@ class LegendItem : Inventory abstract {
 class ItemPassiveHandler : EventHandler {
     // Handles OnHit, OnRetaliate, and OnKill.
 
+    double GetProc(Actor it) {
+        if (it is "LegendShot") {
+            let linf = LegendShot(it);
+            return linf.proc;
+        }
+
+        if (it is "LegendFastShot") {
+            let linf = LegendFastShot(it);
+            return linf.proc;
+        }
+
+        // default to 1.
+        return 1.0;
+    }
+
     override void WorldThingDamaged(WorldEvent e) {
         // First call OnHit on any items in DamageSource's inventory.
         Inventory it;
@@ -420,8 +435,10 @@ class ItemPassiveHandler : EventHandler {
                 while (it) {
                     let lit = LegendItem(it);
                     if (lit) {
-                        int dmg = it.ApplyDamageFactors(it.GetClassName(),e.DamageType,e.Damage,e.Damage);
-                        lit.OnHit(dmg, e.DamageType, e.DamageSource, e.Inflictor, e.Thing);
+                        double dmg = it.ApplyDamageFactors(it.GetClassName(),e.DamageType,e.Damage,e.Damage);
+                        double proc = GetProc(e.Inflictor);
+                        dmg *= proc;
+                        lit.OnHit(floor(dmg), e.DamageType, e.DamageSource, e.Inflictor, e.Thing);
                     }
                     it = it.inv;
                 }

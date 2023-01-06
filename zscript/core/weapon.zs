@@ -90,11 +90,14 @@ class LegendShot : Actor {
     double power;
     int dmg;
     double precision; // What's the precision modifier?
+    double proc; // Multiplier to proc damage.
+    property Proc: proc;
 
     default {
         PROJECTILE;
         +FORCERADIUSDMG;
         Speed 40;
+        LegendShot.Proc 1;
         DamageFunction (dmg);
     }
 
@@ -115,11 +118,14 @@ class LegendFastShot : Actor {
     int dmg;
     double power;
     double precision; // What's the precision modifier?
+    double proc; // Multiplier to proc damage.
+    property Proc: proc;
 
     default {
         PROJECTILE;
         +FORCERADIUSDMG;
         Speed 40;
+        LegendFastShot.Proc 1;
         DamageFunction (dmg);
     }
 

@@ -113,13 +113,13 @@ class Burn : StatusEffect {
     }
 }
 
-class FlameBurst : Actor {
+class FlameBurst : LegendShot {
     // Spreading flames.
-    int power;
     double giveradius;
     default {
         Scale 1.5;
         RenderStyle "Add";
+        LegendShot.Proc 0.75;
         +NOGRAVITY;
     }
 

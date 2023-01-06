@@ -70,15 +70,15 @@ class SmiteModifier : Inventory {
     }
 }
 
-class RadBurst : Actor {
+class RadBurst : LegendShot {
     // Emits radiation, creates sparkles, and stops existing.
     int radius;
-    int power;
     mixin SplashDamage;
 
     default {
         RenderStyle "Add";
         +NOGRAVITY;
+        LegendShot.Proc 2;
     }
 
     states {
