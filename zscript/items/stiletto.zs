@@ -14,7 +14,7 @@ class Stiletto : LegendItem {
     }
 
     override void OnPrecisionHit() {
-        pow += 1.;
+        pow = min(pow + 1.,GetStacks());
         SetTimer();
     }
 
@@ -26,7 +26,7 @@ class Stiletto : LegendItem {
     }
 
     override double GetHaste() {
-        return 3. * pow;
+        return 5. * pow;
     }
 
     states {

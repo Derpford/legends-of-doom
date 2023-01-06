@@ -115,7 +115,7 @@ class LegendPlayer : DoomPlayer abstract {
         }
 
         // Handle haste.
-        if (player.readyweapon) {
+        if (health > 0 && player.readyweapon) {
             let wpn = player.readyweapon;
             let st = player.GetPSprite(PSP_WEAPON);
             if (!wpn.InStateSequence(st.curstate,wpn.ResolveState("Ready"))) {
@@ -124,8 +124,10 @@ class LegendPlayer : DoomPlayer abstract {
                 while (hasteProgress > 100.) {
                     // It's safe to subtract a tick.
                     st.tics = max(1,st.tics - 1);
-                    hasteProgress -= 100.;
+                    hasteProgress -= max(100., hasteProgress / 2.);
                 }
+            } else {
+                hasteProgress = 0; // Reset haste if not in a non-Ready state.
             }
         }
 
