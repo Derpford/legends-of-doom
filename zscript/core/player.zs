@@ -121,14 +121,21 @@ class LegendPlayer : DoomPlayer abstract {
         double ret = 1.;
         while (initial > 100.) {
             ret += 1;
-            initial -= 100.;
+            initial = floor(initial * 0.5);
         }
         // The final roll.
-        if (LuckRoll(initial)) {
-            ret += 1;
+        while (initial > 0) {
+            if (LuckRoll(initial)) {
+                ret += 1;
+                initial = floor(initial * 0.5);
+            } else {
+                initial = 0; // On first missed roll, stop rolling.
+            }
         }
         return ret;
     }
+
+    clearscope 
 
     clearscope bool LuckRoll(double chance, bool isBad = false) {
         // Roll a random number between 1 and 100. If it's lower than chance, return true.
@@ -269,13 +276,14 @@ class LegendPlayer : DoomPlayer abstract {
 
     override int TakeSpecialDamage (Actor inf, Actor src, int dmg, Name type) {
         // RollDown our Toughness and use that as a divisor.
-        double div = RollDown(GetToughness());
+        double tough = GetToughness();
         if (CountInv("ProtectionSphere") > 0) {
-            div += 1; // Protection Sphere adds 1 to the multiplier for the rest of the level.
+            tough += 50; // Protection Sphere adds 50 effective Toughness for the rest of the level.
         }
-        if (div > 1) { A_StartSound("switches/normbutn",8,pitch:1.2); } // Placeholder sound for "Toughness procced"
-        double new = double(dmg) / div;
-        // console.printf("Toughness: "..dmg.." to "..new);
+        double div = DimResist(GetToughness(),50);
+        // if (div > 1) { A_StartSound("switches/normbutn",8,pitch:1.2); } // Placeholder sound for "Toughness procced"
+        double new = double(dmg) * div;
+        console.printf("Toughness: "..dmg.." to "..new);
         return floor(new);
     }
 

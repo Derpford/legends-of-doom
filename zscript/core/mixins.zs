@@ -219,7 +219,7 @@ mixin class Lerps {
         // if amt < 0, the multiplier increases instead.
         // at amt = -half, the multiplier becomes 1.5.
         if (amt >= 0) {
-            return half / amt + half;
+            return half / (amt + half);
         } else {
             return 2 - (half / half - amt); // thank you lolwiki
         }
