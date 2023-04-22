@@ -22,8 +22,11 @@ class LegendArmorGiver : Inventory {
 }
 class LegendArmor : Inventory {
     // Handles armor!
-    // Armor normally absorbs ~33% of incoming damage.
-    // However, while the armor total is above your max health value, the protection rate increases to ~66%.
+    // Armor absorbs damage based on how much armor you have compared to your max health.
+    // At minimum, it absorbs 30% damage.
+    // While armor is equal to or higher than your max health, you get 100% protection.
+    // This means that you need more armor for the same protection value as your max health increases!
+    // It also means you chew through armor rapidly.
     // If you have armor higher than 2x your health, it ticks down, similarly to health.
 
     default {
@@ -32,11 +35,12 @@ class LegendArmor : Inventory {
     }
 
     double GetProtection() {
-        if (amount > owner.GetMaxHealth(true)) {
-            return .66;
-        } else {
-            return .33;
-        }
+        // if (amount > owner.GetMaxHealth(true)) {
+        //     return .66;
+        // } else {
+        //     return .33;
+        // }
+        return clamp(double(amount) / double(owner.GetMaxHealth(true)),0.3,1);
     }
 
     override void AbsorbDamage(int damage, Name damageType, out int newdamage, Actor inflictor, Actor source, int flags) {
