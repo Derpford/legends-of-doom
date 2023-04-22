@@ -94,3 +94,33 @@ class PanicBootton : LegendItem {
             Stop;
     }
 }
+
+class MollePlate : LegendItem {
+    // Real generals study logistics.
+    int charge;
+    default {
+        Tag "MOLLE Plate";
+        LegendItem.Desc "While Over-Armored, taking damage spawns ammo bonuses.";
+        LegendItem.Remark "Do U Even Operate Bro";
+        LegendItem.Icon "MOLLA0";
+        LegendItem.Rarity "COMMON UTILITY";
+    }
+
+    override void OverArmorDamage (int dmg, Name type, Actor inf, Actor src, int flags) {
+        charge += dmg * GetStacks();
+    }
+
+    override void DoEffect() {
+        int hpfrac = owner.GetMaxHealth(true) * 0.1;
+        if (charge > hpfrac) {
+            charge -= hpfrac;
+            owner.Spawn("AmmoTiny",owner.pos);
+        }
+    }
+
+    states {
+        Spawn:
+            MOLL A -1;
+            Stop;
+    }
+}
