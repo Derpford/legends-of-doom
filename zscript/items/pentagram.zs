@@ -4,7 +4,7 @@ class SealedPentagram : LegendItem {
     default {
         LegendItem.Icon "CEYEA0";
         Tag "Sealed Pentagram";
-        LegendItem.Desc "Every 5s, your next attack roots whatever it hits.";
+        LegendItem.Desc "Every 5s, your next attack frightens whatever it hits.";
         LegendItem.Remark "Witchin'.";
         LegendItem.Timer 5.;
         LegendItem.Rarity "RARE DEFENSE UTILITY";
@@ -14,12 +14,8 @@ class SealedPentagram : LegendItem {
         if (TimeUp() && tgt != owner) {
             // Flag our timer for triggering next tic.
             used = true;
-            int amt = 9 + GetStacks();
-            let tinv = StatusEffect(tgt.FindInventory("Root"));
-            if (tinv && tinv.stacks > 0) {
-                amt = 0;
-            }
-            tgt.GiveInventory("Root",amt);
+            int amt = 19 + GetStacks();
+            tgt.GiveInventory("Fear",amt);
 
         }
     }

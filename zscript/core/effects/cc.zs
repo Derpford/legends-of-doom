@@ -64,6 +64,43 @@ class JamPuff : Actor {
     }
 }
 
+class Fear : StatusEffect {
+    // Applies +FRIGHTENED for a while.
+    default {
+        StatusEffect.Timer 1.;
+        StatusEffect.StackGiven .1;
+    }
+
+    override void OnStack(int amt) {
+        owner.bFRIGHTENED = true;
+    }
+
+    override void OnTick() {
+        if (owner && owner.GetAge() % 10 == 0) {
+            owner.A_SpawnItemEX("RootSmoke",xofs:owner.radius, zofs:owner.height,angle:owner.GetAge());
+            owner.A_SpawnItemEX("RootSmoke",xofs:owner.radius, zofs:owner.height,angle:-owner.GetAge());
+        }
+    }
+
+    override void OnEnd() {
+        owner.bFRIGHTENED = false;
+    }
+}
+
+class FearSmoke : Actor {
+    // Indicates fear.
+    default {
+        +NOINTERACTION;
+        RenderStyle "Add";
+    }
+
+    states {
+        Spawn:
+            FEAR AB 5;
+            Stop;
+    }
+}
+
 class Root : StatusEffect {
     // Locks the target's X/Y movement.
     Vector3 oldpos;
