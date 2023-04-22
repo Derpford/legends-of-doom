@@ -1,6 +1,6 @@
 class ArmorCladFaith : LegendItem {
     // I'M A CLOWN OF FAAAAAAATE
-    int count;
+    double count;
     default {
         Tag "Armor-Clad Faith";
         LegendItem.Desc "Picking up armor occasionally grants Ult Ammo.";
@@ -10,12 +10,14 @@ class ArmorCladFaith : LegendItem {
     }
 
     override void PickupArmor (Inventory item) {
-        double multi = RollDown(5 * GetStacks());
-        int amt = item.amount;
-        if (item is "BasicArmorPickup") { amt = BasicArmorPickup(item).SaveAmount; }
+        double multi = GetStacks() * 0.5;
+        double amt = 0;
+        if (item is "LegendArmorGiver") { 
+            amt = LegendArmorGiver(item).givepercent; 
+        }
         count += amt * multi; 
-        while (count >= 100) {
-            count -= 100;
+        while (count >= 1) {
+            count -= 1;
             owner.GiveInventory("PinkAmmo",1);
         }
     }

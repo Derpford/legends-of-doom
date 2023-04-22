@@ -10,9 +10,9 @@ Class StoneskinAmulet : LegendItem {
     }
 
     override void OnTimer() {
-        let arm = owner.CountInv("BasicArmor");
+        let arm = owner.CountInv("LegendArmor");
         if (arm > 0) {
-            owner.TakeInventory("BasicArmor",2*GetStacks());
+            owner.TakeInventory("LegendArmor",2*GetStacks());
             HealOwner(GetStacks());
         }
         SetTimer();

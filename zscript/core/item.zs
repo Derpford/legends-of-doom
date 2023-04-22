@@ -275,7 +275,6 @@ class LegendItem : Inventory abstract {
     override bool HandlePickup(Inventory item) {
         // bool res = item.TryPickup(owner);
         bool res = ((item.bALWAYSPICKUP) ||
-                    (item is "BasicArmorPickup" && BasicArmorPickup(item).SaveAmount > owner.CountInv("BasicArmor")) || 
                     (owner.CountInv(item.GetClassName()) < item.MaxAmount) || 
                     ((item is "Ammo") && (owner.CountInv("BackpackItem") > 0) && (owner.CountInv(item.GetClassName()) < Ammo(item).BackpackAmount)));
         if (res) {
@@ -287,7 +286,7 @@ class LegendItem : Inventory abstract {
                 PickupHealth(item); 
             }
 
-            if (item is "BasicArmorPickup" || item is "ArmBonus") { // Likewise, this overlaps with armor bonuses.
+            if (item is "LegendArmorGiver" || item is "ArmBonus") { // Likewise, this overlaps with armor bonuses.
                 PickupArmor(item);
             }
 
