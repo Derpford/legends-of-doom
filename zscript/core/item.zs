@@ -75,6 +75,20 @@ class LegendItem : Inventory abstract {
         }
     }
 
+    bool IsOverArmor() {
+        let plr = LegendPlayer(owner);
+        if (plr) {
+            let arm = LegendArmor(plr.FindInventory("LegendArmor"));
+            if (arm) {
+                return arm.amount >= plr.GetMaxHealth(true);
+            } else {
+                return false; // Player doesn't have armor?
+            }
+        } else {
+            return false; // Monsters can't have armor, so they aren't over-armored.
+        }
+    }
+
     double GetOwnerLuck() {
         // Returns 0 or parent's luck. Monsters don't get lucky!
         if (owner is "LegendPlayer") {
@@ -246,6 +260,9 @@ class LegendItem : Inventory abstract {
     virtual void BreakArmor () {} 
     // Called when an enemy does damage to a player with no armor.
 
+    virtual void OverArmorDamage (int dmg, Name type, Actor inf, Actor src, int flags) {}
+    // Called when taking damage while over-armored.
+
     virtual double DamageMulti (int dmg, Name type, Actor inf, Actor src, int flags) { return 1.0; }
     // A multiplier to apply to outgoing damage.
 
@@ -289,10 +306,13 @@ class LegendItem : Inventory abstract {
         } else {
             new = dmg * DamageMulti(dmg,type,inf,src,flags);
         }
+        if (IsOverArmor()) {
+            OverArmorDamage(dmg,type,inf,src,flags);
+        }
     }
 
     override void AbsorbDamage (int dmg, Name type, out int newdamage) {
-        let arm = BasicArmor(owner.FindInventory("BasicArmor"));
+        let arm = LegendArmor(owner.FindInventory("LegendArmor"));
         if (arm && arm.Amount < 1) {
             BreakArmor();
         }
