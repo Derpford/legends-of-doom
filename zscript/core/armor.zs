@@ -24,8 +24,8 @@ class LegendArmor : Inventory {
     // Handles armor!
     // Armor absorbs damage based on how much armor you have compared to your max health.
     // At minimum, it absorbs 30% damage.
-    // While armor is equal to or higher than your max health, you get 100% protection.
-    // This means that you need more armor for the same protection value as your max health increases!
+    // While armor is equal to or higher than your max health, you get 100% protection. (This means you're Over-Armored.)
+    // Since proper armor pickups scale with HP, this means increasing your health also increases the amount of damage it takes to drop below Over-Armored.
     // It also means you chew through armor rapidly.
     // If you have armor higher than 2x your health, it ticks down, similarly to health.
 
