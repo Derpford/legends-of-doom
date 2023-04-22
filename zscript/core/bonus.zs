@@ -96,7 +96,7 @@ class ArmBonus: LegendArmorGiver replaces ArmorBonus {
     }
     default {
         Inventory.PickupMessage "Armor Bonus!";
-        LegendArmorGiver.Give 0.01;
+        LegendArmorGiver.Give 0.02;
     }
 
     states {
