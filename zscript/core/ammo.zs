@@ -40,6 +40,7 @@ class AmmoBig : Inventory {
         +BRIGHT;
         Scale 1.5;
         Inventory.PickupMessage "Unpacked some ammo...";
+        +DONTGIB;
     }
     
     override bool TryPickup(in out actor other) {
@@ -64,6 +65,7 @@ class AmmoTiny : Inventory {
     default {
         +FLOATBOB;
         +BRIGHT;
+        +DONTGIB;
         Scale 0.7;
         Inventory.Amount 10;
         Inventory.PickupMessage "Ammo bonus!";
@@ -96,6 +98,7 @@ class GreenAmmo : Ammo replaces Clip {
     default {
         +FLOATBOB;
         +BRIGHT;
+        +DONTGIB;
         Inventory.PickupMessage "Green ammo!";
         Inventory.Amount 25; // used to be 15
         Inventory.MaxAmount 1000; // used to be 300
@@ -128,6 +131,7 @@ class RedAmmo : Ammo replaces Shell {
     default {
         +FLOATBOB;
         +BRIGHT;
+        +DONTGIB;
         Inventory.PickupMessage "Red ammo!";
         Inventory.Amount 25; // used to be 4
         Inventory.MaxAmount 1000; // used to be 80
@@ -160,6 +164,7 @@ class YellowAmmo : Ammo replaces RocketAmmo {
     default {
         +FLOATBOB;
         +BRIGHT;
+        +DONTGIB;
         Inventory.PickupMessage "Yellow ammo!";
         Inventory.Amount 25; // used to be 5
         Inventory.MaxAmount 1000; // used to be 100
@@ -192,6 +197,7 @@ class BlueAmmo : Ammo replaces Cell {
     default {
         +FLOATBOB;
         +BRIGHT;
+        +DONTGIB;
         Inventory.PickupMessage "Blue ammo!";
         Inventory.Amount 25; // used to be 20
         Inventory.MaxAmount 1000; // used to be 400

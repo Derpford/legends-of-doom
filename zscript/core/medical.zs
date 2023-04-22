@@ -6,6 +6,7 @@ class SmallHealthPack : HPBonus replaces Stimpack {
         HPBonus.DontSuck true;
         -INVENTORY.ALWAYSPICKUP;
         Inventory.PickupMessage "Grabbed a small health pack!";
+        +DONTGIB;
     }
 
     states {
@@ -19,6 +20,7 @@ class LargeHealthPack : SmallHealthPack replaces Medikit {
     default {
         HPBonus.heal -25;
         Inventory.PickupMessage "Grabbed a large health pack!";
+        +DONTGIB;
     }
 
     states {

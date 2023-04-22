@@ -17,6 +17,7 @@ class HPBonus : Inventory replaces HealthBonus {
         HPBonus.Overheal true;
         Inventory.PickupMessage "Health Bonus!";
         +Inventory.ALWAYSPICKUP;
+        +DONTGIB;
     }
 
     int GetTrueHeal(Actor plr) {
@@ -79,6 +80,7 @@ class DummyHPBonus : Inventory {
     default {
         Inventory.Amount 1;
         Inventory.MaxAmount 9999;
+        +DONTGIB;
     }
 
     override void DoEffect() {
@@ -97,6 +99,7 @@ class ArmBonus: LegendArmorGiver replaces ArmorBonus {
     default {
         Inventory.PickupMessage "Armor Bonus!";
         LegendArmorGiver.Give 0.02;
+        +DONTGIB;
     }
 
     states {
@@ -114,6 +117,7 @@ class Supersoul : HPBonus replaces Soulsphere {
         HPBonus.DontSuck true;
         Inventory.PickupMessage "Super Soul!";
         +INVENTORY.BIGPOWERUP;
+        +DONTGIB;
     }
 
     states {
@@ -129,6 +133,7 @@ class MegaSoul : SuperSoul replaces MegaSphere {
         HPBonus.DontSuck true;
         Inventory.PickupMessage "Mega Soul!";
         +INVENTORY.BIGPOWERUP;
+        +DONTGIB;
     }
 
     override bool TryPickup (in out actor other) {
@@ -156,6 +161,7 @@ class ProtectionSphere : Inventory replaces Blursphere {
         Inventory.PickupSound "misc/p_pkup";
         Inventory.PickupMessage "Protection Sphere!";
         +INVENTORY.BIGPOWERUP;
+        +DONTGIB;
         Inventory.InterHubAmount 0;
     }
 
