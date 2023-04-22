@@ -169,8 +169,6 @@ class LegendPlayer : DoomPlayer abstract {
         return ret;
     }
 
-    clearscope 
-
     clearscope bool LuckRoll(double chance, bool isBad = false) {
         // Roll a random number between 1 and 100. If it's lower than chance, return true.
         // Luck is applied to this roll based on isBad.
