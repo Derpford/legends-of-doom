@@ -102,7 +102,7 @@ class MollePlate : LegendItem {
     int charge;
     default {
         Tag "MOLLE Plate";
-        LegendItem.Desc "While Over-Armored, taking damage spawns ammo bonuses.";
+        LegendItem.Desc "While Over-Armored, blocked damage periodically spawns ammo bonuses.";
         LegendItem.Remark "Do U Even Operate Bro";
         LegendItem.Icon "MOLLA0";
         LegendItem.Rarity "COMMON UTILITY";
@@ -112,12 +112,23 @@ class MollePlate : LegendItem {
         charge += dmg * GetStacks();
     }
 
+    clearscope double ChargeCap() {
+        return owner.GetMaxHealth(true) * 0.5;
+    }
+
     override void DoEffect() {
-        int hpfrac = owner.GetMaxHealth(true) * 0.1;
+        double hpfrac = ChargeCap();
         if (charge > hpfrac) {
             charge -= hpfrac;
             owner.Spawn("AmmoTiny",owner.pos);
         }
+    }
+
+    override string, int GetItemInfo() {
+        double hpfrac = ChargeCap();
+        double perc = charge / hpfrac;
+        perc *= 100.0;
+        return String.format("%0.1f%%",perc), Font.CR_WHITE;
     }
 
     states {
