@@ -46,7 +46,7 @@ class LeakyBackpack : LegendItem {
         LegendItem.Icon "LKBKA0";
         Tag "Leaky Backpack";
         LegendItem.Desc "Always pick up ammo, even if full. Ammo spawns XP.";
-        LegendItem.Remark "Why can't I hold all this ammo?";
+        LegendItem.Remark "Why cant I hold all this gun";
         LegendItem.Rarity "CURSED";
     }
 
