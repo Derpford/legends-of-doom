@@ -153,21 +153,110 @@ class LegendMegasphereArmor : LegendArmorGiver {
     }
 }
 
-class ProtectionSphere : Inventory replaces Blursphere {
-    // Shields you for the rest of the level, adding 1 to your Toughness divisor.
-    // It's like having 100 extra toughness!
+class LegendPowerup : Inventory {
+    // A powerup that goes away after a time.
+    double duration;
+    Property Duration : duration;
     default {
+        LegendPowerup.Duration 90; // 1.5 minutes by default
         Inventory.Amount 1;
         Inventory.PickupSound "misc/p_pkup";
-        Inventory.PickupMessage "Protection Sphere!";
         +INVENTORY.BIGPOWERUP;
         +DONTGIB;
         Inventory.InterHubAmount 0;
+    }
+
+    override void DoEffect() {
+        duration -= 1./35.;
+        if (duration <= 0) {
+            owner.TakeInventory(self.GetClassName(),1);
+        }
+    }
+}
+
+class ProtectionSphere : LegendPowerup replaces Blursphere {
+    // Shields you for a while, granting 50% extra DR.
+    default {
+        Inventory.PickupMessage "Protection Sphere! Temporary 50% damage resist!";
+    }
+
+    override void ModifyDamage (int dmg, Name type, out int new, bool passive, Actor inf, Actor src, int flags) {
+        if (passive) {
+            new = dmg * 0.5;
+        }
     }
 
     states {
         Spawn:
             PINS ABCD 6 Bright;
             Loop;
+    }
+}
+
+class DamageAmp : LegendPowerup {
+    // Boosts your outgoing damage by 50%.
+    default {
+        Inventory.PickupMessage "Damage Amplifier! Temporary 50% damage boost!";
+    }
+
+    override void ModifyDamage (int dmg, Name type, out int new, bool passive, Actor inf, Actor src, int flags) {
+        if (!passive) {
+            new = dmg * 1.5;
+        }
+    }
+
+    states {
+        Spawn:
+            PPOW A -1 Bright;
+            Stop;
+    }
+}
+
+class RegenBooster : LegendPowerup {
+    // Heals you for 5% of your health once a second for 90 seconds.
+    int timer;
+    default {
+        Inventory.PickupMessage "Regen Booster! Temporary health regen!";
+    }
+
+    override void DoEffect() {
+        timer += 1;
+        if (timer >= 35) {
+            let plr = LegendPlayer(owner);
+            timer = 0;
+            if (plr) {
+                int amt = plr.GetMaxHealth(true) * 0.05;
+                plr.GiveHealth(amt,true);
+            }
+        }
+    }
+
+    states {
+        Spawn:
+            PRGN A -1;
+            Stop;
+    }
+}
+
+class AimComp : LegendPowerup {
+    // Makes your attacks more Precise for a while.
+    default {
+        Inventory.PickupMessage "Aim Computer! Temporary Precision boost!";
+    }
+
+    states {
+        Spawn:
+            PACC ABCDEFGHIJ 5;
+            Loop;
+    }
+}
+
+class LegendPowerSpawn : RandomSpawner replaces Berserk {
+    // Drops one of the powerup items.
+    default {
+        DropItem "AimComp";
+        DropItem "RegenBooster";
+        DropItem "ProtectionSphere";
+        DropItem "DamageAmp";
     }
 }

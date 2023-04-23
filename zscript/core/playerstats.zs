@@ -142,7 +142,7 @@ extend class LegendPlayer {
         // Also returns the multiplier, in case you need that.
         double lucky = GetPrecision();
         double multi = RollDown(lucky);
-        if (CountInv("PowerStrength") > 0) { multi += 1; } // Grabbing a Zerk increases your multiplier for the rest of the level.
+        if (CountInv("AimComp") > 0) { multi += 1; }
 
         Inventory it = inv;
         double bonus = 0.;
@@ -176,9 +176,6 @@ extend class LegendPlayer {
     override int TakeSpecialDamage (Actor inf, Actor src, int dmg, Name type) {
         // RollDown our Toughness and use that as a divisor.
         double tough = GetToughness();
-        if (CountInv("ProtectionSphere") > 0) {
-            tough += 50; // Protection Sphere adds 50 effective Toughness for the rest of the level.
-        }
         double div = DimResist(GetToughness(),50);
         // if (div > 1) { A_StartSound("switches/normbutn",8,pitch:1.2); } // Placeholder sound for "Toughness procced"
         double new = double(dmg) * div;
