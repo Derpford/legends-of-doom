@@ -4,7 +4,7 @@ Class StoneskinAmulet : LegendItem {
         LegendItem.Icon "AMLTA0";
         LegendItem.Timer 0.5;
         Tag "Stoneskin Amulet";
-        LegendItem.Desc "Consume armor for healing, even if your HP's full.";
+        LegendItem.Desc "Consume armor for healing.";
         LegendItem.Remark "Not quite immortal.";
         LegendItem.Rarity "CURSED";
     }
@@ -13,7 +13,7 @@ Class StoneskinAmulet : LegendItem {
         let arm = owner.CountInv("LegendArmor");
         if (arm > 0) {
             owner.TakeInventory("LegendArmor",2*GetStacks());
-            HealOwner(GetStacks());
+            HealOwner(GetStacks(),true);
         }
         SetTimer();
     }
