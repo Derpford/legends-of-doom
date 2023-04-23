@@ -306,7 +306,7 @@ class LegendItem : Inventory abstract {
         } else {
             new = dmg * DamageMulti(dmg,type,inf,src,flags);
         }
-        if (IsOverArmor()) {
+        if (passive && IsOverArmor()) {
             OverArmorDamage(dmg,type,inf,src,flags);
         }
     }
