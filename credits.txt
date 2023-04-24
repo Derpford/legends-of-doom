@@ -4,6 +4,8 @@ This credits file is probably incomplete! A lot of these sprites were lying arou
 
 The ammo and crate sprites are by dawnbreez (that's me!). So are SPRKA0 and SPRKB0.
 
+Green, blue, and red armors are by zrrion the insect: https://forum.zdoom.org/viewtopic.php?t=35797
+
 The XP gems and Lucky Coin sprite are from OpenGameArt and were licensed CC0.
 
 The sprites for the Runes and the Gems, the sprites for Amulets (Life-Channel, Ammolet, & Owlsight), and the sprites for Hammer of Retribution, were all made by NeoWorm: https://forum.zdoom.org/viewtopic.php?t=15908
@@ -15,6 +17,7 @@ The sprites for Strawberry Jam and Spicy Water are from Ac!d: https://forum.zdoo
 Bloodsaw sprites are from Craneo: https://forum.zdoom.org/viewtopic.php?t=65146
 
 Surplus Caliber's sprite, Z-Sec Goggles' sprite, and the small/large health packs are from BloodyAcid's mishmash of edits: https://forum.zdoom.org/viewtopic.php?t=33595
+So are the sprites for the Power Amp, Regen Pack, MOLLE Plate, Aim Comp, and Leaky Backpack.
 
 The Copied, Treasured, and Corrupted Floppy sprites were made by TommyGalano5.
 
