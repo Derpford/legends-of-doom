@@ -4,7 +4,7 @@ This credits file is probably incomplete! A lot of these sprites were lying arou
 
 The ammo and crate sprites are by dawnbreez (that's me!). So are SPRKA0 and SPRKB0.
 
-Green, blue, and red armors are by zrrion the insect: https://forum.zdoom.org/viewtopic.php?t=35797
+Green, blue, and red armors, plus the protection sigils, are by zrrion the insect: https://forum.zdoom.org/viewtopic.php?t=35797
 
 The XP gems and Lucky Coin sprite are from OpenGameArt and were licensed CC0.
 
