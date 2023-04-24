@@ -143,9 +143,18 @@ class MegaArmor : LegendArmorGiver replaces MegaSphere {
     }
 }
 
-class LegendMegasphereArmor : LegendArmorGiver {
+class InvulnSigil : InvulnerabilitySphere replaces InvulnerabilitySphere {
     default {
-        LegendArmorGiver.Give 2.0;
+        Inventory.PickupMessage "Greater Protection Sigil!";
+    }
+
+    states {
+        Spawn:
+            PPRT A 5 Bright;
+            PPRT A 5;
+            PPRT B 5 Bright;
+            PPRT B 5;
+            Loop;
     }
 }
 
@@ -170,10 +179,10 @@ class LegendPowerup : Inventory {
     }
 }
 
-class ProtectionSphere : LegendPowerup replaces Blursphere {
+class ProtectionSigil : LegendPowerup replaces Blursphere {
     // Shields you for a while, granting 50% extra DR.
     default {
-        Inventory.PickupMessage "Protection Sphere! Temporary 50% damage resist!";
+        Inventory.PickupMessage "Lesser Protection Sigil! Temporary 50% damage resist!";
     }
 
     override void ModifyDamage (int dmg, Name type, out int new, bool passive, Actor inf, Actor src, int flags) {
@@ -184,7 +193,10 @@ class ProtectionSphere : LegendPowerup replaces Blursphere {
 
     states {
         Spawn:
-            PINS ABCD 6 Bright;
+            PPRT C 6 Bright;
+            PPRT C 6;
+            PPRT D 6 Bright;
+            PPRT D 6 ;
             Loop;
     }
 }
@@ -252,7 +264,7 @@ class LegendPowerSpawn : RandomSpawner replaces Berserk {
     default {
         DropItem "AimComp";
         DropItem "RegenBooster";
-        DropItem "ProtectionSphere";
+        DropItem "ProtectionSigil";
         DropItem "DamageAmp";
     }
 }
