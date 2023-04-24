@@ -60,7 +60,7 @@ class LegendGreenArmor : LegendArmorGiver replaces GreenArmor {
 
     states {
         Spawn:
-            ARM1 AB 5 Bright;
+            ARMG AB 5 Bright;
             Loop;
     }
 }
@@ -73,7 +73,7 @@ class LegendBlueArmor : LegendArmorGiver replaces BlueArmor {
 
     states {
         Spawn:
-            ARM2 AB 5 Bright;
+            ARMB AB 5 Bright;
             Loop;
     }
 }

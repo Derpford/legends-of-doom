@@ -109,41 +109,37 @@ class ArmBonus: LegendArmorGiver replaces ArmorBonus {
     }
 }
 
-class Supersoul : HPBonus replaces Soulsphere {
-    // the soulsphere, but without a maximum!
+class HugeMedkit : HPBonus replaces Soulsphere {
+    // Overheals 50% of your health.
 
     default {
-        HPBonus.Heal 100;
+        HPBonus.Heal -50;
         HPBonus.DontSuck true;
-        Inventory.PickupMessage "Super Soul!";
+        Inventory.PickupMessage "Huge Medkit!";
         +INVENTORY.BIGPOWERUP;
         +DONTGIB;
     }
 
     states {
         spawn:
-            SOUL ABCDCB 6 Bright;
+            MHUG A -1 Bright;
+            Stop;
     }
 }
 
-class MegaSoul : SuperSoul replaces MegaSphere {
-    // the megasphere, but without a (health) maximum!
+class MegaArmor : LegendArmorGiver replaces MegaSphere {
+    // Grants 300% of your health as armor.
     default {
-        HPBonus.Heal 200;
-        HPBonus.DontSuck true;
-        Inventory.PickupMessage "Mega Soul!";
+        LegendArmorGiver.Give 3.0;
+        Inventory.PickupMessage "Mega Armor!";
         +INVENTORY.BIGPOWERUP;
         +DONTGIB;
     }
 
-    override bool TryPickup (in out actor other) {
-        other.GiveInventory("LegendMegasphereArmor",1);
-        return super.TryPickup(other);
-    }
-
     states {
         spawn:
-            MEGA ABCD 6 bright;
+            ARMR AB 5 bright;
+            Loop;
     }
 }
 
