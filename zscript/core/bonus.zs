@@ -228,6 +228,7 @@ class RegenBooster : LegendPowerup {
     }
 
     override void DoEffect() {
+        super.DoEffect();
         timer += 1;
         if (timer >= 35) {
             let plr = LegendPlayer(owner);
@@ -248,6 +249,7 @@ class RegenBooster : LegendPowerup {
 
 class AimComp : LegendPowerup {
     // Makes your attacks more Precise for a while.
+    // Implemented in the playerclass.
     default {
         Inventory.PickupMessage "Aim Computer! Temporary Precision boost!";
     }
