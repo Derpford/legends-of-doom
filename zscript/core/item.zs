@@ -232,7 +232,8 @@ class LegendItem : Inventory abstract {
     // Called via event handler, WorldThingDamaged.
 
     virtual void OnRetaliate (int dmg, Name type, Actor src, Actor inf, Actor tgt) {} 
-    // Likewise, but when our owner is the thing behing hurt.
+    virtual void OnRetaliateRaw (int dmg, Name type, Actor src, Actor inf, Actor tgt) {} 
+    // Likewise, but when our owner is the thing behing hurt. OnRetaliateRaw is called before damage modifiers.
 
     virtual void OnKill (Actor src, Actor tgt) {} 
     // Called when owner (src) killed tgt.
@@ -302,6 +303,7 @@ class LegendItem : Inventory abstract {
     override void ModifyDamage (int dmg, Name type, out int new, bool passive, Actor inf, Actor src, int flags) {
         // We don't call OnHit and OnRetaliate here, because those should only be called AFTER all multipliers are applied.
         if (passive) {
+            OnRetaliateRaw(dmg,type,src,inf,owner);
             new = dmg * HurtMulti(dmg,type,inf,src,flags);
         } else {
             new = dmg * DamageMulti(dmg,type,inf,src,flags);
