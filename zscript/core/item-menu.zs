@@ -32,9 +32,11 @@ class ItemMenu : LegendZFGenericMenu {
     Vector2 tooltipoffset;
 
     LegendZFFrame tooltip;
+    LegendZFBoxImage ttbg;
     LegendZFLabel ttname;
     LegendZFLabel ttremark;
     LegendZFLabel ttdesc;
+    LegendZFButton ttdescbt;
 
     String title;
     int iid;
@@ -44,6 +46,12 @@ class ItemMenu : LegendZFGenericMenu {
     String longdesc;
 
     Array<LegendItem> items;
+
+    int GetTextLineSize(string tx, Font fn, int width) {
+        // given a string, a font, and how wide the column is, figure out how long the column has to be
+        BrokenLines bl = fn.BreakLines(tx,width);
+        return bl.Count() * (fn.GetHeight() + 1);
+    }
 
     override void Init (Menu parent) {
         Super.init(parent);
@@ -126,7 +134,7 @@ class ItemMenu : LegendZFGenericMenu {
         LegendZFLabel.Create (
             (1,1+bigfnt.GetHeight()),
             (200,fnt.GetHeight()),
-            text: "Click to toggle description",
+            text: "Click to show description",
             fnt: fnt,
             wrap: false,
             autosize:true,
@@ -188,6 +196,19 @@ class ItemMenu : LegendZFGenericMenu {
         ); 
         ttbg.pack(tooltip);
 
+        // Description toggle button.
+        let ttdescbt = LegendZFButton.Create (
+            (tooltipSize.x - 33, 0),
+            (32,12),
+            text : "DESC",
+            cmdHandler : handler,
+            command : "toggledesc",
+            inactive : btex,
+            hover : btex,
+            click : btex
+        );
+        ttdescbt.pack(tooltip);
+
         // Item name...
         ttname = LegendZFLabel.Create (
             (1,1),
@@ -232,11 +253,22 @@ class ItemMenu : LegendZFGenericMenu {
             iname = items[iid].GetTag();
             remark = items[iid].GetRemark();
             shortdesc = items[iid].GetShortDesc();
+            longdesc = items[iid].GetLongDesc();
         }
-        tooltip.setBox(tooltipPos,tooltipSize);
         ttname.text = iname;
-        ttdesc.text = shortdesc;
+        if (displayLongDesc) {
+            ttdesc.text = longdesc;
+        } else {
+            ttdesc.text = shortdesc;
+        }
         ttremark.text = remark;
+        // Change tooltipSize.y to account for the length of the text.
+        int sizey = GetTextLineSize(ttname.text,fnt,tooltipSize.X) +
+                    GetTextLineSize(ttremark.text,fnt,tooltipSize.X) +
+                    GetTextLineSize(ttdesc.text,fnt,tooltipSize.X);
+        tooltipSize.y = sizey;
+        tooltip.setBox(tooltipPos,tooltipSize);
+        ttbg.setBox((0,0),tooltipSize - (1,1));
     }
 }
 
@@ -257,22 +289,28 @@ class ItemMenuHandler : LegendZFHandler {
     // }
 
     override void buttonClickCommand(LegendZFButton caller, string cmd) {
-        int idx = cmd.toInt();
-        if (idx == link.iid) {
-            link.displayTooltip = !link.displayTooltip;
-            if(link.displayTooltip) {
-                Menu.MenuSound("menu/activate");
-            } else {
-                Menu.MenuSound("menu/clear");
-            }
+        if (cmd == "toggledesc") {
+            link.displayLongDesc = !link.displayLongDesc;
         } else {
-            Menu.MenuSound("menu/activate");
-            link.displayTooltip = true;
-            link.iid = idx;
-            let ts = link.tooltipSize;
-            let posx = clamp(2, link.baseres.x - ts.x - 4,caller.box.pos.x);
-            let posy = clamp(2,link.baseres.y - ts.y - 4,caller.box.pos.y + caller.box.size.y);
-            link.tooltipPos = (posx,posy);
+            int idx = cmd.toInt();
+            if (idx || idx == 0) { // clunky check to see if idx is non-null...
+                if (idx == link.iid) {
+                    link.displayTooltip = !link.displayTooltip;
+                    if(link.displayTooltip) {
+                        Menu.MenuSound("menu/activate");
+                    } else {
+                        Menu.MenuSound("menu/clear");
+                    }
+                } else {
+                    Menu.MenuSound("menu/activate");
+                    link.displayTooltip = true;
+                    link.iid = idx;
+                    let ts = link.tooltipSize;
+                    let posx = clamp(2, link.baseres.x - ts.x - 4,caller.box.pos.x);
+                    let posy = clamp(2,link.baseres.y - ts.y - 4,caller.box.pos.y + caller.box.size.y);
+                    link.tooltipPos = (posx,posy);
+                }
+            }
         }
     }
 }
