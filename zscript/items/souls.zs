@@ -9,6 +9,10 @@ class CalmSoul : LegendItem {
         LegendItem.Rarity "EPIC DEFENSE HEALING";
     }
 
+    override string GetLongDesc() {
+        return "Taking damage adds 5 (+5 per stack) points of rapid health regen over time.";
+    }
+
     override void OnRetaliateRaw (int dmg, Name type, Actor src, Actor inf, Actor tgt) {
         stock += 5 * GetStacks();
     }
@@ -42,6 +46,10 @@ class StoneSoul : LegendItem {
         LegendItem.Remark "Forgive them, Father...";
         LegendItem.Rarity "EPIC DEFENSE";
         LegendItem.Timer 1.0;
+    }
+
+    override string GetLongDesc() {
+        return "Taking damage adds 0.5 (+0.5 per stack) points of Toughness. Every second, 10% of stacks decay.";
     }
 
     override void OnRetaliateRaw (int dmg, Name type, Actor src, Actor inf, Actor tgt) {
@@ -81,6 +89,10 @@ class HiddenSoul : LegendItem {
         LegendItem.Timer 1.0;
     }
 
+    override string GetLongDesc() {
+        return "Dealing damage adds 0.5 (+0.5 per stack) points of Accuracy. Every second, 10% of stacks decay.";
+    }
+
     override void OnHit (int dmg, Name type, Actor src, Actor inf, Actor tgt) {
         buff += 1;
         if (TimeUp()) {
@@ -116,6 +128,10 @@ class UndyingSoul : LegendItem {
         LegendItem.Remark "I am the Alpha and the Omega.";
         LegendItem.Rarity "CURSED";
         LegendItem.Timer 0.1;
+    }
+
+    override string GetLongDesc() {
+        return "Dealing damage adds 0.5 (+0.5 per stack) points of Power. Taking damage removes 0.5 (+0.5 per stack) points of Power. Just don't get hit.";
     }
 
     override void OnHit (int dmg, Name type, Actor src, Actor inf, Actor tgt) {

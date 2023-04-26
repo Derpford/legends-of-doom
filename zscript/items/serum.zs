@@ -12,6 +12,10 @@ class BloodySerum : LegendItem {
         LegendItem.Rarity "RARE HEALING";
     }
 
+    override string GetLongDesc() {
+        return "On kill, gain 1 max health. Caps at 100 (+100 per stack).";
+    }
+
     clearscope int MaxStacks() {
         return (100 * GetStacks());
     }
