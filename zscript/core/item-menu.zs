@@ -198,8 +198,8 @@ class ItemMenu : LegendZFGenericMenu {
 
         // Description toggle button.
         ttdescbt = LegendZFButton.Create (
-            (tooltipSize.x - 33, 0),
-            (32,12),
+            (tooltipSize.x - 35, 0),
+            (34,12),
             text : "DESC",
             cmdHandler : handler,
             command : "toggledesc",
