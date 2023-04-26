@@ -188,7 +188,7 @@ class ItemMenu : LegendZFGenericMenu {
         );
         tooltip.pack(mainFrame);
         // Background...
-        let ttbg = LegendZFBoxImage.Create (
+        ttbg = LegendZFBoxImage.Create (
             (0,0),
             tooltipSize - (1,1),
             btex2,
@@ -197,7 +197,7 @@ class ItemMenu : LegendZFGenericMenu {
         ttbg.pack(tooltip);
 
         // Description toggle button.
-        let ttdescbt = LegendZFButton.Create (
+        ttdescbt = LegendZFButton.Create (
             (tooltipSize.x - 33, 0),
             (32,12),
             text : "DESC",
