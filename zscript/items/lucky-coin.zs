@@ -11,7 +11,7 @@ class LuckyCoin : LegendItem {
         LegendItem.Rarity "COMMON UTILITY";
     }
 
-    override void GetLongDesc() {
+    override string GetLongDesc() {
         return "On picking up a health bonus, armor bonus, or ammo bonus, gain +10 Luck for 5 seconds (+5s per stack).";
     }
 
