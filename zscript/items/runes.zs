@@ -10,6 +10,10 @@ class RuneOfPain : LegendItem {
         LegendItem.Rarity "RARE UTILITY";
     }
 
+    override string GetLongDesc() {
+        return "On-hit, if the target is in their pain state, spawn an XP gem worth .25 XP (+.25 per stack). Can trigger once every .25 seconds.";
+    }
+
     override void OnHit(int dmg, Name type, Actor src, Actor inf, Actor tgt) {
         if (tgt.InStateSequence(tgt.curstate, tgt.ResolveState("Pain")) && TimeUp()) {
             let gem = XPGem(tgt.spawn("SmallXPGem", tgt.pos));
@@ -44,6 +48,10 @@ class RuneOfEyes : LegendItem {
         LegendItem.Desc "Precision hits grant luck for a short time.";
         LegendItem.Remark "I am the God-Particle!";
         LegendItem.Rarity "RARE ATTACK DEFENSE";
+    }
+
+    override string GetLongDesc() {
+        return "Gain +4 Precision. On Precision Hit, gain 5 (+5 per stack) Precision. This buff decays by 2.5 (+2.5 per stack) every 2.5 seconds.";
     }
 
     override double GetPrecision() {
@@ -87,6 +95,10 @@ class RuneOfJudgement : LegendItem {
         LegendItem.Desc "Retaliate with a homing projectile.";
         LegendItem.Remark "JUDGEMENT!";
         LegendItem.Rarity "EPIC ATTACK DEFENSE";
+    }
+
+    override string GetLongDesc() {
+        return "On taking health damage, spawn a homing snake of JUDGEMENT that does damage equal to 100% (+50% per stack) of the damage taken, homing in on the enemy who wronged you. Can trigger once every .2 seconds. Does not protect against being locked in a flesh prison.";
     }
 
     override void OnRetaliate(int dmg, Name type, Actor src, Actor inf, Actor tgt) {

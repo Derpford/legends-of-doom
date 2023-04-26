@@ -9,6 +9,10 @@ class LifeChannelAmulet : LegendItem {
         LegendItem.Rarity "CURSED";
     }
 
+    override string GetLongDesc() {
+        return "Gain Power equal to 40% (+40% per stack) of your base Power, but suffer 1 (+1 per stack) stack of bleed every 15 seconds.";
+    }
+
     override void OnTimer() {
         owner.GiveInventory("Bleed",GetStacks());
         SetTimer();

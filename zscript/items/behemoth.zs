@@ -9,6 +9,10 @@ class BehemothShell : LegendItem {
         DamageFactor "Explosion", 0.5;
     }
 
+    override string GetLongDesc() {
+        return "On-hit, create an explosion that does 60% of the initial hit's damage in a radius of 128 units (+32 units per stack).";
+    }
+
     override void OnHit(int dmg, Name type, Actor src, Actor inf, Actor tgt) {
         // attacks also explode for 60% original damage in a 128-unit radius
         if (type != "Behemoth") {
@@ -40,7 +44,7 @@ class BehemothBlast : Actor {
         Spawn:
             MISL C 0;
             MISL C 4 {
-                A_SplashDamage(power,128*stacks,type:"Behemoth",selfdmg:false);
+                A_SplashDamage(power,128 + (32*stacks),type:"Behemoth",selfdmg:false);
                 A_StartSound("weapons/barrelx",volume:0.5);
                 double scl = float(power)/64.;
                 //scale = (scl, scl);

@@ -8,6 +8,10 @@ class RubyPower : LegendItem {
         LegendItem.Rarity "COMMON ATTACK";
     }
 
+    override string GetLongDesc() {
+        return "Every weapon's damage is affected by Power.";
+    }
+
     override double GetPower() {
         return GetStacks();
     }
@@ -26,6 +30,10 @@ class EmeraldPrecise : LegendItem {
         LegendItem.Desc "Gain +8 Precision.";
         LegendItem.Remark "Dexterity Enchantment";
         LegendItem.Rarity "COMMON ATTACK";
+    }
+
+    override string GetLongDesc() {
+        return "Precision gives you a percentage chance to do double damage. High enough Precision allows triple damage, or more. Some weapons do special things with Precision...";
     }
 
     override double GetPrecision() {
@@ -49,6 +57,10 @@ class OnyxToughness : LegendItem {
         LegendItem.Rarity "COMMON DEFENSE";
     }
 
+    override string GetLongDesc() {
+        return "Toughness gives you damage reduction. At 50 Toughness, you have 50% damage reduction, but after that, diminishing returns start kicking in.";
+    }
+
     override double GetToughness() {
         return GetStacks() * 8.;
     }
@@ -70,6 +82,10 @@ class TopazLucky : LegendItem {
         LegendItem.Rarity "COMMON UTILITY";
     }
 
+    override string GetLongDesc() {
+        return "Luck affects most forms of randomness, but suffers from extremely diminishing returns. You can't have more than 50 Luck.";
+    }
+
     override double GetLuck() {
         return GetStacks() * 1.;
     }
@@ -89,6 +105,10 @@ class FirebluCursed : LegendItem {
         LegendItem.Desc "Buff all your stats, but take more damage.";
         LegendItem.Remark "Demon Core";
         LegendItem.Rarity "CURSED";
+    }
+
+    override string GetLongDesc() {
+        return "Gain 2.5 Power, 2.5 Luck, 12 Precision and 12 Toughness (+2.5/2.5/12/12 per stack). Take 10% more damage (+10% per stack).";
     }
 
     override double GetLuck() {

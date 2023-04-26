@@ -9,6 +9,10 @@ Class StoneskinAmulet : LegendItem {
         LegendItem.Rarity "CURSED";
     }
 
+    override string GetLongDesc() {
+        "Every 0.5 seconds, consume 2 (+2 per stack) armor to heal 1 (+1 per stack) health. This effect can overheal.";
+    }
+
     override void OnTimer() {
         let arm = owner.CountInv("LegendArmor");
         if (arm > 0) {

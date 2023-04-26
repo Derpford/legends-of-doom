@@ -14,6 +14,10 @@ class SpicyWater : LegendItem {
         LegendItem.Rarity "RARE DEFENSE";
     }
 
+    override string GetLongDesc() {
+        return "On taking health damage, irradiate everything in a 128-unit radius around you, doing damage equal to 100% of your power. Effect triggers once every 10 ticks, speeding up as you gain more stacks (triggering once per frame at 10 stacks).";
+    }
+
     override void OnRetaliate(int dmg, Name type, Actor src, Actor inf, Actor tgt) {
         SetTimer();
     }

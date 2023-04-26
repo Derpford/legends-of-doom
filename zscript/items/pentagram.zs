@@ -10,6 +10,10 @@ class SealedPentagram : LegendItem {
         LegendItem.Rarity "RARE DEFENSE UTILITY";
     }
 
+    override string GetLongDesc() {
+        return "Every 5 seconds, your next attack fears the target for 2 seconds (+0.1s per stack).";
+    }
+
     override void OnHit(int dmg, Name type, Actor src, Actor inf, Actor tgt) {
         if (TimeUp() && tgt != owner) {
             // Flag our timer for triggering next tic.

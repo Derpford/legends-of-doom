@@ -8,6 +8,10 @@ class MedicBag : LegendItem {
         LegendItem.Rarity "RARE HEALING";
     }
 
+    override string GetLongDesc() {
+        return "On kill, the victim drops a healing orb that restores 3% (+3% per stack) of your health. Does not overheal, but it can be picked up at full health anyway.";
+    }
+
     override void OnKill(Actor src, Actor tgt) {
         let it = tgt.Spawn("MedicOrb",tgt.pos);
         if (it) {
@@ -75,6 +79,10 @@ class FirstAidKit : LegendItem {
         LegendItem.Timer 6.0;
     }
 
+    override string GetLongDesc() {
+        return "On taking damage, start a 6 second timer. Heal 2.5 (+2.5 per stack) health, plus 10% of your max health, when the timer is up. Fractional HP is rounded down.";
+    }
+
     override void OnTimer() {
         int baseheal = floor(2.5 * GetStacks());
         int percentheal = floor(owner.GetMaxHealth() * 0.1);
@@ -101,6 +109,10 @@ class OverstuffedMedikit : LegendItem {
         LegendItem.Desc "Gain 25 health.";
         LegendItem.Remark "Eat your greens, they said...";
         LegendItem.Rarity "COMMON HEALING";
+    }
+
+    override string GetLongDesc() {
+        return "Gain 25 (+25 per stack) additional health. Yes, it's full of bison steak.";
     }
 
     override void OnStack() {

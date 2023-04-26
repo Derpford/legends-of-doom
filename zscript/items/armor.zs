@@ -9,6 +9,10 @@ class ArmorCladFaith : LegendItem {
         LegendItem.Rarity "COMMON UTILITY DEFENSE";
     }
 
+    override string GetLongDesc() {
+        return "Picking up armor generates 50% (+ 50% per stack) charge for every 100% max armor picked up. At 100% charge, grant a bit of Ultimate Ammo.";
+    }
+
     override void PickupArmor (Inventory item) {
         double multi = GetStacks() * 0.5;
         double amt = 0;
@@ -18,7 +22,7 @@ class ArmorCladFaith : LegendItem {
         count += amt * multi; 
         while (count >= 1) {
             count -= 1;
-            owner.GiveInventory("PinkAmmo",1);
+            owner.GiveInventory("PinkAmmo",10);
         }
     }
 
@@ -39,6 +43,9 @@ class BlackPowderPlate : LegendItem {
         LegendItem.Rarity "EPIC DEFENSE UTILITY";
     }
 
+    override string GetLongDesc() {
+        return "Gain a 20% chance (+20% per stack) that ammunition will spawn an armor bonus when picked up. Gain a 20% (+10% per stack) chance that an armor bonus will spawn a random small ammo drop when picked up.";
+    }
     override void PickupAmmo (Inventory item) {
         int amount = RollDown(20 * GetStacks()) - 1;
         for (int i = 0; i < amount; i++) {
@@ -74,6 +81,10 @@ class PanicBootton : LegendItem {
         LegendItem.Rarity "COMMON UTILITY";
     }
 
+    override string GetLongDesc() {
+        return "When you take damage while unarmored, gain 20 (+10 per stack) bonus Luck. It decays by 1 point per second.";
+    }
+
     override void OnTimer() {
         power = max(0,power - 1.);
         if (power > 0) {
@@ -106,6 +117,10 @@ class MollePlate : LegendItem {
         LegendItem.Remark "Do U Even Operate Bro";
         LegendItem.Icon "MOLLA0";
         LegendItem.Rarity "COMMON UTILITY";
+    }
+
+    override string GetLongDesc() {
+        return "Damage that is 100% blocked by armor generates charge (charge is multiplied by stack count). When you have charge equal to 50% of your max health, you spawn a tiny amount of all ammo types.";
     }
 
     override void OverArmorDamage (int dmg, Name type, Actor inf, Actor src, int flags) {

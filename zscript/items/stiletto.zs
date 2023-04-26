@@ -9,6 +9,10 @@ class Stiletto : LegendItem {
         LegendItem.Timer 3.;
     }
 
+    override string GetLongDesc() {
+        return "Gain +4 Precision. On Precision Hit, gain 5 (+5 per stack) Haste. Stacks up to 1 (+1 per stack) times. This buff decays by 7.5 (+7.5 per stack) every 3 seconds.";
+    }
+
     override double GetPrecision() {
         return 4.0;
     }

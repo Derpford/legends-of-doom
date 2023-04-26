@@ -7,6 +7,10 @@ class CopiedFloppy : LegendItem {
         LegendItem.Rarity "COMMON UTILITY";
     }
 
+    override string GetLongDesc() {
+        return "On kill, you gain 5 (+5 per stack) XP instantly.";
+    }
+
     override void OnKill (Actor src, Actor tgt) {
         // On kill, gain 5*stacks XP.
         let plr = LegendPlayer(src);
@@ -31,6 +35,10 @@ class TreasuredFloppy : LegendItem {
         LegendItem.Rarity "COMMON UTILITY";
     }
 
+    override string GetLongDesc() {
+        return "On kill, 25% (+25% per stack) chance to make the victim drop a tiny amount of all ammo types.";
+    }
+
     override void OnKill (Actor src, Actor tgt) {
         int amt = RollDown(25. + (25. * GetStacks())) - 1;
         for (int i = 0; i < amt; i++) {
@@ -52,6 +60,10 @@ class CorruptFloppy : LegendItem {
         LegendItem.Desc "Killing an enemy sometimes spawns a duplicate.";
         LegendItem.Remark "NIGHTMARE.EXE";
         LegendItem.Rarity "CURSED";
+    }
+
+    override string GetLongDesc() {
+        return "On kill, 20% (+20% per stack) chance for the victim to spawn another enemy of the same type.";
     }
 
     override void OnKill (Actor src, Actor tgt) {

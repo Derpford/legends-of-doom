@@ -8,6 +8,10 @@ class Ammolet : LegendItem {
         LegendItem.Rarity "COMMON UTILITY";
     }
 
+    override string GetLongDesc() {
+        return "Picking up health generates 1 (+1 per stack) charge per 1% health recovered. At 25 charge, spawn a random small ammo pickup.";
+    }
+
     override void PickupHealth(Inventory it) {
         let lit = HPBonus(it);
         if (lit) {
@@ -48,6 +52,10 @@ class LeakyBackpack : LegendItem {
         LegendItem.Desc "Always pick up ammo, even if full. Ammo spawns XP.";
         LegendItem.Remark "Why cant I hold all this gun";
         LegendItem.Rarity "CURSED";
+    }
+
+    override string GetLongDesc() { 
+        return "Ammo that you walk over can be picked up even by players who don't have room for it, wasting the ammo. Picking up ammo spawns an XP gem worth 0.5 (+0.5 per stack) XP.";
     }
 
     override void DoEffect() {

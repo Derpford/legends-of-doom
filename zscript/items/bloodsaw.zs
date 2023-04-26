@@ -7,6 +7,10 @@ class BloodSaw : LegendItem {
         LegendItem.Remark "Is that tomato sauce?";
         LegendItem.Rarity "COMMON ATTACK";
     }
+    
+    override string GetLongDesc() {
+        return "On-hit, 15% (+5% per stack) chance to inflict bleed on the target. Each stack of bleed deals 2 damage every half-second.";
+    }
 
     override void OnHit(int dmg, Name type, Actor src, Actor inf, Actor tgt) {
         if (!src || src == tgt || type == "Bleeding") { return; }

@@ -12,6 +12,10 @@ class SurplusCaliber : LegendItem {
         LegendItem.Rarity "RARE ATTACK";
     }
 
+    override string GetLongDesc() {
+        return "Every time your weapon Cycles, gain 1 Power, up to a maximum of 5 (+5 per stack). Different weapons Cycle at different points in their animation. A sound cue will indicate when the weapon has cycled.";
+    }
+
     override void DoEffect() {
         // Timer starts ticking whenever power is > 0.
         if(power > 0) {

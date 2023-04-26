@@ -11,8 +11,12 @@ class LuckyCoin : LegendItem {
         LegendItem.Rarity "COMMON UTILITY";
     }
 
+    override void GetLongDesc() {
+        return "On picking up a health bonus, armor bonus, or ammo bonus, gain +10 Luck for 5 seconds (+5s per stack).";
+    }
+
     override void PickupBonus(Inventory item) {
-        // Picking up a bonus item grants +25 luck for 5s per stack.
+        // Picking up a bonus item grants +10 luck for 5s per stack.
         SetTimer(timelimit * GetStacks());
     }
 

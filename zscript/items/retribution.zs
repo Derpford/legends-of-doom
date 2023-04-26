@@ -11,6 +11,10 @@ class Retribution : LegendItem {
         +FLOATBOB;
     }
 
+    override string GetLongDesc() {
+        return "On-hit, 25% chance to fire a holy hammer, dealing Smite damage equal to 500% (+500% per stack) of your Power. Smite damage is increased based on the target's missing health, dealing up to 2x damage against low-health enemies. If the target is overhealed (somehow), the attack will deal less damage, down to 0.5x at twice normal health.";
+    }
+
     override void OnHit (int dmg, Name type, Actor src, Actor inf, Actor tgt) {
         if (LuckRoll(25)) {
             let it = LegendShot(Spawn("RetributionHammer",owner.pos+(0,0,owner.height/2)));

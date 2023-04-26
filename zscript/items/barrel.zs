@@ -10,6 +10,10 @@ class BarrelOfFun : LegendItem {
         LegendItem.Rarity "COMMON ATTACK";
     }
 
+    override string GetLongDesc() {
+        return "Gain a 5% (+5% per stack) chance to spawn a time-bomb barrel on hit, dealing 350% of the initial hit's damage.";
+    }
+
     override void OnHit(int dmg, Name type, Actor src, Actor inf, Actor tgt) {
         if(LuckRoll(5  * GetStacks())) {
             let it = TimeBarrel(tgt.Spawn("TimeBarrel",tgt.pos));
@@ -79,6 +83,10 @@ class OilBarrel : LegendItem {
         LegendItem.Desc "On kill, ignite everything nearby.";
         LegendItem.Remark "Captain Planet villain.";
         LegendItem.Rarity "COMMON ATTACK";
+    }
+
+    override string GetLongDesc() {
+        return "On kill, enemies near the killed target burst into flames, gaining stacks of Burn equal to the number of stacks of Oil Barrel you own. Burn periodically deals damage in an area around the victim.";
     }
 
     override void OnKill(Actor src, Actor tgt) {

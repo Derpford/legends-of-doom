@@ -11,6 +11,10 @@ class SanguineShield : LegendItem {
         LegendItem.Rarity "COMMON DEFENSE HEALING";
     }
 
+    override string GetLongDesc() {
+        return "On taking health damage, store up to 25 (+25 per stack) damage as charge. Every .25 seconds, convert 1 (+1 per stack) charge to armor.";
+    }
+
     override void OnRetaliate (int dmg, Name type, Actor src, Actor inf, Actor tgt) {
         stock = min(25 * GetStacks(),stock + dmg);
     }

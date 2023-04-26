@@ -9,6 +9,10 @@ class StrawberryJam : LegendItem {
         LegendItem.Rarity "RARE ATTACK UTILITY";
     }
 
+    override string GetLongDesc() {
+        return "On-hit, gain a 5% (+5% per stack) chance to afflict the target with Jammed, forcing them into their pain state if they attempt to attack.";
+    }
+
     override void OnHit (int dmg, Name type, Actor src, Actor inf, Actor tgt) {
         if (src == tgt) { return; }
         if (LuckRoll(5 + (5 * GetStacks()))) {
