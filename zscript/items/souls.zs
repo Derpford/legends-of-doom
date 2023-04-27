@@ -10,7 +10,7 @@ class CalmSoul : LegendItem {
     }
 
     override string GetLongDesc() {
-        return "Taking damage adds 5 (+5 per stack) points of rapid health regen over time.";
+        return "Taking damage adds 5 (+5 per stack) points of rapid health regen over time. This healing can overheal.";
     }
 
     override void OnRetaliateRaw (int dmg, Name type, Actor src, Actor inf, Actor tgt) {
