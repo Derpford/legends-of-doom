@@ -110,10 +110,10 @@ class ArmBonus: LegendArmorGiver replaces ArmorBonus {
 }
 
 class HugeMedkit : HPBonus replaces Soulsphere {
-    // Overheals 50% of your health.
+    // Overheals 100% of your health.
 
     default {
-        HPBonus.Heal -50;
+        HPBonus.Heal -100;
         HPBonus.DontSuck true;
         Inventory.PickupMessage "Huge Medkit!";
         +INVENTORY.BIGPOWERUP;
