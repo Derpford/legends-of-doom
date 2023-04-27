@@ -8,7 +8,9 @@ class LegendArmorGiver : Inventory {
     }
 
     override bool TryPickup(in out Actor toucher) {
-        amount = toucher.GetMaxHealth(true) * givepercent;
+        if (!amount && givepercent) {
+            amount = toucher.GetMaxHealth(true) * givepercent;
+        }
         LegendArmor it = LegendArmor(toucher.FindInventory("LegendArmor"));
         if (it) {
             it.amount += amount;
