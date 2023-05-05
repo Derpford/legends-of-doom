@@ -4,6 +4,7 @@ class LegendArmorGiver : Inventory {
     Property Give : givepercent;
     default {
         LegendArmorGiver.Give 1.0;
+        Inventory.Amount 0;
         +DONTGIB;
     }
 
