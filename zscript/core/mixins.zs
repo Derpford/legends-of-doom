@@ -76,7 +76,7 @@ mixin class SplashDamage {
                 if (mass - 0.1 < 0) {mass = 1;} // Catch cases where mass is zero, or possibly less. With an epsilon of 0.1 because floating point can be fun like that.
                 int deltadmg = damage - mindamage;
                 int finaldmg = mindamage + (deltadmg * multi);
-                hits.Thing.vel.z += finaldmg / ; // SOMEONE forgot to add mass to their object...
+                hits.Thing.vel.z += finaldmg / mass; // SOMEONE forgot to add mass to their object...
                 hits.Thing.DamageMobj(self,target,finaldmg,type,DMG_EXPLOSION);
             }
         }
