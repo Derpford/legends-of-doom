@@ -194,11 +194,13 @@ class ItemSpawnHandler : StaticEventHandler {
             let lit = LegendItem(e.Thing);
             Array<String> tiers;
             lit.GetTiers(tiers);
-            let rarity = tiers[0];
-            let sparkType = sparkList.at(rarity);
-            let spark = ItemSparkSpawner(lit.spawn("ItemSparkSpawner",lit.pos));
-            spark.master = lit;
-            spark.sparkType = sparkType;
+            if (tiers.size() > 0) {
+                let rarity = tiers[0];
+                let sparkType = sparkList.at(rarity);
+                let spark = ItemSparkSpawner(lit.spawn("ItemSparkSpawner",lit.pos));
+                spark.master = lit;
+                spark.sparkType = sparkType;
+            }
         }
     }
 
