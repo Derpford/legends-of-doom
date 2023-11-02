@@ -56,3 +56,4 @@ version "4.6"
 // Characters.
 #include "zscript/legends/doomslayer.zs"
 #include "zscript/legends/sidhe.zs"
+#include "zscript/legends/tank.zs"
