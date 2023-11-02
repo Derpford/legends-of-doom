@@ -18,6 +18,22 @@ class LegendWeapon : Weapon {
         return pow, multi;
     }
 
+    action state A_DualFire(StateLabel st, bool alt = false) {
+        // A helpful function for handling dual-wielding.
+        int btns = GetPlayerInput(INPUT_BUTTONS);
+        if (!alt) {
+            if (btns & BT_ATTACK && invoker.CheckAmmo(PrimaryFire,false)) {
+                return ResolveState(st);
+            }
+        } else {
+            if (btns & BT_ALTATTACK && invoker.CheckAmmo(AltFire,false)) {
+                return ResolveState(st);
+            }
+        }
+        return ResolveState(null);
+    }
+
+
     int GetDamage(double power, double base = -1, double scale = -1) {
         // Mildly annoying hax, because there's no clean way to have these defaults in an action function to my knowledge
         if (base < 0) { base = BaseDmg; }
@@ -37,11 +53,13 @@ class LegendWeapon : Weapon {
     }
 
     action void TakeAmmo(bool alt = false) {
-        if(!alt) {
-            A_TakeInventory(invoker.ammotype1,invoker.ammouse1);
-        } else {
-            A_TakeInventory(invoker.ammotype2,invoker.ammouse2);
-        }
+        // if(!alt) {
+        //     A_TakeInventory(invoker.ammotype1,invoker.ammouse1);
+        // } else {
+        //     A_TakeInventory(invoker.ammotype2,invoker.ammouse2);
+        // }
+        // DepleteAmmo is used instead.
+        invoker.DepleteAmmo(alt);
     }
 
     action actor Shoot(Name type, double ang = 0, double xy = 0, int height = 0, int flags = 0, double pitch = 0, double base = -1, double dscale = -1) {
