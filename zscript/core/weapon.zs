@@ -18,7 +18,10 @@ class LegendWeapon : Weapon {
         return pow, multi;
     }
 
-    int GetDamage(double power) {
+    int GetDamage(double power, double base = -1, double scale = -1) {
+        // Mildly annoying hax, because there's no clean way to have these defaults in an action function to my knowledge
+        if (base < 0) { base = BaseDmg; }
+        if (scale < 0) { scale = PowScale; }
         // Since we might get a fractional damage value, use the fractional part as a chance of rounding up.
         let plr = LegendPlayer(owner);
         if(!plr) { return 0; } // Something went wrong.
@@ -26,9 +29,9 @@ class LegendWeapon : Weapon {
         int bpow = floor(power);
         double c = (power - bpow)*100; // Percentage chance of getting the higher value
 
-        int fdmg = floor(BaseDmg + (power * PowScale));
+        int fdmg = floor(base + (power * scale));
         if (plr.LuckRoll(c)) {
-            fdmg = ceil(BaseDmg + (power * PowScale));
+            fdmg = ceil(base + (power * scale));
         }
         return fdmg;
     }
@@ -41,13 +44,13 @@ class LegendWeapon : Weapon {
         }
     }
 
-    action actor Shoot(Name type, double ang = 0, double xy = 0, int height = 0, int flags = 0, double pitch = 0) {
+    action actor Shoot(Name type, double ang = 0, double xy = 0, int height = 0, int flags = 0, double pitch = 0, double base = -1, double dscale = -1) {
         Actor it; Actor dummy;
         [dummy, it] = A_FireProjectile(type,ang,false,xy,height,flags,pitch);
         if(it) {
             double pow; double multi;
             [pow, multi] = invoker.GetPower();
-            int dmg = invoker.GetDamage(pow);
+            int dmg = invoker.GetDamage(pow,base,dscale);
             if (it is "LegendShot") {
                 let it = LegendShot(it);
                 it.power = pow;
