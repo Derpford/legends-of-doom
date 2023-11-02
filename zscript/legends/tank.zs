@@ -20,21 +20,55 @@ class TankJr : LegendPlayer {
 
         Player.DisplayName "Tank Jr";
 
+        Player.StartItem "TankPassive";
         Player.StartItem "TankBrawler";
-        Player.StartItem "RedAmmo", 300;
+        Player.StartItem "TankArty";
+        Player.StartItem "RedAmmo", 200;
         Player.StartItem "YellowAmmo",150;
+        Player.StartItem "BlueAmmo",150;
+        Player.StartItem "GreenAmmo",200;
     }
 }
 
-class TankBrawler : LegendWeapon {
-    // Contains the short-range configuration of the plasma lance, as well as a grenade launcher.
+class TankPassive : LegendItem {
+    // Provides up to 5 Power based on current health.
+    mixin Lerps;
+    default {
+        LegendItem.Icon "ARMBA0";
+        Tag "Tank's Pride";
+        LegendItem.Desc "Gain a small amount of power based on current health.";
+        LegendItem.Remark "You're up against the wall!";
+        LegendItem.Rarity "";
+    }
+
+    override string GetLongDesc() {
+        return "Gain up to 5 Power (+5 per stack) based on your current health percentage.";
+    }
+
+    override double GetPower() {
+        return MapRange(owner.health,0,owner.GetMaxHealth(true),0,5*GetStacks());
+    }
+
+}
+
+class TankDualWeapon : LegendWeapon {
     const LEFT = 2;
     const RIGHT = 3; // Overlay layers.
-
     const SPACING = 64; // How far to the left/right the guns are.
+
+    override void OwnerDied() {
+        A_Overlay(LEFT,"null");
+        A_Overlay(RIGHT,"null");
+    }
+
+}
+
+class TankBrawler : TankDualWeapon {
+    // Contains the short-range configuration of the plasma lance, as well as a grenade launcher.
     default {
         LegendWeapon.Damage 5, 1.0;
 
+        Weapon.SlotNumber 3;
         Weapon.AmmoType1 "RedAmmo";
         Weapon.AmmoUse1 3;
         Weapon.AmmoType2 "YellowAmmo";
@@ -152,6 +186,140 @@ class TankGrenade : LegendShot {
             MISL D 4 Bright A_SplashDamage(power*10,128);
             MISL E 4 Bright;
             TNT1 A 0;
+            Stop;
+    }
+}
+
+class TankArty : TankDualWeapon {
+    // Combines a heavy autocannon with a plasma lance.
+    default {
+        LegendWeapon.Damage 5, 2.0;
+
+        Weapon.SlotNumber 2;
+        Weapon.AmmoType1 "BlueAmmo";
+        Weapon.AmmoUse1 5;
+        Weapon.AmmoType2 "GreenAmmo";
+        Weapon.AmmoUse2 2;
+    }
+
+    action void PlasFire() {
+        A_StartSound("weapons/plasmaf");
+        Shoot("PlasLance",base:0,dscale:5);
+        TakeAmmo();
+    }
+
+    action void CannonFire() {
+        A_StartSound("weapons/gatlf");
+        Shoot("CannonShot",pitch:-5);
+        TakeAmmo(true);
+    }
+
+    states {
+        Select:
+            TNT1 A 0;
+            TNT1 A 0 A_Overlay(RIGHT,"PlasReady");
+            TNT1 A 0 A_OverlayOffset(RIGHT,SPACING,0);
+            TNT1 A 0 A_Overlay(LEFT,"CannonReady");
+            TNT1 A 0 A_OverlayOffset(LEFT,-SPACING,0);
+        SelLoop:
+            TNT1 A 1 A_Raise(35);
+            Loop;
+        
+        DeSelect:
+            TNT1 A 1 A_Lower(35);
+            Loop;
+
+        Ready:
+            TNT1 A 1 A_WeaponReady();
+            Loop;
+        
+        Fire:
+        AltFire:
+            TNT1 A 1;
+            Goto Ready;
+        
+        PlasReady:
+            DPGG A 1 A_DualFire("PlasShot");
+            Loop;
+
+        PlasShot:
+            DPGF A 2 Bright PlasFire();
+            DPGF B 2 Bright;
+            DPGF C 2 Bright;
+            DPGF D 2 Bright;
+            DPGG B 5 Cycle();
+            DPFG B 5;
+            DPGG B 5;
+            DPFG B 5;
+            DPGG B 5;
+            DPFG B 5;
+            Goto PlasReady;
+        
+        CannonReady:
+            DGTG A 1 A_DualFire("CannonShot",true);
+            Loop;
+        
+        CannonShot:
+            DGTG A 2 A_StartSound("weapons/gatls",7);
+            DGTF A 1 Bright CannonFire();
+            DGTF B 1 Bright;
+            DGTG BCD 1;
+            DGTG ABCD 3 A_DualFire("CannonShot",true);
+            DGTG A 4 Cycle();
+            Goto CannonReady;
+    }
+}
+
+class PlasLance : LegendFastShot {
+    // A powerful railgun-like blast of plasma.
+    default {
+        +RIPPER;
+        +BRIGHT;
+        Speed 120;
+        MissileType "PlasLanceTrail";
+        MissileHeight 8;
+        RenderStyle "Add";
+    }
+
+    states {
+        Spawn:
+            PLSS AB 3;
+            Loop;
+        Death:
+            PLSE ABCDE 3;
+            Stop;
+    }
+}
+
+class PlasLanceTrail : Actor {
+    default {
+        +NOINTERACTION;
+        RenderStyle "Add";
+        Scale 0.5;
+    }
+
+    states {
+        Spawn:
+            PLSE ABCDE 2;
+            Stop;
+    }
+}
+
+class CannonShot : LegendShot {
+    default {
+        -NOGRAVITY;
+        Speed 80;
+        Scale 0.5;
+    }
+
+    states {
+        Spawn:
+            MISL A 1;
+            Loop;
+        
+        Death:
+            MISL B 0 { invoker.bNOGRAVITY = true; }
+            MISL BCD 3;
             Stop;
     }
 }
