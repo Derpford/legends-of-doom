@@ -24,6 +24,9 @@ version "4.6"
 // ZForms.
 #include "/LegendZForms/Include.zsc"
 
+// FlamethrowerLib.
+#include "zscript/library/projectile.zs"
+
 // Items.
 #include "zscript/items/ammolet.zs"
 #include "zscript/items/armor.zs"

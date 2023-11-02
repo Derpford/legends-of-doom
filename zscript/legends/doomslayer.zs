@@ -299,6 +299,9 @@ class VorpalSplash : LegendShot {
         RenderStyle "Add";
         LegendShot.Proc 0.5;
         +NOCLIP;
+        // This *technically* could be turned into a ripping projectile,
+        // but that requires removing +NOCLIP, which leads to
+        // the projectile stopping instantly in tight spaces.
     }
 
     states {

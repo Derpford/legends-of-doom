@@ -83,7 +83,7 @@ class LegendWeapon : Weapon {
 
 }
 
-class LegendShot : Actor {
+class LegendShot : Missile {
     // A projectile fired by a LegendWeapon.
     mixin SplashDamage;
 
@@ -96,6 +96,8 @@ class LegendShot : Actor {
     default {
         PROJECTILE;
         +FORCERADIUSDMG;
+        -RIPPER;
+        +Missile.HITONCE;
         Speed 40;
         LegendShot.Proc 1;
         DamageFunction (dmg);
@@ -111,7 +113,7 @@ class LegendShot : Actor {
 
 }
 
-class LegendFastShot : Actor {
+class LegendFastShot : FastMissile {
     // FastProjectile for LegendWeapons.
     mixin SplashDamage;
 
@@ -124,6 +126,8 @@ class LegendFastShot : Actor {
     default {
         PROJECTILE;
         +FORCERADIUSDMG;
+        -RIPPER;
+        +FastMissile.HITONCE;
         Speed 40;
         LegendFastShot.Proc 1;
         DamageFunction (dmg);
