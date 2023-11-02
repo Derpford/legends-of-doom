@@ -68,7 +68,7 @@ class TankDualWeapon : LegendWeapon {
     }
 
     override void OwnerDied() {
-        A_ClearOverlays();
+        owner.A_ClearOverlays(LEFT,RIGHT);
     }
 
 }
