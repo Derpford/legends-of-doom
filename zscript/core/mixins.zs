@@ -209,6 +209,11 @@ mixin class LumpParser {
 
 mixin class Lerps {
     // Various interpolation things.
+
+    clearscope double MapRange(double input, double istart, double iend, double oStart, double oEnd) {
+        return ((oend - ostart) / (iend - istart)) * (input - istart);
+    }
+
     clearscope double SmoothCap(double base, double cap) {
         // Diminishing returns on base, such that base never reaches cap.
         // In other words, as base approaches infinity,
