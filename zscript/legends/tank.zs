@@ -16,7 +16,8 @@ class TankJr : LegendPlayer {
         LegendPlayer.Precision 0,1.0;
         LegendPlayer.Toughness 10,1.0;
         LegendPlayer.Luck 1.0,0.0;
-        LegendPlayer.BonusHealth 10,3;
+        LegendPlayer.BonusHealth 0,3;
+        Player.MaxHealth 110;
 
         Player.DisplayName "Tank Jr";
 
@@ -36,17 +37,20 @@ class TankPassive : LegendItem {
     default {
         LegendItem.Icon "ARMBA0";
         Tag "Tank's Pride";
-        LegendItem.Desc "Gain a small amount of power based on current health.";
+        LegendItem.Desc "Gain a small amount of power as health falls.";
         LegendItem.Remark "You're up against the wall!";
         LegendItem.Rarity "";
     }
 
     override string GetLongDesc() {
-        return "Gain up to 5 Power (+5 per stack) based on your current health percentage.";
+        return "Gain up to 5 Power (+5 per stack) based on your current health percentage. Maxes out at 30% health.";
     }
 
     override double GetPower() {
-        return MapRange(owner.health,0,owner.GetMaxHealth(true),0,5*GetStacks());
+        double low = owner.GetMaxHealth(true) * 0.3;
+        double high = owner.GetMaxHealth(true);
+        double input = clamp(owner.health,low,high);
+        return MapRange(input,high,low,0,5*GetStacks());
     }
 
 }
@@ -56,9 +60,15 @@ class TankDualWeapon : LegendWeapon {
     const RIGHT = 3; // Overlay layers.
     const SPACING = 64; // How far to the left/right the guns are.
 
+    default {
+        // +Weapon.AMMO_OPTIONAL;
+        // +Weapon.NOAUTOSWITCHTO;
+        Weapon.MinSelectionAmmo1 0;
+        Weapon.MinSelectionAmmo2 0;
+    }
+
     override void OwnerDied() {
-        A_Overlay(LEFT,"null");
-        A_Overlay(RIGHT,"null");
+        A_ClearOverlays();
     }
 
 }
@@ -76,15 +86,17 @@ class TankBrawler : TankDualWeapon {
     }
 
     action void PlasFire() {
-        Shoot("PlasmaFire",frandom(-10,10));
-        Shoot("PlasmaFire",frandom(-5,5));
-        TakeAmmo();
+        if (TakeAmmo()) {
+            Shoot("PlasmaFire",frandom(-10,10));
+            Shoot("PlasmaFire",frandom(-5,5));
+        }
     }
 
     action void GrenFire(double ang) {
-        A_StartSound("weapons/grenlf");
-        Shoot("TankGrenade",ang,pitch:-10,dscale:5.0);
-        TakeAmmo(true);
+        if (TakeAmmo(true)) {
+            A_StartSound("weapons/grenlf");
+            Shoot("TankGrenade",ang,pitch:-10,dscale:5.0);
+        }
     }
 
     states {
@@ -203,15 +215,17 @@ class TankArty : TankDualWeapon {
     }
 
     action void PlasFire() {
-        A_StartSound("weapons/plasmaf");
-        Shoot("PlasLance",base:0,dscale:5);
-        TakeAmmo();
+        if (TakeAmmo()) {
+            A_StartSound("weapons/plasmaf");
+            Shoot("PlasLance",base:0,dscale:5);
+        }
     }
 
     action void CannonFire() {
-        A_StartSound("weapons/gatlf");
-        Shoot("CannonShot",pitch:-5);
-        TakeAmmo(true);
+        if (TakeAmmo(true)) {
+            A_StartSound("weapons/gatlf");
+            Shoot("CannonShot",pitch:-5);
+        }
     }
 
     states {

@@ -52,14 +52,87 @@ class LegendWeapon : Weapon {
         return fdmg;
     }
 
-    action void TakeAmmo(bool alt = false) {
+    override bool CheckAmmo(int fireMode, bool autoSwitch, bool requireAmmo, int ammocount)
+	{
+        // Ended up having to copy in all this shit, because
+        // there's no good way to ignore running out of ammo.
+		int count1, count2;
+		int enough, enoughmask;
+		int lAmmoUse1;
+        int lAmmoUse2 = AmmoUse2;
+
+		if (sv_infiniteammo || (Owner.FindInventory ('PowerInfiniteAmmo', true) != null))
+		{
+			return true;
+		}
+		if (fireMode == EitherFire)
+		{
+			bool gotSome = CheckAmmo (PrimaryFire, false) || CheckAmmo (AltFire, false);
+			if (!gotSome && autoSwitch)
+			{
+				PlayerPawn(Owner).PickNewWeapon (null);
+			}
+			return gotSome;
+		}
+		let altFire = (fireMode == AltFire);
+		let optional = (altFire? bAlt_Ammo_Optional : bAmmo_Optional);
+		let useboth = (altFire? bAlt_Uses_Both : bPrimary_Uses_Both);
+
+		if (!requireAmmo && optional)
+		{
+			return true;
+		}
+		count1 = (Ammo1 != null) ? Ammo1.Amount : 0;
+		count2 = (Ammo2 != null) ? Ammo2.Amount : 0;
+
+		if (ammocount >= 0)
+		{
+			lAmmoUse1 = ammocount;
+			lAmmoUse2 = ammocount;
+		}
+		else if (bDehAmmo && Ammo1 == null)
+		{
+			lAmmoUse1 = 0;
+		}
+		else
+		{
+			lAmmoUse1 = AmmoUse1;
+		}
+
+		enough = (count1 >= lAmmoUse1) | ((count2 >= lAmmoUse2) << 1);
+		if (useboth)
+		{
+			enoughmask = 3;
+		}
+		else
+		{
+			enoughmask = 1 << altFire;
+		}
+		if (altFire && FindState('AltFire') == null)
+		{ // If this weapon has no alternate fire, then there is never enough ammo for it
+			enough &= 1;
+		}
+		if (((enough & enoughmask) == enoughmask) || (enough && bAmmo_CheckBoth))
+		{
+			return true;
+		}
+		// out of ammo, pick a weapon to change to
+		// if (autoSwitch)
+		// {
+		// 	PlayerPawn(Owner).PickNewWeapon (null);
+		// }
+        // Sike, not gonna autoswitch ever.
+		return false;
+	}
+
+    action bool TakeAmmo(bool alt = false,bool enough = true,int use = -1,bool forced = false) {
         // if(!alt) {
         //     A_TakeInventory(invoker.ammotype1,invoker.ammouse1);
         // } else {
         //     A_TakeInventory(invoker.ammotype2,invoker.ammouse2);
         // }
         // DepleteAmmo is used instead.
-        invoker.DepleteAmmo(alt);
+        return invoker.DepleteAmmo(alt,enough,use,forced);
     }
 
     action actor Shoot(Name type, double ang = 0, double xy = 0, int height = 0, int flags = 0, double pitch = 0, double base = -1, double dscale = -1) {

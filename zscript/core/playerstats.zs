@@ -167,7 +167,7 @@ extend class LegendPlayer {
         // We're measuring health with the growth calculator.
         // Sadly, checking against inventory items fails.
         if (withUpgrades) {
-            return MaxHealth + stamina + Floor(BonusHealthGrow * Level);
+            return MaxHealth + Stamina + BonusHealth + Floor(BonusHealthGrow * Level);
         } else {
             return MaxHealth;
         }

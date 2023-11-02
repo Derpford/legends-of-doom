@@ -115,6 +115,7 @@ class HugeMedkit : HPBonus replaces Soulsphere {
 
     default {
         HPBonus.Heal -100;
+        HPBonus.Overheal true;
         HPBonus.DontSuck true;
         Inventory.PickupMessage "Huge Medkit!";
         +INVENTORY.BIGPOWERUP;
