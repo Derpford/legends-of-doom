@@ -43,8 +43,8 @@ weapons/flameswordswing dsfwdswg
 
 weapons/grenlf dsglaunc
 $random weapons/gatlf { gatlf1 gatlf2 gatlf3 }
-/* weapons/gatlf dsgtfir1 */
 gatlf1 dsgtfir1
 gatlf2 dsgtfir2
 gatlf3 dsgtfir3
 weapons/gatls dsgtspin
+misc/tankshield shieldhit

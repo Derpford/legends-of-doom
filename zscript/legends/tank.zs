@@ -24,10 +24,13 @@ class TankJr : LegendPlayer {
         Player.StartItem "TankPassive";
         Player.StartItem "TankBrawler";
         Player.StartItem "TankArty";
+        Player.StartItem "TankShield";
         Player.StartItem "RedAmmo", 200;
         Player.StartItem "YellowAmmo",150;
         Player.StartItem "BlueAmmo",150;
         Player.StartItem "GreenAmmo",200;
+        
+        LegendPlayer.BFG "TankShield";
     }
 }
 
@@ -205,26 +208,26 @@ class TankGrenade : LegendShot {
 class TankArty : TankDualWeapon {
     // Combines a heavy autocannon with a plasma lance.
     default {
-        LegendWeapon.Damage 5, 2.0;
+        LegendWeapon.Damage 5, 2.5;
 
         Weapon.SlotNumber 2;
         Weapon.AmmoType1 "BlueAmmo";
         Weapon.AmmoUse1 5;
         Weapon.AmmoType2 "GreenAmmo";
-        Weapon.AmmoUse2 2;
+        Weapon.AmmoUse2 3;
     }
 
     action void PlasFire() {
         if (TakeAmmo()) {
             A_StartSound("weapons/plasmaf");
-            Shoot("PlasLance",base:0,dscale:5);
+            Shoot("PlasLance",base:10,dscale:5);
         }
     }
 
-    action void CannonFire() {
+    action void CannonFire(double spread = 0) {
         if (TakeAmmo(true)) {
             A_StartSound("weapons/gatlf");
-            Shoot("CannonShot",pitch:-5);
+            Shoot("CannonShot",frandom(-spread,spread),pitch:-2 + (frandom(-spread,spread) * 0.5));
         }
     }
 
@@ -261,12 +264,12 @@ class TankArty : TankDualWeapon {
             DPGF B 2 Bright;
             DPGF C 2 Bright;
             DPGF D 2 Bright;
-            DPGG B 5 Cycle();
-            DPFG B 5;
-            DPGG B 5;
-            DPFG B 5;
-            DPGG B 5;
-            DPFG B 5;
+            DPGG B 3 Cycle();
+            DPFG B 3;
+            DPGG B 3;
+            DPFG B 3;
+            DPGG B 3;
+            DPFG B 3;
             Goto PlasReady;
         
         CannonReady:
@@ -274,11 +277,13 @@ class TankArty : TankDualWeapon {
             Loop;
         
         CannonShot:
-            DGTG A 2 A_StartSound("weapons/gatls",7);
+        CannonRefire:
+            DGTG A 1 A_StartSound("weapons/gatls",7);
             DGTF A 1 Bright CannonFire();
-            DGTF B 1 Bright;
+            DGTG BCDA 1;
+            DGTF B 1 Bright CannonFire(1.5);
             DGTG BCD 1;
-            DGTG ABCD 3 A_DualFire("CannonShot",true);
+            DGTG ABCD 3 A_DualFire("CannonRefire",true);
             DGTG A 4 Cycle();
             Goto CannonReady;
     }
@@ -319,11 +324,12 @@ class PlasLanceTrail : Actor {
     }
 }
 
-class CannonShot : LegendShot {
+class CannonShot : LegendFastShot {
     default {
         -NOGRAVITY;
-        Speed 80;
+        Speed 120;
         Scale 0.5;
+        Gravity 0.5;
     }
 
     states {
@@ -334,6 +340,112 @@ class CannonShot : LegendShot {
         Death:
             MISL B 0 { invoker.bNOGRAVITY = true; }
             MISL BCD 3;
+            Stop;
+    }
+}
+
+class TankShield : LegendWeapon {
+    // An extremely unconventional weapon which absorbs incoming fire from the front.
+    // Upon releasing this charge, Tank Jr. heals for a percentage of what it absorbed,
+    // and releases a shockwave based on absorbed damage.
+    // Ammo is consumed based on the damage absorbed, altered by Tank Jr.'s toughness.
+    // However, charge is based on premitigation damage!
+    // This means that this weapon gets more efficient as Toughness increases.
+    mixin Lerps;
+    mixin SplashDamage;
+
+    default {
+        Weapon.SlotNumber 6;
+        Weapon.AmmoType1 "TankShieldCharge";
+        Weapon.AmmoUse1 10; // Special ammo usage.
+        // +Weapon.AMMO_OPTIONAL;
+        // +FORCERADIUSDMG;
+        Weapon.AmmoType2 "PinkAmmo";
+        Weapon.AmmoUse2 1; // Special ammo usage.
+        LegendWeapon.Damage 0,0.; // Nonstandard damage output.
+    }
+
+    override void ModifyDamage (int dmg, Name type, out int new, bool passive, Actor inf, Actor src, int flags) {
+        if (!passive) { return; }
+        if ((owner.player.readyweapon is GetClassName())) { return; } // Only prevents damage while NOT selected.
+        if (owner.CountInv("PinkAmmo") <= 0) { return ;}
+        owner.GiveInventory("TankShieldCharge",dmg);
+        let plr = LegendPlayer(owner);
+        double div = 1.0;
+        if (plr) {
+            div = DimResist(plr.GetToughness(),50);
+        }
+        double nd = double(dmg) * div;
+        console.printf("Ammo usage %d",floor(nd));
+        owner.TakeInventory(ammotype2.GetClassName(),floor(nd));
+        new = floor(nd * 0.2); // Absorb 80% of damage.
+        owner.A_StartSound("misc/tankshield",99);
+    }
+
+    action void FireShockwave() {
+        int amt = invoker.owner.GetMaxHealth(true);
+        int healing = ceil((invoker.owner.GetMaxHealth(true) - invoker.owner.health) * 0.1); // 10% of missing health per shot
+        double dist = 256 + (256 * (double(amt)/1000.));
+        double mult = 1.0;
+        target = invoker.owner; // gross hax to prevent selfdmg
+        let plr = LegendPlayer(invoker.owner);
+        if (plr) {
+            plr.GiveHealth(healing);
+            mult += plr.GetPower(true) * 0.01; // Every power is 1% additional damage.
+        }
+        // A_SplashDamage(amt,dist,ceil(amt*0.5),selfdmg: false);
+        Shoot("TankShockwave",base:amt * mult);
+        TakeAmmo();
+        // invoker.owner.TakeInventory(invoker.ammotype1.GetClassName(),amt);
+    }
+
+    states {
+        Select:
+            DBFC AB 3 A_Raise(35);
+            Loop;
+        
+        DeSelect:
+            DBFG A 1 A_Lower(35);
+            Loop;
+        
+        Ready:
+            DBFC ABCDEF 2 Bright;
+        ReadyLoop:
+            DBFC GHIJ 2 Bright A_WeaponReady();
+            Loop;
+        
+        Fire:
+            DBFF A 3 Bright FireShockwave();
+            DBFF B 3 Bright;
+            DBFG C 3;
+            DBFG BA 3 A_Refire();
+            Goto Ready;
+    }
+}
+
+class TankShieldCharge : Ammo {
+    default {
+        Inventory.Amount 1;
+        Inventory.MaxAmount 1000;
+    }
+}
+
+class TankShockwave : LegendShot {
+    default {
+        Radius 10;
+        RenderStyle "Add";
+        +BRIGHT;
+    }
+
+    states {
+        Spawn:
+            APLS AB 3;
+            Loop;
+        
+        Death:
+            BFE2 A 4 A_SplashDamage(dmg,128,floor(dmg * 0.5),"Plasma",false);
+            BFE2 BCD 4;
+            APBX ABCDE 3;
             Stop;
     }
 }
