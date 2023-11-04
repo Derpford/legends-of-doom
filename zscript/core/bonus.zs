@@ -187,10 +187,8 @@ class ProtectionSigil : LegendPowerup replaces Blursphere {
         Inventory.PickupMessage "Lesser Protection Sigil! Temporary 50% damage resist!";
     }
 
-    override void ModifyDamage (int dmg, Name type, out int new, bool passive, Actor inf, Actor src, int flags) {
-        if (passive) {
-            new = dmg * 0.5;
-        }
+    override void AbsorbDamage (int dmg, Name type, out int new, Actor inf, Actor src, int flags) {
+        new = dmg * 0.5;
     }
 
     states {
