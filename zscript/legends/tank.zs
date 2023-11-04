@@ -369,6 +369,7 @@ class TankShield : LegendWeapon {
         if (!passive) { return; }
         if ((owner.player.readyweapon is GetClassName())) { return; } // Only prevents damage while NOT selected.
         if (owner.CountInv("PinkAmmo") <= 0) { return ;}
+        A_StartSound("misc/tankshield",6);
         owner.GiveInventory("TankShieldCharge",dmg);
         let plr = LegendPlayer(owner);
         double div = 1.0;
@@ -379,7 +380,6 @@ class TankShield : LegendWeapon {
         console.printf("Ammo usage %d",floor(nd));
         owner.TakeInventory(ammotype2.GetClassName(),floor(nd));
         new = floor(nd * 0.2); // Absorb 80% of damage.
-        owner.A_StartSound("misc/tankshield",99);
     }
 
     action void FireShockwave() {

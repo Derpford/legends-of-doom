@@ -47,4 +47,5 @@ gatlf1 dsgtfir1
 gatlf2 dsgtfir2
 gatlf3 dsgtfir3
 weapons/gatls dsgtspin
-misc/tankshield shieldhit
+
+misc/tankshield "sounds/SHIELDHIT.wav"
