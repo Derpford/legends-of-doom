@@ -227,6 +227,12 @@ class LegendFastShot : FastMissile {
         DamageFunction (dmg);
     }
 
+    override void Tick() {
+        Super.Tick();
+        // Handle gravity.
+        vel.z -= GetGravity();
+    }
+
     override int DoSpecialDamage(Actor tgt, int dmg, name mod) {
         // If this was precision damage, spawn a special particle effect.
         if (precision > 1) {
