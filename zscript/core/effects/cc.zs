@@ -77,8 +77,8 @@ class Fear : StatusEffect {
 
     override void OnTick() {
         if (owner && owner.GetAge() % 10 == 0) {
-            owner.A_SpawnItemEX("RootSmoke",xofs:owner.radius, zofs:owner.height,angle:owner.GetAge());
-            owner.A_SpawnItemEX("RootSmoke",xofs:owner.radius, zofs:owner.height,angle:-owner.GetAge());
+            owner.A_SpawnItemEX("FearSmoke",xofs:owner.radius, zofs:owner.height,angle:owner.GetAge());
+            owner.A_SpawnItemEX("FearSmoke",xofs:owner.radius, zofs:owner.height,angle:-owner.GetAge());
         }
     }
 
