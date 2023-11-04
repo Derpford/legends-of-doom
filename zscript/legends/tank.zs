@@ -83,21 +83,24 @@ class TankBrawler : TankDualWeapon {
 
         Weapon.SlotNumber 3;
         Weapon.AmmoType1 "RedAmmo";
-        Weapon.AmmoUse1 3;
+        Weapon.AmmoUse1 5;
         Weapon.AmmoType2 "YellowAmmo";
         Weapon.AmmoUse2 10;
     }
 
     action void PlasFire() {
         if (TakeAmmo()) {
-            Shoot("PlasmaFire",frandom(-10,10));
-            Shoot("PlasmaFire",frandom(-5,5));
+            A_StartSound("weapons/plasmax",9);
+            Shoot("PlasmaFire",-8);
+            Shoot("PlasmaFire",-2);
+            Shoot("PlasmaFire",8);
+            Shoot("PlasmaFire",2);
         }
     }
 
     action void GrenFire(double ang) {
         if (TakeAmmo(true)) {
-            A_StartSound("weapons/grenlf");
+            A_StartSound("weapons/grenlf",10);
             Shoot("TankGrenade",ang,pitch:-10,dscale:5.0);
         }
     }
@@ -131,10 +134,12 @@ class TankBrawler : TankDualWeapon {
             Loop;
 
         FlameShot:
-            DPFF A 2 Bright PlasFire();
-            DPFF B 2 Bright;
-            DPFF C 2 Bright PlasFire();
-            DPFF D 2 Bright;
+            DPFF A 3 Bright PlasFire();
+            DPFF B 3 Bright;
+            DPFG B 3;
+            DPFF C 3 Bright PlasFire();
+            DPFF D 3 Bright;
+            DPFG B 3 Cycle();
             DPFF A 0 A_DualFire("FlameShot");
             DPFG B 5 Cycle();
             Goto FlameReady;
@@ -159,6 +164,7 @@ class PlasmaFire : LegendShot {
     // A ripping plasma bolt.
     default {
         +RIPPER;
+        +BRIGHT;
         Speed 20;
         RenderStyle "Add";
         Radius 4;
@@ -167,11 +173,10 @@ class PlasmaFire : LegendShot {
 
     states {
         Spawn:
-            PLS2 AB 3 A_FadeOut();
-            Loop;
+            PLS2 ABABA 3;
+            BAL1 ABCDE 4;
         Death:
-            PLS2 AB 3;
-            BAL1 CDE 3;
+            BAL1 E 0;
             Stop;
     }
 }
@@ -219,14 +224,15 @@ class TankArty : TankDualWeapon {
 
     action void PlasFire() {
         if (TakeAmmo()) {
-            A_StartSound("weapons/plasmaf");
+            A_StartSound("weapons/plasmaf",9);
             Shoot("PlasLance",base:10,dscale:5);
+            Shoot("PlasLanceCore",base:10,dscale:5);
         }
     }
 
     action void CannonFire(double spread = 0) {
         if (TakeAmmo(true)) {
-            A_StartSound("weapons/gatlf");
+            A_StartSound("weapons/gatlf",10);
             Shoot("CannonShot",frandom(-spread,spread),pitch:-2 + (frandom(-spread,spread) * 0.5));
         }
     }
@@ -295,9 +301,11 @@ class PlasLance : LegendFastShot {
         +RIPPER;
         +BRIGHT;
         Speed 120;
-        MissileType "PlasLanceTrail";
+        MissileType "PlasLanceTrail2";
         MissileHeight 8;
         RenderStyle "Add";
+        Scale 0.5;
+        Alpha 0.5;
     }
 
     states {
@@ -310,16 +318,43 @@ class PlasLance : LegendFastShot {
     }
 }
 
+class PlasLanceCore : PlasLance {
+    // Same as the PlasLance shot, but only hits
+    // the first enemy.
+    default {
+        Speed 100;
+        Scale 1;
+        -RIPPER;
+        MissileType "PlasLanceTrail";
+    }
+}
+
 class PlasLanceTrail : Actor {
     default {
         +NOINTERACTION;
         RenderStyle "Add";
-        Scale 0.5;
+        Alpha 0.3;
     }
 
     states {
         Spawn:
-            PLSE ABCDE 2;
+            PLSS AB 2;
+            PLSE E 2;
+            Stop;
+    }
+}
+
+class PlasLanceTrail2 : Actor {
+    default {
+        +NOINTERACTION;
+        RenderStyle "Add";
+        Scale 1.3;
+        Alpha 0.3;
+    }
+
+    states {
+        Spawn:
+            PLSS AB 2;
             Stop;
     }
 }
