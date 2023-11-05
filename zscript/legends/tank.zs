@@ -404,7 +404,7 @@ class TankShield : LegendWeapon {
         if (!passive) { return; }
         if ((owner.player.readyweapon is GetClassName())) { return; } // Only prevents damage while NOT selected.
         if (owner.CountInv("PinkAmmo") <= 0) { return ;}
-        A_StartSound("misc/tankshield",6);
+        owner.A_StartSound("misc/tankshield",6);
         owner.GiveInventory("TankShieldCharge",dmg);
         let plr = LegendPlayer(owner);
         double div = 1.0;
