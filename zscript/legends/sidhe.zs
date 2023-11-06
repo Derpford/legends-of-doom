@@ -39,7 +39,7 @@ class SidheWand : LegendWeapon {
         Weapon.AmmoUse1 5;
         +Weapon.AMMO_OPTIONAL;
         Weapon.AmmoType2 "PinkAmmo";
-        Weapon.AmmoUse2 125;
+        Weapon.AmmoUse2 50;
     }
 
     action void FireWand(double spread = 0.0) {
@@ -68,15 +68,17 @@ class SidheWand : LegendWeapon {
 
     action void FireBolt() {
         TakeAmmo(true);
-        double pow; double mult;
+        double pow; double mult; double scale = 5;
         [pow, mult] = invoker.GetPower();
         if (mult > 1.) {
-            // Precision hits gain a 1.5x power boost.
-            pow *= 1.5;
+            // Precision multiplies power scaling.
+            scale *= mult;
         }
 
         int dmg = invoker.GetDamage(pow);
-        A_RailAttack(dmg * 10,0,false,"9356a3","413c5a",RGF_FULLBRIGHT,8);
+        // A_RailAttack(dmg * 10 * mult,0,false,"9356a3","413c5a",RGF_FULLBRIGHT,8);
+        A_StartSound("weapons/railgf");
+        Shoot("AmethystRail",power: pow,base: 10,dscale: scale, mult: mult);
     }
 
     states {
@@ -111,11 +113,11 @@ class SidheWand : LegendWeapon {
             Goto Ready;
         
         AltFire:
-            AWND C 4 A_WeaponOffset(0,40,WOF_INTERPOLATE);
             AWND C 0 Bright FireBolt();
-            AWND B 5 Bright A_WeaponOffset(0,34,WOF_INTERPOLATE);
-            AWND D 6 Bright A_WeaponOffset(0,32,WOF_INTERPOLATE);
-            AWND EF 6 Bright;
+            AWND C 3 A_WeaponOffset(0,40,WOF_INTERPOLATE);
+            AWND B 4 Bright A_WeaponOffset(0,34,WOF_INTERPOLATE);
+            AWND D 5 Bright A_WeaponOffset(0,32,WOF_INTERPOLATE);
+            AWND EF 4 Bright;
             Goto Ready;
     }
 }
@@ -133,6 +135,29 @@ class AmethystBolt : LegendShot {
     states {
         Spawn:
             CHFR ABCB 3 A_SpawnItemEX("AmethystTrail");
+            Loop;
+        Death:
+            CHFR ABCDEFGHIJKLMNOP Random(1,2);
+            TNT1 A 0;
+            Stop;
+    }
+}
+
+class AmethystRail : LegendFastShot {
+    // A much faster, ripping bolt.
+    default {
+        Radius 4;
+        Height 2;
+        Speed 200;
+        +BRIGHT;
+        +RIPPER;
+        MissileType "AmethystTrail";
+        MissileHeight 8;
+    }
+
+    states {
+        Spawn:
+            CHFR ABCB 3;
             Loop;
         Death:
             CHFR ABCDEFGHIJKLMNOP Random(1,2);
