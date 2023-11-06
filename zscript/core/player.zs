@@ -40,7 +40,7 @@ class LegendPlayer : DoomPlayer abstract {
     Name bfg; // A weapon you can quickly select using the Zoom key.
     Property BFG : bfg;
 
-    double hasteProgress; // For every 100 of this, advance 1 tick.
+    double multiShotProgress; // For every 100 of this, fire a bonus projectile.
 
 
     default {
@@ -112,23 +112,6 @@ class LegendPlayer : DoomPlayer abstract {
             }
         } else {
             armortimer = -5.;
-        }
-
-        // Handle haste.
-        if (health > 0 && player.readyweapon) {
-            let wpn = player.readyweapon;
-            let st = player.GetPSprite(PSP_WEAPON);
-            if (!wpn.InStateSequence(st.curstate,wpn.ResolveState("Ready"))) {
-                // Not in the Ready state, tick Haste.
-                hasteProgress += GetHaste();
-                while (hasteProgress > 100.) {
-                    // It's safe to subtract a tick.
-                    st.tics = max(1,st.tics - 1);
-                    hasteProgress -= max(100., hasteProgress / 2.);
-                }
-            } else {
-                hasteProgress = 0; // Reset haste if not in a non-Ready state.
-            }
         }
 
 

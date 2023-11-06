@@ -136,29 +136,37 @@ class LegendWeapon : Weapon {
     }
 
     action actor Shoot(Name type, double ang = 0, double xy = 0, int height = 0, int flags = 0, double pitch = 0, double power = -1, double base = -1, double dscale = -1, double mult = -1) {
-        Actor it; Actor dummy;
-        [dummy, it] = A_FireProjectile(type,ang,false,xy,height,flags,pitch);
-        if(it) {
-            double pow; double multi;
-            [pow, multi] = invoker.GetPower();
-            if (mult > 0) { multi = mult; }
-            if (power > 0) { pow = power; }
-            int dmg = invoker.GetDamage(pow,base,dscale);
-            if (it is "LegendShot") {
-                let it = LegendShot(it);
-                it.power = pow;
-                it.dmg = dmg;
-                it.precision = multi;
-            } else if (it is "LegendFastShot") {
-                let it = LegendFastShot(it);
-                it.power = pow;
-                it.dmg = dmg;
-                it.precision = multi;
-            }
-            return it;
-        } else {
-            return null;
+        int shots = 1;
+        let plr = LegendPlayer(invoker.owner);
+        if (plr) {
+            shots = plr.RollDown(plr.GetMultishot());
         }
+        Actor first;
+        for (int i = 0; i < shots; i++) {
+            Actor it; Actor dummy;
+            double spreadang = frandom(-i,i) * 0.25;
+            double spreadpitch = frandom(-i,i) * 0.25;
+            [dummy, it] = A_FireProjectile(type,ang+spreadang,false,xy,height,flags,pitch+spreadpitch);
+            if(it) {
+                double pow; double multi;
+                [pow, multi] = invoker.GetPower();
+                if (mult > 0) { multi = mult; }
+                if (power > 0) { pow = power; }
+                int dmg = invoker.GetDamage(pow,base,dscale);
+                if (it is "LegendShot") {
+                    let it = LegendShot(it);
+                    it.power = pow;
+                    it.dmg = dmg;
+                    it.precision = multi;
+                } else if (it is "LegendFastShot") {
+                    let it = LegendFastShot(it);
+                    it.power = pow;
+                    it.dmg = dmg;
+                    it.precision = multi;
+                }
+            }
+        }
+        return first;
     }
 
     action void Cycle() {

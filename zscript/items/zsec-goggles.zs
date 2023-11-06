@@ -3,16 +3,16 @@ class ZSecGoggles : LegendItem {
     default {
         LegendItem.Icon "HGOGB0";
         Tag "Z-Sec Goggles";
-        LegendItem.Desc "Gain 5% Haste.";
+        LegendItem.Desc "Gain 5% Multishot.";
         LegendItem.Remark "These aren't my glasses...";
         LegendItem.Rarity "COMMON ATTACK";
     }
 
     override string GetLongDesc() {
-        return "Gain 5 Haste (+5 per stack). Haste makes your weapon animations tick faster. 100 Haste reduces the length of each sprite frame by 1 tick, to a minimum of 1. Yes, this is very jank.";
+        return "Gain 5% Multishot (+5 per stack). Multishot gives each projectile a chance to duplicate itself.";
     }
 
-    override double GetHaste() {
+    override double GetMultishot() {
         return 5. * GetStacks();
     }
 

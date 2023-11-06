@@ -3,14 +3,14 @@ class Stiletto : LegendItem {
     default {
         LegendItem.Icon "SRDPA0";
         Tag "Stiletto";
-        LegendItem.Desc "Precision Hits grant a stacking Haste buff.";
+        LegendItem.Desc "Precision Hits grant a stacking Multishot buff.";
         LegendItem.Remark "Good hunting...";
         LegendItem.Rarity "RARE ATTACK";
         LegendItem.Timer 3.;
     }
 
     override string GetLongDesc() {
-        return "Gain +4 Precision. On Precision Hit, gain 5 (+5 per stack) Haste. Stacks up to 1 (+1 per stack) times. This buff decays by 7.5 (+7.5 per stack) every 3 seconds.";
+        return "Gain +4 Precision. On Precision Hit, gain 5% (+5 per stack) Multishot. Stacks up to 1 (+1 per stack) times. This buff decays by 7.5 (+7.5 per stack) every 3 seconds.";
     }
 
     override double GetPrecision() {
@@ -29,7 +29,7 @@ class Stiletto : LegendItem {
         }
     }
 
-    override double GetHaste() {
+    override double GetMultishot() {
         return 5. * pow;
     }
 

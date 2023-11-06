@@ -419,7 +419,7 @@ class LegendItem : Inventory abstract {
     virtual clearscope double GetPrecision() { return 0; }
     virtual clearscope double GetToughness() { return 0; }
     virtual clearscope double GetLuck() { return 0; }
-    virtual clearscope double GetHaste() { return 0; }
+    virtual clearscope double GetMultishot() { return 0; }
 }
 
 class ItemPassiveHandler : EventHandler {

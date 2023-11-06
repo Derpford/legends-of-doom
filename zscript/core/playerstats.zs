@@ -54,14 +54,14 @@ extend class LegendPlayer {
         return base + (scaling * level);
     }
 
-    clearscope double GetHaste() {
-        // Characters do not naturally gain Haste.
+    clearscope double GetMultishot() {
+        // Characters do not naturally gain Multishot.
         Inventory it = inv;
         double bonus = 0.;
         while (it) {
             let lit = LegendItem(it);
             if (lit) {
-                bonus += lit.GetHaste();
+                bonus += lit.GetMultishot();
             }
             it = it.inv;
         }
