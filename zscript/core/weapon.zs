@@ -18,16 +18,25 @@ class LegendWeapon : Weapon {
         return pow, multi;
     }
 
+    action state A_BtnCheck(StateLabel st, int btn) {
+        // A generalized button check for weapons.
+        int btns = GetPlayerInput(INPUT_BUTTONS);
+        if (btns & btn) {
+            return ResolveState(st);
+        }
+        return ResolveState(null);
+    }
+
     action state A_DualFire(StateLabel st, bool alt = false) {
         // A helpful function for handling dual-wielding.
         int btns = GetPlayerInput(INPUT_BUTTONS);
         if (!alt) {
-            if (btns & BT_ATTACK && invoker.CheckAmmo(PrimaryFire,false)) {
-                return ResolveState(st);
+            if (invoker.CheckAmmo(PrimaryFire,false)) {
+                return A_BtnCheck(st,BT_ATTACK);
             }
         } else {
-            if (btns & BT_ALTATTACK && invoker.CheckAmmo(AltFire,false)) {
-                return ResolveState(st);
+            if (invoker.CheckAmmo(AltFire,false)) {
+                return A_BtnCheck(st,BT_ALTATTACK);
             }
         }
         return ResolveState(null);
