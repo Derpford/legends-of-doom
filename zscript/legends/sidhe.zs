@@ -496,7 +496,7 @@ class DragonSpark : Actor {
 class SidheHellmouth : LegendWeapon {
 
     default {
-        LegendWeapon.Damage 0.,9;
+        LegendWeapon.Damage 0.,6;
         Weapon.SlotNumber 5;
         Weapon.AmmoType1 "YellowAmmo";
         Weapon.AmmoUse1 30;
@@ -607,6 +607,7 @@ class FirebluShrapnel : LegendShot {
     default {
         RenderStyle "Add";
         +BRIGHT;
+        +RIPPER;
         DeathSound "weapon/awandx";
         ReactionTime 3;
         Speed 10;
@@ -615,8 +616,8 @@ class FirebluShrapnel : LegendShot {
     states {
         Spawn:
             PLSS A 0 A_CountDown();
-            PLSS AB 4;
-            PLS2 AB 4;
+            PLSS AB 2;
+            PLS2 AB 2;
             Loop;
         Death:
             PLSE A 2;
