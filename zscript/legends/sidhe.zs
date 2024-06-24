@@ -570,7 +570,7 @@ class FirebluShard : LegendShot {
     action void SpawnShrapnel() {
         if (!tracer) { return; }
         double adjust = frandom(-15,15);
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < 8; i++) {
             vector3 spos = invoker.tracer.Vec3Angle(invoker.tracer.radius * 1.8,i * 45,invoker.tracer.height / 2.);
             let it = FirebluShrapnel(invoker.tracer.Spawn("FirebluShrapnel",spos));
             if (it) {
@@ -608,21 +608,26 @@ class FirebluShrapnel : LegendShot {
         RenderStyle "Add";
         +BRIGHT;
         +RIPPER;
+        +SEEKERMISSILE;
         DeathSound "weapon/awandx";
         ReactionTime 3;
         Speed 10;
     }
 
+    action void ShrapSeek() {
+        A_SeekerMissile(10,45,SMF_LOOK|SMF_PRECISE,256);
+    }
+
     states {
         Spawn:
             PLSS A 0 A_CountDown();
-            PLSS AB 2;
-            PLS2 AB 2;
+            PLSS AABB 1 ShrapSeek();
+            PLS2 AABB 1 ShrapSeek();
             Loop;
         Death:
             PLSE A 2;
             BAL1 C 2;
-            PLSE B 2;
+            PLSE B 2 A_SplashDamage(power * 0.6,80);
             BAL1 D 2;
             PLSE C 2;
             BAL1 E 2;
