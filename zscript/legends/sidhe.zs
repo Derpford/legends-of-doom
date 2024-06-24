@@ -444,12 +444,20 @@ class DragonShot : LegendShot {
         DeathSound "weapon/awandx";
     }
 
+    action void DragonBlast() {
+        if (invoker.precision > 1.) {
+            // Precision hits explode.
+            A_SplashDamage(power,96);
+        }
+    }
+
     states {
         Spawn:
             PLS1 AB 3;
             Loop;
         
         Death:
+            PLS1 C 0 DragonBlast();
             PLS1 CDEFG 4;
             Stop;
     }
