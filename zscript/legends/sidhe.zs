@@ -123,6 +123,15 @@ class AmethystBolt : LegendShot {
         DeathSound "weapon/awandx";
     }
 
+    override void PostBeginPlay() {
+        Super.PostBeginPlay();
+
+        if (precision > 1) {
+            // Precision hits are 50% more effective.
+            precision *= 1.5;
+        }
+    }
+
     states {
         Spawn:
             CHFR ABCB 3 A_SpawnItemEX("AmethystTrail");
@@ -144,6 +153,15 @@ class AmethystRail : LegendFastShot {
         +RIPPER;
         MissileType "AmethystTrail";
         MissileHeight 8;
+    }
+
+    override void PostBeginPlay() {
+        Super.PostBeginPlay();
+
+        if (precision > 1) {
+            // Precision hits are 50% more effective.
+            precision *= 1.5;
+        }
     }
 
     states {
