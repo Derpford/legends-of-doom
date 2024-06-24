@@ -39,7 +39,7 @@ class SidheWand : LegendWeapon {
         Weapon.AmmoUse1 5;
         +Weapon.AMMO_OPTIONAL;
         Weapon.AmmoType2 "PinkAmmo";
-        Weapon.AmmoUse2 50;
+        Weapon.AmmoUse2 20;
     }
 
     action void FireWand(double spread = 0.0) {
@@ -68,17 +68,8 @@ class SidheWand : LegendWeapon {
 
     action void FireBolt() {
         TakeAmmo(true);
-        double pow; double mult; double scale = 5;
-        [pow, mult] = invoker.GetPower();
-        if (mult > 1.) {
-            // Precision multiplies power scaling.
-            scale *= mult;
-        }
-
-        int dmg = invoker.GetDamage(pow);
-        // A_RailAttack(dmg * 10 * mult,0,false,"9356a3","413c5a",RGF_FULLBRIGHT,8);
         A_StartSound("weapons/railgf");
-        Shoot("AmethystRail",power: pow,base: 10,dscale: scale, mult: mult);
+        Shoot("AmethystRail",base: 10,dscale: 10);
     }
 
     states {
