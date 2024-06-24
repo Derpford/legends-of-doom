@@ -447,7 +447,7 @@ class DragonShot : LegendShot {
     action void DragonBlast() {
         if (invoker.precision > 1.) {
             // Precision hits explode.
-            A_SplashDamage(power,96);
+            A_SplashDamage(invoker.power,96);
         }
     }
 
