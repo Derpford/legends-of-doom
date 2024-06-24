@@ -186,7 +186,7 @@ class AmethystTrail : Actor {
 
     states {
         Spawn:
-            CHFR CBA 3;
+            CHFR CBA Random(2,4);
             TNT1 A 0;
             Stop;
     }
