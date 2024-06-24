@@ -199,7 +199,7 @@ class SidheFlamberge : LegendWeapon {
         Weapon.AmmoType1 "RedAmmo";
         Weapon.AmmoUse1 10;
         Weapon.AmmoType2 "PinkAmmo";
-        Weapon.AmmoUse2 10;
+        Weapon.AmmoUse2 8;
         +BRIGHT;
     }
 
@@ -366,7 +366,7 @@ class SidheGauntlet : LegendWeapon {
         Weapon.AmmoType1 "GreenAmmo";
         Weapon.AmmoUse1 8;
         Weapon.AmmoType2 "PinkAmmo";
-        Weapon.AmmoUse2 20;
+        Weapon.AmmoUse2 16;
     }
 
     action void CycleGauntlet() {
@@ -510,7 +510,7 @@ class SidheHellmouth : LegendWeapon {
         Weapon.AmmoType1 "YellowAmmo";
         Weapon.AmmoUse1 30;
         Weapon.AmmoType2 "PinkAmmo";
-        Weapon.AmmoUse2 25;
+        Weapon.AmmoUse2 20;
     }
 
     action void FirePain() {
