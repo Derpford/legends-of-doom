@@ -131,7 +131,7 @@ class UndyingSoul : LegendItem {
     }
 
     override string GetLongDesc() {
-        return "Dealing damage adds 0.5 (+0.5 per stack) points of Power. Taking damage removes 0.5 (+0.5 per stack) points of Power. Just don't get hit.";
+        return "Dealing damage adds 0.1 (+0.1 per stack) points of Power. Taking damage removes 10% of stacks. Just don't get hit.";
     }
 
     override void OnHit (int dmg, Name type, Actor src, Actor inf, Actor tgt) {
@@ -143,13 +143,13 @@ class UndyingSoul : LegendItem {
 
     override void OnRetaliate (int dmg, Name type, Actor src, Actor inf, Actor tgt) {
         if(TimeUp()) {
-            buff -= 1;
+            buff -= ceil(buff * 0.1);
             SetTimer();
         }
     }
 
     override double GetPower() {
-        return buff * 0.5 * GetStacks();
+        return buff * 0.1 * GetStacks();
     }
 
     states {
