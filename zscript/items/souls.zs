@@ -19,7 +19,7 @@ class CalmSoul : LegendItem {
 
     override void DoEffect() {
         super.DoEffect();
-        if (stock > 0) {
+        if (stock > 0 && GetAge() % 3 == 0) {
             stock -= GetStacks();
             let plr = LegendPlayer(owner);
             if (plr) {
